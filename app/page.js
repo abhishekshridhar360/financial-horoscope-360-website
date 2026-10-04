@@ -16,6 +16,11 @@ const FACEBOOK = "https://www.facebook.com/MyShubhNivesh/";
 const LINKEDIN = "https://www.linkedin.com/company/myshubhnivesh/";
 const MAPS = "https://maps.app.goo.gl/9593Mjn7iVxs2MVc7";
 const WHATSAPP = "https://wa.me/918607777320";
+const VISUALS = {
+  hero: "https://images.unsplash.com/photo-1676813790626-e958a8248eac?auto=format&fit=crop&fm=jpg&q=82&w=2400",
+  family: "https://images.unsplash.com/photo-1784040864694-ad907373f000?auto=format&fit=crop&fm=jpg&q=82&w=1800",
+  retirement: "https://images.unsplash.com/photo-1758686254550-c5d8f4de1b3a?auto=format&fit=crop&fm=jpg&q=82&w=1800"
+};
 
 const goals = [
   [Home,"Dream Home"],[GraduationCap,"Children's Education"],[Car,"Car / Lifestyle"],
@@ -68,7 +73,7 @@ export default function Page(){
     </header>
 
     <section id="home" className="hero">
-      <img src="/assets/hero-approved.png" alt="" className="heroArt"/>
+      <img src={VISUALS.hero} alt="A winding road through the mountains at sunrise" className="heroArt"/>
       <div className="heroShade"/>
       <div className="heroContent">
         <div className="kicker light"><Sparkles/> YOUR DREAMS HAVE DESTINATIONS</div>
@@ -92,9 +97,12 @@ export default function Page(){
         <h3>But are you actually <em>on course?</em></h3>
         <p>Having investments is not the same as knowing whether your goals are adequately funded—or whether every part of your financial life is working together.</p>
       </div>
-      <div className="orbit">
+      <div className="whyVisual">
+        <img src={VISUALS.family} alt="Family — the reason behind every financial journey"/>
+        <div className="orbit">
         <div className="question">?</div>
         {[[Banknote,"Income"],[WalletCards,"Investments"],[ShieldCheck,"Protection"],[House,"Property"],[Landmark,"Loans"],[CircleDollarSign,"Savings"]].map(([I,t],i)=><div key={t} className={`orbitItem o${i+1}`}><I/><span>{t}</span></div>)}
+        </div>
       </div>
     </section>
 
@@ -102,9 +110,9 @@ export default function Page(){
       <div className="kicker center">A DIFFERENT STARTING POINT</div>
       <h2 className="centerText">From <span className="mutedText">obligation</span> to <span className="goldText">aspiration.</span></h2>
       <div className="split">
-        <div className="splitCard obligation"><small>TRADITIONAL STARTING POINT</small><h3>Obligations</h3><p>Pay Tax • Pay EMI • Buy Insurance • Start SIP • Save for Retirement</p></div>
+        <div className="splitCard obligation"><div className="splitPic"><img src={VISUALS.retirement} alt="Everyday financial obligations and planning"/></div><small>TRADITIONAL STARTING POINT</small><h3>Obligations</h3><p>Pay Tax • Pay EMI • Buy Insurance • Start SIP • Save for Retirement</p></div>
         <div className="splitArrow"><ArrowRight/></div>
-        <div className="splitCard dream"><small>FINANCIAL HOROSCOPE™</small><h3>Aspirations</h3><p>Dream Home • Education • Lifestyle • Experiences • Marriage • Financial Freedom • Retirement • Legacy</p></div>
+        <div className="splitCard dream"><div className="splitPic"><img src={VISUALS.hero} alt="Aspirations and the road to the life you want"/></div><small>FINANCIAL HOROSCOPE™</small><h3>Aspirations</h3><p>Dream Home • Education • Lifestyle • Experiences • Marriage • Financial Freedom • Retirement • Legacy</p></div>
       </div>
       <blockquote>“Don’t start with money. Start with the life you want.”<span>Because money isn’t the destination. The life you want is.</span></blockquote>
     </section>
@@ -114,7 +122,7 @@ export default function Page(){
       <h2 className="centerText">Financial Horoscope™ begins with <span className="goldText">YOU.</span></h2>
       <p className="lead centerText">Because your financial future depends on much more than just your investments.</p>
       <div className="youMap">
-        <div className="youCore"><Users/><b>YOU</b><small>Your life. Your priorities.</small></div>
+        <div className="youCore"><img src={VISUALS.family} alt="Your life and your family"/><div><Users/><b>YOU</b><small>Your life. Your priorities.</small></div></div>
         {["Profession & Experience","Family & Life Stage","Income & Expenses","Assets & Liabilities","Investments & Protection","Goals & Dreams"].map((x,i)=><div className={`youNode y${i+1}`} key={x}>{x}</div>)}
       </div>
       <p className="signature">Different Lives. Different Priorities. Different Dreams. <b>Different Financial Horoscopes™.</b></p>
@@ -171,11 +179,11 @@ export default function Page(){
     <section className="dreams section soft">
       <div className="kicker center">EVERY DREAM BECOMES MEASURABLE</div>
       <h2 className="centerText">Dreams become goals when they have a <span className="goldText">number and a timeline.</span></h2>
-      <div className="goalGrid">{goals.map(([I,t])=><div key={t}><I/><span>{t}</span></div>)}</div>
+      <div className="goalGrid">{goals.map(([I,t],i)=><div className="goalVisual" key={t}><img src={i>5?VISUALS.retirement:(i%2?VISUALS.family:VISUALS.hero)} alt=""/><span className="goalShade"/><I/><b>{t}</b></div>)}</div>
     </section>
 
     <section className="protect section">
-      <div className="protectVisual"><div className="familyGlow"><ShieldCheck/></div></div>
+      <div className="protectVisual photoProtect"><img src={VISUALS.family} alt="Family protection and financial security"/><div className="familyGlow"><ShieldCheck/></div></div>
       <div className="protectCopy"><div className="kicker">PROTECT WHAT MATTERS</div><h2>Building wealth is only <span className="goldText">half the journey.</span></h2><p>Protecting what you’re building matters too.</p><div className="protectGrid">{[[ShieldCheck,"Life Protection"],[HeartPulse,"Health Protection"],[Siren,"Emergency Preparedness"],[Users,"Family Financial Security"]].map(([I,t])=><div key={t}><I/><span>{t}</span></div>)}</div></div>
     </section>
 
@@ -191,7 +199,7 @@ export default function Page(){
     <section id="for-whom" className="audience section">
       <div className="kicker center">WHO IS IT FOR?</div>
       <h2 className="centerText">Different lives. Different responsibilities. Different dreams.</h2>
-      <div className="audienceGrid">{["Doctors","Defence Personnel","Bankers & Professionals","Business Owners","Families","HNIs","Pre-Retirees","Retirees"].map((x)=><div key={x}><b>{x}</b></div>)}</div>
+      <div className="audienceGrid">{["Doctors","Defence Personnel","Bankers & Professionals","Business Owners","Families","HNIs","Pre-Retirees","Retirees"].map((x,i)=><div className="audienceVisual" key={x}><img src={i>=6?VISUALS.retirement:(i%3===0?VISUALS.hero:VISUALS.family)} alt=""/><span/><b>{x}</b></div>)}</div>
       <p className="signature">One important question: <b>Are you financially on course?</b></p>
     </section>
 
