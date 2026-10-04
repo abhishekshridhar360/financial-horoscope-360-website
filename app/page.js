@@ -84,7 +84,7 @@ export default function Page(){
 
     <section id="why" className="why section">
       <div className="whyCopy">
-        <div className="kicker">01 — WHY?</div>
+        <div className="kicker">WHY?</div>
         <h2>You are earning.<br/>Saving. Investing.</h2>
         <h3>But are you actually <em>on course?</em></h3>
         <p>Having investments is not the same as knowing whether your goals are adequately funded—or whether every part of your financial life is working together.</p>
@@ -96,7 +96,7 @@ export default function Page(){
     </section>
 
     <section className="aspiration section">
-      <div className="kicker center">02 — A DIFFERENT STARTING POINT</div>
+      <div className="kicker center">A DIFFERENT STARTING POINT</div>
       <h2 className="centerText">From <span className="mutedText">obligation</span> to <span className="goldText">aspiration.</span></h2>
       <div className="split">
         <div className="splitCard obligation"><small>TRADITIONAL STARTING POINT</small><h3>Obligations</h3><p>Pay Tax • Pay EMI • Buy Insurance • Start SIP • Save for Retirement</p></div>
@@ -107,7 +107,7 @@ export default function Page(){
     </section>
 
     <section className="begins section">
-      <div className="kicker center">03 — PERSONAL BY DESIGN</div>
+      <div className="kicker center">PERSONAL BY DESIGN</div>
       <h2 className="centerText">Financial Horoscope™ begins with <span className="goldText">YOU.</span></h2>
       <p className="lead centerText">Because your financial future depends on much more than just your investments.</p>
       <div className="youMap">
@@ -118,7 +118,7 @@ export default function Page(){
     </section>
 
     <section className="questions section dark">
-      <div className="kicker light">04 — QUESTIONS WORTH KNOWING</div>
+      <div className="kicker light">QUESTIONS WORTH KNOWING</div>
       <div className="questionLayout">
         <div><h2>Do you know the answers to <span>these questions?</span></h2><p>You already have a financial future. The question is—do you know what it looks like?</p></div>
         <div className="questionList">
@@ -128,7 +128,7 @@ export default function Page(){
     </section>
 
     <section id="benefits" className="what section">
-      <div className="kicker center">05 — WHAT IS FINANCIAL HOROSCOPE™?</div>
+      <div className="kicker center">WHAT IS FINANCIAL HOROSCOPE™?</div>
       <h2 className="centerText">See your financial life as <span className="goldText">one complete picture.</span></h2>
       <div className="engine">
         <div className="inputs"><b>YOUR LIFE</b><span>Family • Profession • Aspirations</span><b>YOUR NUMBERS</b><span>Income • Expenses • Assets • Investments</span></div>
@@ -140,7 +140,7 @@ export default function Page(){
     </section>
 
     <section id="how" className="how section soft">
-      <div className="kicker center">06 — HOW DOES IT WORK?</div>
+      <div className="kicker center">HOW DOES IT WORK?</div>
       <h2 className="centerText">A simple 4-step journey to <span className="goldText">clarity.</span></h2>
       <div className="steps">
         {[
@@ -154,7 +154,7 @@ export default function Page(){
     </section>
 
     <section className="reveal section">
-      <div className="kicker center">07 — THE BIG REVEAL</div>
+      <div className="kicker center">THE BIG REVEAL</div>
       <h2 className="centerText">Where are you <span className="goldText">headed?</span></h2>
       <div className="journeyCompare">
         <div className="journeyCard current"><small>WHAT IF NOTHING CHANGES?</small><h3>Current Wealth Journey</h3>{["Financial Health Score","Wealth Zone","Current Corpus","Required Corpus","Goals Funded","Projected Wealth Gap"].map(x=><span key={x}><i/> {x}</span>)}</div>
@@ -165,18 +165,18 @@ export default function Page(){
     </section>
 
     <section className="dreams section soft">
-      <div className="kicker center">08 — EVERY DREAM BECOMES MEASURABLE</div>
+      <div className="kicker center">EVERY DREAM BECOMES MEASURABLE</div>
       <h2 className="centerText">Dreams become goals when they have a <span className="goldText">number and a timeline.</span></h2>
       <div className="goalGrid">{goals.map(([I,t])=><div key={t}><I/><span>{t}</span></div>)}</div>
     </section>
 
     <section className="protect section">
       <div className="protectVisual"><div className="familyGlow"><ShieldCheck/></div></div>
-      <div className="protectCopy"><div className="kicker">09 — PROTECT WHAT MATTERS</div><h2>Building wealth is only <span className="goldText">half the journey.</span></h2><p>Protecting what you’re building matters too.</p><div className="protectGrid">{[[ShieldCheck,"Life Protection"],[HeartPulse,"Health Protection"],[Siren,"Emergency Preparedness"],[Users,"Family Financial Security"]].map(([I,t])=><div key={t}><I/><span>{t}</span></div>)}</div></div>
+      <div className="protectCopy"><div className="kicker">PROTECT WHAT MATTERS</div><h2>Building wealth is only <span className="goldText">half the journey.</span></h2><p>Protecting what you’re building matters too.</p><div className="protectGrid">{[[ShieldCheck,"Life Protection"],[HeartPulse,"Health Protection"],[Siren,"Emergency Preparedness"],[Users,"Family Financial Security"]].map(([I,t])=><div key={t}><I/><span>{t}</span></div>)}</div></div>
     </section>
 
     <section className="action section dark">
-      <div className="kicker light center">10 — FROM INSIGHT TO ACTION</div>
+      <div className="kicker light center">FROM INSIGHT TO ACTION</div>
       <h2 className="centerText">Knowing the gap is only the beginning.<br/><span>Clarity → Action → Progress</span></h2>
       <div className="actionTable">
         <div className="thead"><b>WHAT TO DO</b><b>PRIORITY</b><b>WHEN</b><b>EXPECTED OUTCOME</b></div>
@@ -185,14 +185,14 @@ export default function Page(){
     </section>
 
     <section id="for-whom" className="audience section">
-      <div className="kicker center">11 — WHO IS IT FOR?</div>
+      <div className="kicker center">WHO IS IT FOR?</div>
       <h2 className="centerText">Different lives. Different responsibilities. Different dreams.</h2>
-      <div className="audienceGrid">{["Doctors","Defence Personnel","Bankers & Professionals","Business Owners","Families","HNIs","Pre-Retirees","Retirees"].map((x,i)=><div key={x}><span>{String(i+1).padStart(2,"0")}</span><b>{x}</b></div>)}</div>
+      <div className="audienceGrid">{["Doctors","Defence Personnel","Bankers & Professionals","Business Owners","Families","HNIs","Pre-Retirees","Retirees"].map((x)=><div key={x}><b>{x}</b></div>)}</div>
       <p className="signature">One important question: <b>Are you financially on course?</b></p>
     </section>
 
     <section id="stories" className="stories section soft">
-      <div className="kicker center">12 — REAL PEOPLE. REAL EXPERIENCES.</div>
+      <div className="kicker center">REAL PEOPLE. REAL EXPERIENCES.</div>
       <h2 className="centerText">Hear it from the people who have <span className="goldText">experienced the journey.</span></h2>
       <div className="videoGrid">
         {videos.map(([name,type,id])=><a key={id} className="videoCard" href={`https://youtu.be/${id}`} target="_blank" rel="noreferrer"><div className="thumb"><img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt={`${name} testimonial video thumbnail`}/><span><Play/></span></div><h3>{name}</h3><p>{type}</p></a>)}
@@ -203,7 +203,7 @@ export default function Page(){
     </section>
 
     <section className="different section">
-      <div className="kicker center">13 — HOW IS IT DIFFERENT?</div>
+      <div className="kicker center">HOW IS IT DIFFERENT?</div>
       <h2 className="centerText">Start with your <span className="goldText">life.</span> Then design the money around it.</h2>
       <div className="differentGrid">
         <div><small>TRADITIONAL STARTING POINT</small><h3>Product-Centric</h3><p>Products → Investments → Returns → Hopefully Goals</p></div>
@@ -214,7 +214,7 @@ export default function Page(){
     </section>
 
     <section id="about" className="about section dark">
-      <div className="kicker light center">14 — THE PEOPLE BEHIND THE ROADMAP</div>
+      <div className="kicker light center">THE PEOPLE BEHIND THE ROADMAP</div>
       <h2 className="centerText">Experience. Planning. <span>Human understanding.</span></h2>
       <div className="teamGrid">{team.map(([name,role,cred,img])=><article key={name}><div className="teamPhoto"><img src={img} alt={name}/></div><h3>{name}</h3><b>{role}</b><p>{cred}</p></article>)}</div>
       <div className="trustStrip"><b>Trusted Financial Services Since 2009</b><span>Among Haryana’s Top 3</span><span>₹300+ Cr AUM</span><span>1,000+ Families</span><span>Serving Clients Across India</span></div>
@@ -222,13 +222,13 @@ export default function Page(){
     </section>
 
     <section id="faq" className="faq section">
-      <div><div className="kicker">15 — FAQ & TRUST</div><h2>Before you <span className="goldText">begin.</span></h2><p>Clear answers to the questions people naturally ask before starting their Financial Horoscope™.</p></div>
+      <div><div className="kicker">FAQ & TRUST</div><h2>Before you <span className="goldText">begin.</span></h2><p>Clear answers to the questions people naturally ask before starting their Financial Horoscope™.</p></div>
       <div className="faqList">{faq.map(([q,a])=><details key={q}><summary>{q}<ChevronDown/></summary><p>{a}</p></details>)}</div>
     </section>
 
     <section className="final section dark">
       <div className="finalCompass"><Compass/></div>
-      <div className="kicker light center">16 — YOUR DESTINATION</div>
+      <div className="kicker light center">YOUR DESTINATION</div>
       <h2>You Have Only One Financial Life.<span>Don’t Navigate It Blindly.</span></h2>
       <div className="finalPoints"><span><BadgeCheck/>Know where you are.</span><span><BadgeCheck/>Know where you want to go.</span><span><BadgeCheck/>Know what needs to change.</span></div>
       <a className="primary large" href={QUICK_SCAN}>Discover My Financial Horoscope™ <ArrowRight/></a>
