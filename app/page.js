@@ -17,7 +17,7 @@ const LINKEDIN = "https://www.linkedin.com/company/myshubhnivesh/";
 const MAPS = "https://maps.app.goo.gl/9593Mjn7iVxs2MVc7";
 const WHATSAPP = "https://wa.me/918607777320";
 const VISUALS = {
-  hero: "https://images.unsplash.com/photo-1676813790626-e958a8248eac?auto=format&fit=crop&fm=jpg&q=82&w=2400",
+  hero: "/assets/hero-approved.png",
   family: "https://images.unsplash.com/photo-1784040864694-ad907373f000?auto=format&fit=crop&fm=jpg&q=82&w=1800",
   retirement: "https://images.unsplash.com/photo-1758686254550-c5d8f4de1b3a?auto=format&fit=crop&fm=jpg&q=82&w=1800"
 };
@@ -134,9 +134,9 @@ export default function Page(){
       <div className="kicker center">A DIFFERENT STARTING POINT</div>
       <h2 className="centerText">From <span className="mutedText">obligation</span> to <span className="goldText">aspiration.</span></h2>
       <div className="split">
-        <div className="splitCard obligation"><div className="splitPic"><img src={VISUALS.retirement} alt="Everyday financial obligations and planning"/></div><small>TRADITIONAL STARTING POINT</small><h3>Obligations</h3><p>Pay Tax • Pay EMI • Buy Insurance • Start SIP • Save for Retirement</p></div>
+        <div className="splitCard obligation iconJourney"><WalletCards/><small>TRADITIONAL STARTING POINT</small><h3>Obligations</h3><p>Pay Tax • Pay EMI • Buy Insurance • Start SIP • Save for Retirement</p></div>
         <div className="splitArrow"><ArrowRight/></div>
-        <div className="splitCard dream"><div className="splitPic"><img src={VISUALS.hero} alt="Aspirations and the road to the life you want"/></div><small>FINANCIAL HOROSCOPE™</small><h3>Aspirations</h3><p>Dream Home • Education • Lifestyle • Experiences • Marriage • Financial Freedom • Retirement • Legacy</p></div>
+        <div className="splitCard dream iconJourney"><Route/><small>FINANCIAL HOROSCOPE™</small><h3>Aspirations</h3><p>Dream Home • Education • Lifestyle • Experiences • Marriage • Financial Freedom • Retirement • Legacy</p></div>
       </div>
       <blockquote>“Don’t start with money. Start with the life you want.”<span>Because money isn’t the destination. The life you want is.</span></blockquote>
     </section>
@@ -146,7 +146,7 @@ export default function Page(){
       <h2 className="centerText">Financial Horoscope™ begins with <span className="goldText">YOU.</span></h2>
       <p className="lead centerText">Because your financial future depends on much more than just your investments.</p>
       <div className="youMap">
-        <div className="youCore"><img src={VISUALS.family} alt="Your life and your family"/><div><Users/><b>YOU</b><small>Your life. Your priorities.</small></div></div>
+        <div className="youCore"><div><Users/><b>YOU</b><small>Your life. Your priorities.</small></div></div>
         {["Profession & Experience","Family & Life Stage","Income & Expenses","Assets & Liabilities","Investments & Protection","Goals & Dreams"].map((x,i)=><div className={`youNode y${i+1}`} key={x}>{x}</div>)}
       </div>
       <p className="signature">Different Lives. Different Priorities. Different Dreams. <b>Different Financial Horoscopes™.</b></p>
@@ -155,7 +155,7 @@ export default function Page(){
     <section className="dreams section soft">
       <div className="kicker center">EVERY DREAM BECOMES MEASURABLE</div>
       <h2 className="centerText">Dreams become goals when they have a <span className="goldText">number and a timeline.</span></h2>
-      <div className="goalGrid">{goals.map(([I,t],i)=><div className="goalVisual" key={t}><img src={i>5?VISUALS.retirement:(i%2?VISUALS.family:VISUALS.hero)} alt=""/><span className="goalShade"/><I/><b>{t}</b></div>)}</div>
+      <div className="goalGrid">{goals.map(([I,t])=><div className="goalIconCard" key={t}><I/><b>{t}</b></div>)}</div>
     </section>
 
     <section id="benefits" className="what section">
@@ -220,7 +220,7 @@ export default function Page(){
     <section id="for-whom" className="audience section">
       <div className="kicker center">WHO IS IT FOR?</div>
       <h2 className="centerText">Different lives. Different responsibilities. Different dreams.</h2>
-      <div className="audienceGrid">{["Doctors","Defence Personnel","Bankers & Professionals","Business Owners","Salaried","Families","HNIs","Ultra HNI","Pre-Retirees","Retirees"].map((x,i)=><div className="audienceVisual" key={x}><img src={i>=6?VISUALS.retirement:(i%3===0?VISUALS.hero:VISUALS.family)} alt=""/><span/><b>{x}</b></div>)}</div>
+      <div className="audienceGrid">{[[HeartPulse,"Doctors"],[ShieldCheck,"Defence Personnel"],[Landmark,"Bankers & Professionals"],[BriefcaseBusiness,"Business Owners"],[BadgeCheck,"Salaried"],[Users,"Families"],[Trophy,"HNIs"],[Sparkles,"Ultra HNI"],[Sunset,"Pre-Retirees"],[TreePine,"Retirees"]].map(([I,x])=><div className="audienceIconCard" key={x}><I/><b>{x}</b></div>)}</div>
       <p className="signature">One important question: <b>Are you financially on course?</b></p>
     </section>
 
