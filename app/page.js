@@ -16,11 +16,6 @@ const FACEBOOK = "https://www.facebook.com/MyShubhNivesh/";
 const LINKEDIN = "https://www.linkedin.com/company/myshubhnivesh/";
 const MAPS = "https://maps.app.goo.gl/9593Mjn7iVxs2MVc7";
 const WHATSAPP = "https://wa.me/918607777320";
-const VISUALS = {
-  hero: "/assets/hero-approved.png",
-  family: "https://images.unsplash.com/photo-1784040864694-ad907373f000?auto=format&fit=crop&fm=jpg&q=82&w=1800",
-  retirement: "https://images.unsplash.com/photo-1758686254550-c5d8f4de1b3a?auto=format&fit=crop&fm=jpg&q=82&w=1800"
-};
 
 const goals = [
   [Home,"Dream Home"],[GraduationCap,"Children's Education"],[Car,"Car / Lifestyle"],
@@ -32,7 +27,7 @@ const videos = [
   ["Dr. Abhishek Khurana","Doctor","XsJ45wzk1-0"],
   ["Col. Somvir Singh Mundalia","Defence Personnel","ZuwFJrcT5sY"],
   ["Mr. Vikas Aggarwal","Business / Professional","8n6MlojWU2c"],
-  ["Mr. Mohit Garg","Business / Professional","FtVSwHnASH8"]
+  ["Mr. Mohit Garg","Client","FtVSwHnASH8"]
 ];
 
 const team = [
@@ -45,8 +40,7 @@ const team = [
 const faq = [
   ["What exactly is Financial Horoscope™?","Financial Horoscope™ is a structured financial planning and diagnostic concept that brings your life goals, financial resources, protection and future requirements into one comprehensive view."],
   ["Is Financial Horoscope™ related to astrology?","No. It is not astrology or fortune-telling. The name is a brand metaphor for a comprehensive view of your financial life and future planning requirements."],
-  ["Who should get one?","It can be useful for salaried individuals, professionals, business owners, doctors, defence personnel, families, HNIs, Ultra HNIs, pre-retirees and retirees who want greater clarity about their financial journey."],
-  ["Is Financial Horoscope™ an investment product?","No. Financial Horoscope™ is a financial planning and diagnostic concept designed to bring your financial life, goals, resources, protection and future requirements into one structured view."],
+  ["Who should get one?","It can be useful for professionals, business owners, families, HNIs, defence personnel, pre-retirees and retirees who want greater clarity about their financial journey."],
   ["What information will I need to provide?","The complete exercise may consider family and life-stage information, income and expenses, assets and liabilities, investments and protection, and your important goals and aspirations."],
   ["Is my information confidential?","Confidentiality is a core design principle of the Financial Horoscope™ journey. Information should be shared only through the designated secure workflow."],
   ["Are future values or projections guaranteed?","No. Future values, inflation and return assumptions are planning estimates and not guarantees of future outcomes. Actual outcomes can differ."],
@@ -59,7 +53,7 @@ export default function Page(){
   const [menu,setMenu]=useState(false);
   return <main>
     <header className="nav">
-      <a className="brand officialBrand" href="#home"><img src="/assets/financial-horoscope-logo.png" alt="Financial Horoscope™"/><span className="brandOwner">Proprietary to My Shubh Nivesh</span></a>
+      <a className="brand brandLogo" href="#home"><img src="/assets/financial-horoscope-logo.png" alt="Financial Horoscope™"/><span className="proprietary">PROPRIETARY TO<br/><b>MY SHUBH NIVESH</b></span></a>
       <nav className={menu ? "navlinks open":"navlinks"}>
         <a href="#why" onClick={()=>setMenu(false)}>Why</a>
         <a href="#how" onClick={()=>setMenu(false)}>How It Works</a>
@@ -75,7 +69,7 @@ export default function Page(){
     </header>
 
     <section id="home" className="hero">
-      <img src={VISUALS.hero} alt="A winding road through the mountains at sunrise" className="heroArt"/>
+      <img src="/assets/hero-approved.png" alt="" className="heroArt"/>
       <div className="heroShade"/>
       <div className="heroContent">
         <div className="kicker light"><Sparkles/> YOUR DREAMS HAVE DESTINATIONS</div>
@@ -92,16 +86,6 @@ export default function Page(){
       </div>
     </section>
 
-    <section className="questions section dark">
-      <div className="kicker light">QUESTIONS WORTH KNOWING</div>
-      <div className="questionLayout">
-        <div><h2>Do you know the answers to <span>these questions?</span></h2><p>You already have a financial future. The question is—do you know what it looks like?</p></div>
-        <div className="questionList">
-          {["What is my Financial Health Score?","Which Wealth Zone Am I In?","How much wealth will my life actually require?","How much of my goals are funded today?","What is my wealth gap?","Is my family adequately protected?","Where will my current financial journey take me?","What should I change today?"].map((q)=><div key={q}><span>{q}</span></div>)}
-        </div>
-      </div>
-    </section>
-
     <section id="why" className="why section">
       <div className="whyCopy">
         <div className="kicker">WHY?</div>
@@ -109,34 +93,19 @@ export default function Page(){
         <h3>But are you actually <em>on course?</em></h3>
         <p>Having investments is not the same as knowing whether your goals are adequately funded—or whether every part of your financial life is working together.</p>
       </div>
-      <div className="whyVisual">
-        <img src={VISUALS.family} alt="Family — the reason behind every financial journey"/>
-        <div className="orbit">
+      <div className="orbit">
         <div className="question">?</div>
         {[[Banknote,"Income"],[WalletCards,"Investments"],[ShieldCheck,"Protection"],[House,"Property"],[Landmark,"Loans"],[CircleDollarSign,"Savings"]].map(([I,t],i)=><div key={t} className={`orbitItem o${i+1}`}><I/><span>{t}</span></div>)}
-        </div>
       </div>
-    </section>
-
-    <section className="reveal section">
-      <div className="kicker center">THE BIG REVEAL</div>
-      <h2 className="centerText">Where are you <span className="goldText">headed?</span></h2>
-      <div className="journeyCompare">
-        <div className="journeyCard current"><small>WHAT IF NOTHING CHANGES?</small><h3>Current Wealth Journey</h3>{["Financial Health Score","Wealth Zone","Current Corpus","Required Corpus","Goals Funded","Projected Wealth Gap"].map(x=><span key={x}><i/> {x}</span>)}</div>
-        <div className="transform"><Compass/><b>FINANCIAL<br/>HOROSCOPE™</b><ArrowRight/></div>
-        <div className="journeyCard recommended"><small>WITH A STRUCTURED ROADMAP</small><h3>Recommended Wealth Journey</h3>{["Recommended Corpus","Goals Funded","Potential Surplus","Growth Zone","Financial Freedom"].map(x=><span key={x}><i/> {x}</span>)}</div>
-      </div>
-      <h3 className="bigStatement">Same Dreams. <span>A Better-Designed Journey.</span></h3>
-      <div className="revealCta"><a className="primary" href={QUICK_SCAN}>See What Your Financial Horoscope™ Says <ArrowRight/></a></div>
     </section>
 
     <section className="aspiration section">
       <div className="kicker center">A DIFFERENT STARTING POINT</div>
       <h2 className="centerText">From <span className="mutedText">obligation</span> to <span className="goldText">aspiration.</span></h2>
       <div className="split">
-        <div className="splitCard obligation iconJourney"><WalletCards/><small>TRADITIONAL STARTING POINT</small><h3>Obligations</h3><p>Pay Tax • Pay EMI • Buy Insurance • Start SIP • Save for Retirement</p></div>
+        <div className="splitCard obligation"><small>TRADITIONAL STARTING POINT</small><h3>Obligations</h3><p>Pay Tax • Pay EMI • Buy Insurance • Start SIP • Save for Retirement</p></div>
         <div className="splitArrow"><ArrowRight/></div>
-        <div className="splitCard dream iconJourney"><Route/><small>FINANCIAL HOROSCOPE™</small><h3>Aspirations</h3><p>Dream Home • Education • Lifestyle • Experiences • Marriage • Financial Freedom • Retirement • Legacy</p></div>
+        <div className="splitCard dream"><small>FINANCIAL HOROSCOPE™</small><h3>Aspirations</h3><p>Dream Home • Education • Lifestyle • Experiences • Marriage • Financial Freedom • Retirement • Legacy</p></div>
       </div>
       <blockquote>“Don’t start with money. Start with the life you want.”<span>Because money isn’t the destination. The life you want is.</span></blockquote>
     </section>
@@ -146,16 +115,20 @@ export default function Page(){
       <h2 className="centerText">Financial Horoscope™ begins with <span className="goldText">YOU.</span></h2>
       <p className="lead centerText">Because your financial future depends on much more than just your investments.</p>
       <div className="youMap">
-        <div className="youCore"><div><Users/><b>YOU</b><small>Your life. Your priorities.</small></div></div>
+        <div className="youCore"><Users/><b>YOU</b><small>Your life. Your priorities.</small></div>
         {["Profession & Experience","Family & Life Stage","Income & Expenses","Assets & Liabilities","Investments & Protection","Goals & Dreams"].map((x,i)=><div className={`youNode y${i+1}`} key={x}>{x}</div>)}
       </div>
       <p className="signature">Different Lives. Different Priorities. Different Dreams. <b>Different Financial Horoscopes™.</b></p>
     </section>
 
-    <section className="dreams section soft">
-      <div className="kicker center">EVERY DREAM BECOMES MEASURABLE</div>
-      <h2 className="centerText">Dreams become goals when they have a <span className="goldText">number and a timeline.</span></h2>
-      <div className="goalGrid">{goals.map(([I,t])=><div className="goalIconCard" key={t}><I/><b>{t}</b></div>)}</div>
+    <section className="questions section dark">
+      <div className="kicker light">QUESTIONS WORTH KNOWING</div>
+      <div className="questionLayout">
+        <div><h2>Do you know the answers to <span>these questions?</span></h2><p>You already have a financial future. The question is—do you know what it looks like?</p></div>
+        <div className="questionList">
+          {["What is my Financial Health Score?","Which Wealth Zone Am I In?","How much wealth will my life actually require?","How much of my goals are funded today?","What is my wealth gap?","Is my family adequately protected?","Where will my current financial journey take me?","What should I change today?"].map((q)=><div key={q}><span>{q}</span></div>)}
+        </div>
+      </div>
     </section>
 
     <section id="benefits" className="what section">
@@ -184,8 +157,26 @@ export default function Page(){
       <p className="signature">Not just a report. <b>A roadmap for your entire wealth journey.</b></p>
     </section>
 
+    <section className="reveal section">
+      <div className="kicker center">THE BIG REVEAL</div>
+      <h2 className="centerText">Where are you <span className="goldText">headed?</span></h2>
+      <div className="journeyCompare">
+        <div className="journeyCard current"><small>WHAT IF NOTHING CHANGES?</small><h3>Current Wealth Journey</h3>{["Financial Health Score","Wealth Zone","Current Corpus","Required Corpus","Goals Funded","Projected Wealth Gap"].map(x=><span key={x}><i/> {x}</span>)}</div>
+        <div className="transform"><Compass/><b>FINANCIAL<br/>HOROSCOPE™</b><ArrowRight/></div>
+        <div className="journeyCard recommended"><small>WITH A STRUCTURED ROADMAP</small><h3>Recommended Wealth Journey</h3>{["Recommended Corpus","Goals Funded","Potential Surplus","Growth Zone","Financial Freedom"].map(x=><span key={x}><i/> {x}</span>)}</div>
+      </div>
+      <h3 className="bigStatement">Same Dreams. <span>A Better-Designed Journey.</span></h3>
+      <div className="revealCta"><a className="primary" href={QUICK_SCAN}>See What Your Financial Horoscope™ Says <ArrowRight/></a></div>
+    </section>
+
+    <section className="dreams section soft">
+      <div className="kicker center">EVERY DREAM BECOMES MEASURABLE</div>
+      <h2 className="centerText">Dreams become goals when they have a <span className="goldText">number and a timeline.</span></h2>
+      <div className="goalGrid">{goals.map(([I,t])=><div key={t}><I/><span>{t}</span></div>)}</div>
+    </section>
+
     <section className="protect section">
-      <div className="protectVisual photoProtect"><img src={VISUALS.family} alt="Family protection and financial security"/><div className="familyGlow"><ShieldCheck/></div></div>
+      <div className="protectVisual"><img src="/assets/protection-family.png" alt="Family protected by a golden halo"/></div>
       <div className="protectCopy"><div className="kicker">PROTECT WHAT MATTERS</div><h2>Building wealth is only <span className="goldText">half the journey.</span></h2><p>Protecting what you’re building matters too.</p><div className="protectGrid">{[[ShieldCheck,"Life Protection"],[HeartPulse,"Health Protection"],[Siren,"Emergency Preparedness"],[Users,"Family Financial Security"]].map(([I,t])=><div key={t}><I/><span>{t}</span></div>)}</div></div>
     </section>
 
@@ -196,6 +187,13 @@ export default function Page(){
         <div className="thead"><b>WHAT TO DO</b><b>PRIORITY</b><b>WHEN</b><b>EXPECTED OUTCOME</b></div>
         {[["Portfolio Optimization","High","0–3 months","Better risk-adjusted structure"],["Investment Requirements","High","0–3 months","Address goal-funding gaps"],["Protection Review","High","0–3 months","Adequate family cover"],["Asset Allocation","Medium","3–6 months","Balanced portfolio"],["Goal Prioritization","Medium","3–6 months","Focus on key goals"],["Future Cash-Flow Plan","Medium","6–12 months","Stay on long-term track"]].map(r=><div className="trow" key={r[0]}>{r.map(c=><span key={c}>{c}</span>)}</div>)}
       </div>
+    </section>
+
+    <section id="for-whom" className="audience section">
+      <div className="kicker center">WHO IS IT FOR?</div>
+      <h2 className="centerText">Different lives. Different responsibilities. Different dreams.</h2>
+      <div className="audienceGrid">{["Doctors","Defence Personnel","Bankers & Professionals","Business Owners","Salaried","Families","HNIs","Ultra HNI","Pre-Retirees","Retirees"].map((x)=><div key={x}><b>{x}</b></div>)}</div>
+      <p className="signature">One important question: <b>Are you financially on course?</b></p>
     </section>
 
     <section id="stories" className="stories section soft">
@@ -209,21 +207,6 @@ export default function Page(){
       <div className="reviewGrid">{["review-haresh.png","review-himmat.png","review-meenakshi.png"].map((x,i)=><a key={x} href={MAPS} target="_blank" rel="noreferrer"><img src={`/assets/${x}`} alt={`Google review ${i+1}`}/></a>)}</div>
     </section>
 
-    <section id="about" className="about section dark">
-      <div className="ownership"><span>FINANCIAL HOROSCOPE™ — PROPRIETARY TO</span><img src="/assets/my-shubh-nivesh-logo.png" alt="My Shubh Nivesh"/></div><div className="kicker light center">THE PEOPLE BEHIND THE ROADMAP</div>
-      <h2 className="centerText">Experience. Planning. <span>Human understanding.</span></h2>
-      <div className="teamGrid">{team.map(([name,role,cred,img])=><article key={name}><div className="teamPhoto"><img src={img} alt={name}/></div><h3>{name}</h3><b>{role}</b><p>{cred}</p></article>)}</div>
-      <div className="trustStrip"><b>Trusted Financial Services Since 2009</b><span>₹300+ Cr AUM</span><span>1,000+ Families</span><span>Serving Clients Across India</span></div>
-      <p className="specialism">Portfolio Management Specialists | MF • SIF • PMS • AIF | Financial Horoscope™</p>
-    </section>
-
-    <section id="for-whom" className="audience section">
-      <div className="kicker center">WHO IS IT FOR?</div>
-      <h2 className="centerText">Different lives. Different responsibilities. Different dreams.</h2>
-      <div className="audienceGrid">{[[HeartPulse,"Doctors"],[ShieldCheck,"Defence Personnel"],[Landmark,"Bankers & Professionals"],[BriefcaseBusiness,"Business Owners"],[BadgeCheck,"Salaried"],[Users,"Families"],[Trophy,"HNIs"],[Sparkles,"Ultra HNI"],[Sunset,"Pre-Retirees"],[TreePine,"Retirees"]].map(([I,x])=><div className="audienceIconCard" key={x}><I/><b>{x}</b></div>)}</div>
-      <p className="signature">One important question: <b>Are you financially on course?</b></p>
-    </section>
-
     <section className="different section">
       <div className="kicker center">HOW IS IT DIFFERENT?</div>
       <h2 className="centerText">Start with your <span className="goldText">life.</span> Then design the money around it.</h2>
@@ -235,12 +218,20 @@ export default function Page(){
       <blockquote>Financial Horoscope™ doesn’t begin with a financial product.<span>It begins with your life.</span></blockquote>
     </section>
 
+    <section id="about" className="about section dark">
+      <div className="kicker light center">THE PEOPLE BEHIND THE ROADMAP</div>
+      <h2 className="centerText">Experience. Planning. <span>Human understanding.</span></h2>
+      <div className="teamGrid">{team.map(([name,role,cred,img])=><article key={name}><div className="teamPhoto"><img src={img} alt={name}/></div><h3>{name}</h3><b>{role}</b><p>{cred}</p></article>)}</div>
+      <div className="ownership"><img src="/assets/my-shubh-nivesh-logo.png" alt="My Shubh Nivesh"/><div><b>Financial Horoscope™</b><span>A Proprietary Initiative of My Shubh Nivesh</span></div></div><div className="trustStrip"><b>Trusted Financial Services Since 2009</b><span>₹300+ Cr AUM</span><span>1,000+ Families</span><span>Serving Clients Across India</span></div>
+      <p className="specialism">Portfolio Management Specialists | MF • SIF • PMS • AIF | Financial Horoscope™</p>
+    </section>
+
     <section id="faq" className="faq section">
       <div><div className="kicker">FAQ & TRUST</div><h2>Before you <span className="goldText">begin.</span></h2><p>Clear answers to the questions people naturally ask before starting their Financial Horoscope™.</p></div>
       <div className="faqList">{faq.map(([q,a])=><details key={q}><summary>{q}<ChevronDown/></summary><p>{a}</p></details>)}</div>
     </section>
 
-    <section className="final section dark">
+    <section className="final section dark" style={{backgroundImage:"linear-gradient(90deg,rgba(4,20,36,.92),rgba(4,20,36,.35)),url(/assets/final-cta-road.png)"}}>
       <div className="finalCompass"><Compass/></div>
       <div className="kicker light center">YOUR DESTINATION</div>
       <h2>You Have Only One Financial Life.<span>Don’t Navigate It Blindly.</span></h2>
@@ -251,13 +242,13 @@ export default function Page(){
 
     <footer>
       <div className="footerGrid">
-        <div><div className="footerDualBrand"><img className="fhLogo" src="/assets/financial-horoscope-logo.png" alt="Financial Horoscope™"/><span>A Proprietary Initiative of</span><img className="msnLogo" src="/assets/my-shubh-nivesh-logo.png" alt="My Shubh Nivesh"/></div><p>Trusted Financial Services Since 2009</p></div>
+        <div className="footerBrands"><img src="/assets/financial-horoscope-logo.png" alt="Financial Horoscope™"/><p>A Proprietary Initiative of</p><img className="msnLogo" src="/assets/my-shubh-nivesh-logo.png" alt="My Shubh Nivesh"/><p>Trusted Financial Services Since 2009</p></div>
         <div><h4>Explore</h4><a href="#why">Why</a><a href="#how">How It Works</a><a href="#for-whom">For Whom</a><a href="#stories">Real Stories</a><a href="#about">About</a></div>
         <div><h4>Contact</h4><a href="tel:+918607777320"><Phone/>8607777320</a><a href={WHATSAPP} target="_blank" rel="noreferrer"><MessageCircle/>WhatsApp Us</a><a href="mailto:helpdesk@myshubhnivesh.com"><Mail/>helpdesk@myshubhnivesh.com</a><a href={MAPS} target="_blank" rel="noreferrer"><MapPin/>282, 2nd Floor, Sector 9-11, Hisar, Haryana - 125005</a></div>
         <div><h4>Connect</h4><div className="social"><a href={YOUTUBE} target="_blank" rel="noreferrer"><Youtube/></a><a href={FACEBOOK} target="_blank" rel="noreferrer"><Facebook/></a><a href={LINKEDIN} target="_blank" rel="noreferrer"><Linkedin/></a></div><a className="footerLogin" href={CLIENT_LOGIN} target="_blank" rel="noreferrer">Client Login <ExternalLink/></a></div>
       </div>
       <div className="disclaimer"><p>Important: Financial Horoscope™ is a financial planning and diagnostic concept and is not astrology or a guarantee of future outcomes. Future values, inflation and expected-return assumptions are estimates used for planning. Actual investment outcomes can vary and investments are subject to market and other risks. Individual suitability, tax and regulatory circumstances should be considered before acting.</p></div>
-      <div className="copyright"><span>© 2026 My Shubh Nivesh. All rights reserved.</span><span><a href="/privacy-policy">Privacy Policy</a> &nbsp; | &nbsp; <a href="/terms-and-conditions">Terms &amp; Conditions</a> &nbsp; | &nbsp; <a href="/disclaimer">Disclaimer</a></span><b>Your Vision, Our Mission.</b></div>
+      <div className="copyright"><span>© 2026 My Shubh Nivesh. All rights reserved.</span><span><a href="/privacy-policy">Privacy Policy</a> &nbsp; | &nbsp; <a href="/terms-and-conditions">Terms & Conditions</a> &nbsp; | &nbsp; <a href="/disclaimer">Disclaimer</a></span><b>Your Vision, Our Mission.</b></div>
     </footer>
   </main>
 }
