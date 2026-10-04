@@ -5,7 +5,7 @@ import {
   ArrowRight, Menu, X, ChevronDown, Compass, Home, GraduationCap, Car, Plane,
   HeartHandshake, Trophy, Sunset, TreePine, ShieldCheck, HeartPulse, Siren,
   Users, BriefcaseBusiness, Landmark, BadgeCheck, Target, Route, Sparkles,
-  Play, Star, Phone, Mail, MapPin, Youtube, Facebook, Linkedin, ExternalLink,
+  Play, Star, Phone, Mail, MapPin, Youtube, Facebook, Linkedin, MessageCircle, ExternalLink,
   WalletCards, House, Banknote, Umbrella, CircleDollarSign, ChartNoAxesCombined
 } from "lucide-react";
 
@@ -15,6 +15,7 @@ const YOUTUBE = "https://www.youtube.com/@MyShubhNivesh-com";
 const FACEBOOK = "https://www.facebook.com/MyShubhNivesh/";
 const LINKEDIN = "https://www.linkedin.com/company/myshubhnivesh/";
 const MAPS = "https://maps.app.goo.gl/9593Mjn7iVxs2MVc7";
+const WHATSAPP = "https://wa.me/918607777320";
 
 const goals = [
   [Home,"Dream Home"],[GraduationCap,"Children's Education"],[Car,"Car / Lifestyle"],
@@ -42,6 +43,8 @@ const faq = [
   ["What information will I need to provide?","The complete exercise may consider family and life-stage information, income and expenses, assets and liabilities, investments and protection, and your important goals and aspirations."],
   ["Is my information confidential?","Confidentiality is a core design principle of the Financial Horoscope™ journey. Information should be shared only through the designated secure workflow."],
   ["Are future values or projections guaranteed?","No. Future values, inflation and return assumptions are planning estimates and not guarantees of future outcomes. Actual outcomes can differ."],
+  ["How long does it take?","The time required depends on the completeness of the information provided and the depth of the analysis. The process is designed to move from information gathering to financial clarity in a structured way."],
+  ["Does Financial Horoscope™ recommend financial products?","Financial Horoscope™ begins with your life, goals, resources and gaps. Any action considered afterward should follow from the roadmap and your individual suitability rather than starting with a product."],
   ["How often should it be reviewed?","A financial roadmap should be revisited when life, income, goals, markets or other important circumstances materially change, and periodically as part of an ongoing planning process."]
 ];
 
@@ -122,7 +125,7 @@ export default function Page(){
       <div className="questionLayout">
         <div><h2>Do you know the answers to <span>these questions?</span></h2><p>You already have a financial future. The question is—do you know what it looks like?</p></div>
         <div className="questionList">
-          {["What is my Financial Health Score?","Which Wealth Zone Am I In?","How much wealth will my life actually require?","How much of my goals are funded today?","What is my wealth gap?","Is my family adequately protected?","Where will my current financial journey take me?","What should I change today?"].map((q,i)=><div key={q}><b>{String(i+1).padStart(2,"0")}</b><span>{q}</span></div>)}
+          {["What is my Financial Health Score?","Which Wealth Zone Am I In?","How much wealth will my life actually require?","How much of my goals are funded today?","What is my wealth gap?","Is my family adequately protected?","Where will my current financial journey take me?","What should I change today?"].map((q)=><div key={q}><span>{q}</span></div>)}
         </div>
       </div>
     </section>
@@ -162,6 +165,7 @@ export default function Page(){
         <div className="journeyCard recommended"><small>WITH A STRUCTURED ROADMAP</small><h3>Recommended Wealth Journey</h3>{["Recommended Corpus","Goals Funded","Potential Surplus","Growth Zone","Financial Freedom"].map(x=><span key={x}><i/> {x}</span>)}</div>
       </div>
       <h3 className="bigStatement">Same Dreams. <span>A Better-Designed Journey.</span></h3>
+      <div className="revealCta"><a className="primary" href={QUICK_SCAN}>See What Your Financial Horoscope™ Says <ArrowRight/></a></div>
     </section>
 
     <section className="dreams section soft">
@@ -239,7 +243,7 @@ export default function Page(){
       <div className="footerGrid">
         <div><a className="brand footerBrand" href="#home"><Compass/><span><b>FINANCIAL HOROSCOPE™</b><small>A ROADMAP FOR YOUR WEALTH JOURNEY</small></span><em>360</em></a><p>Trusted Financial Services Since 2009</p></div>
         <div><h4>Explore</h4><a href="#why">Why</a><a href="#how">How It Works</a><a href="#for-whom">For Whom</a><a href="#stories">Real Stories</a><a href="#about">About</a></div>
-        <div><h4>Contact</h4><a href="tel:+918607777320"><Phone/>8607777320</a><a href="mailto:helpdesk@myshubhnivesh.com"><Mail/>helpdesk@myshubhnivesh.com</a><a href={MAPS} target="_blank" rel="noreferrer"><MapPin/>282, 2nd Floor, Sector 9-11, Hisar, Haryana - 125005</a></div>
+        <div><h4>Contact</h4><a href="tel:+918607777320"><Phone/>8607777320</a><a href={WHATSAPP} target="_blank" rel="noreferrer"><MessageCircle/>WhatsApp Us</a><a href="mailto:helpdesk@myshubhnivesh.com"><Mail/>helpdesk@myshubhnivesh.com</a><a href={MAPS} target="_blank" rel="noreferrer"><MapPin/>282, 2nd Floor, Sector 9-11, Hisar, Haryana - 125005</a></div>
         <div><h4>Connect</h4><div className="social"><a href={YOUTUBE} target="_blank" rel="noreferrer"><Youtube/></a><a href={FACEBOOK} target="_blank" rel="noreferrer"><Facebook/></a><a href={LINKEDIN} target="_blank" rel="noreferrer"><Linkedin/></a></div><a className="footerLogin" href={CLIENT_LOGIN} target="_blank" rel="noreferrer">Client Login <ExternalLink/></a></div>
       </div>
       <div className="disclaimer"><p>Important: Financial Horoscope™ is a financial planning and diagnostic concept and is not astrology or a guarantee of future outcomes. Future values, inflation and expected-return assumptions are estimates used for planning. Actual investment outcomes can vary and investments are subject to market and other risks. Individual suitability, tax and regulatory circumstances should be considered before acting.</p></div>

@@ -65,3 +65,54 @@ footer{background:#04111f;color:#9dafbf;padding:65px max(5vw,28px) 28px}.footerG
   .trow{min-width:560px}
   .teamPhoto{height:360px}
 }
+
+/* === LIVE V1.2 PREMIUM CONVERSION PASS === */
+/* Questions are intentionally unnumbered: they are prompts, not a presentation sequence. */
+.questionList>div{grid-template-columns:1fr;padding:17px 0;border-bottom:1px solid rgba(255,255,255,.12)}
+.questionList>div span{font-size:clamp(16px,1.35vw,20px);line-height:1.45}
+.questionList>div::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--gold2);box-shadow:0 0 0 6px rgba(212,166,45,.10);margin-right:16px;flex:0 0 auto}
+.questionList>div{display:flex;align-items:center}
+
+/* Make the product transformation the second major conversion moment. */
+.reveal{background:radial-gradient(circle at 50% 42%,rgba(212,166,45,.10),transparent 34%),linear-gradient(180deg,#fff,#f8f4ea)}
+.journeyCompare{max-width:1180px}
+.journeyCard{box-shadow:0 22px 55px rgba(8,32,55,.09)}
+.revealCta{text-align:center;margin-top:32px}
+.revealCta .primary{box-shadow:0 16px 36px rgba(212,166,45,.20)}
+
+/* Make goal/audience cards feel editorial rather than like a dashboard. */
+.goalGrid>div,.audienceGrid>div{border-color:#e4dcc9;background:linear-gradient(145deg,#fff,#fbf8f1)}
+.goalGrid svg{filter:drop-shadow(0 6px 10px rgba(184,139,33,.15))}
+.audienceGrid>div{position:relative;overflow:hidden}
+.audienceGrid>div::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:3px;background:linear-gradient(90deg,transparent,var(--gold2),transparent);opacity:.65}
+
+/* Action table: retain precise information but present it as a roadmap. */
+.actionTable{max-width:1120px;margin-left:auto;margin-right:auto;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.14);box-shadow:0 24px 60px rgba(0,0,0,.18)}
+.trow{transition:background .18s ease}
+@media(hover:hover){.trow:hover{background:rgba(255,255,255,.055)}}
+
+/* Stronger testimonial affordance. */
+.videoCard{box-shadow:0 14px 35px rgba(8,32,55,.07)}
+.thumb>span{transition:transform .2s ease,box-shadow .2s ease}
+@media(hover:hover){.videoCard:hover .thumb>span{transform:translate(-50%,-50%) scale(1.08);box-shadow:0 12px 32px rgba(0,0,0,.32)}}
+
+/* Close the narrative loop by bringing the hero landscape back into the final destination. */
+.final{position:relative;overflow:hidden;background:#061a2e}
+.final::before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(3,15,28,.80),rgba(3,15,28,.91)),url('/assets/hero-approved.png') center 46%/cover no-repeat;filter:saturate(.82)}
+.final>*{position:relative;z-index:1}
+
+/* Footer readability and conversion. */
+.footerGrid a,.footerGrid>div:first-child>p{font-size:13px}
+.disclaimer{font-size:11.5px;max-width:1300px;margin-left:auto;margin-right:auto}
+
+@media(max-width:700px){
+  .questionList>div{grid-template-columns:1fr;padding:15px 0}
+  .questionList>div::before{width:7px;height:7px;margin-right:12px}
+  .revealCta .primary{width:100%;justify-content:center;text-align:center}
+  .actionTable{overflow:visible;border:0;box-shadow:none;background:transparent}
+  .trow{min-width:0;display:grid;grid-template-columns:1fr 1fr;border:1px solid rgba(255,255,255,.13);border-radius:13px;margin:10px 0;padding:14px;gap:10px;background:rgba(255,255,255,.035)}
+  .trow span{padding:0!important;border:0!important}
+  .trow span:first-child{grid-column:1/-1;color:white;font-weight:800;font-size:15px}
+  .trow span:last-child{grid-column:1/-1;color:#b9c8d4}
+  .final::before{background:linear-gradient(rgba(3,15,28,.84),rgba(3,15,28,.94)),url('/assets/hero-approved.png') 68% center/cover no-repeat}
+}
