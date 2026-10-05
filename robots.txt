@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://financialhoroscope360.com/sitemap.xml
