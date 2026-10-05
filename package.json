@@ -1,16 +1,8 @@
 {
   "name": "financial-horoscope-360-live",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
-  },
-  "dependencies": {
-    "next": "15.5.0",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "lucide-react": "0.468.0"
+    "build": "node -e \"const fs=require('fs');fs.rmSync('out',{recursive:true,force:true});fs.cpSync('FinancialHoroscope360_V2_Cloudflare','out',{recursive:true});console.log('V2 static site copied to out/')\""
   }
 }
