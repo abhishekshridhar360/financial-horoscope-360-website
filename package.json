@@ -1,6 +1,6 @@
 {
   "name": "financial-horoscope-360-live",
-  "version": "2.3.3",
+  "version": "2.3.6",
   "private": true,
   "scripts": {
     "build": "node -e \"const fs=require('fs');fs.rmSync('out',{recursive:true,force:true});fs.cpSync('FinancialHoroscope360_V2_Cloudflare','out',{recursive:true});for(const f of ['index.html','styles.css','main.js','404.html','assets','privacy-policy','terms-and-conditions','disclaimer','favicon.ico','robots.txt','sitemap.xml','_headers']){if(fs.existsSync(f))fs.cpSync(f,'out/'+f,{recursive:true,force:true})}console.log('V2.2 site built in out/')\""
