@@ -868,3 +868,13 @@ img.si{width:62px;height:62px}
 .dPhoto::after{display:none}
 .dPhoto{background:#DCEBF7}
 @media (max-width:600px){.pScene{height:auto}}
+/* V2.3.7: cleaner, larger question icons, centred cards */
+.qGrid li{align-items:center;text-align:center;padding:30px 20px 28px;gap:20px}
+.qIc{width:116px;height:116px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#2A4A78,var(--navy) 72%);box-shadow:0 0 0 4px var(--paper),0 0 0 6px var(--gold),0 16px 32px rgba(16,33,58,.22)}
+.qi{width:80px;height:80px}
+.qGrid li:hover .qIc{transform:scale(1.06)}
+@media (max-width:600px){.qGrid li{flex-direction:row;text-align:left;padding:16px;gap:16px}.qIc{width:76px;height:76px;flex:none;box-shadow:0 0 0 3px var(--paper),0 0 0 5px var(--gold)}.qi{width:44px;height:44px}}
+/* V2.3.8: medallion icon images */
+.qIc{background:none;box-shadow:none;width:128px;height:128px;overflow:visible}
+.qIc img{width:100%;height:100%;display:block;filter:drop-shadow(0 14px 22px rgba(16,33,58,.25))}
+@media (max-width:600px){.qIc{width:84px;height:84px;box-shadow:none}}
