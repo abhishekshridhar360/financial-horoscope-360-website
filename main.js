@@ -65,5 +65,30 @@
   // hide WhatsApp button while the hero journey bar is on screen
   var wa=document.querySelector('.waFloat'),hj=document.querySelector('.heroJourney');
   if(wa&&hj&&'IntersectionObserver' in window){new IntersectionObserver(function(en){wa.classList.toggle('away',en[0].isIntersecting);}).observe(hj);}
+
+  // roadmap labels: pin each label to its icon on the hero image (object-fit: cover aware)
+  var hero=document.querySelector('.hero'), art=hero&&hero.querySelector('.heroArt'), pinBox=hero&&hero.querySelector('.pins'), copy=hero&&hero.querySelector('.heroContent');
+  function placePins(){
+    if(!art||!pinBox||!art.naturalWidth)return;
+    var W=hero.clientWidth,H=hero.clientHeight,iw=art.naturalWidth,ih=art.naturalHeight,s=Math.max(W/iw,H/ih),rw=iw*s,rh=ih*s;
+    var pos=getComputedStyle(art).objectPosition.split(' '),px=parseFloat(pos[0])/100,py=parseFloat(pos[1]||'50%')/100;
+    var ox=(W-rw)*px,oy=(H-rh)*py,hr=hero.getBoundingClientRect(),narrow=W<700;
+    var textRects=[];copy.querySelectorAll('.kicker,h1,.heroSub,.btn,.trustMini').forEach(function(t){var rg=document.createRange();rg.selectNodeContents(t);[].forEach.call(rg.getClientRects(),function(r){textRects.push(r)});textRects.push(t.classList.contains('btn')?t.getBoundingClientRect():{left:0,right:0,top:0,bottom:0});});
+    pinBox.querySelectorAll('.pin').forEach(function(el){
+      var dx=narrow&&el.dataset.mx?el.dataset.mx:el.dataset.x,dy=narrow&&el.dataset.my?el.dataset.my:el.dataset.y;
+      var x=ox+rw*parseFloat(dx)/100,y=oy+rh*parseFloat(dy)/100;
+      el.style.left=x+'px';el.style.top=y+'px';el.hidden=false;el.classList.remove('side');
+      function hits(r){return textRects.some(function(c){return c.right>c.left&&!(r.right<c.left-14||r.left>c.right+14||r.bottom<c.top-10||r.top>c.bottom+10);});}
+      var r=el.getBoundingClientRect(),hide=(narrow&&!el.classList.contains('here'))||r.left<hr.left+4||r.right>hr.right-4||r.top<hr.top+4;
+      if(narrow&&el.classList.contains('here')&&hits(r)){var bb=hero.querySelector('.heroJourney').getBoundingClientRect();el.style.top=(bb.top-hr.top-34)+'px';el.style.left=(W*0.62)+'px';r=el.getBoundingClientRect();hide=hits(r);}
+      if(!hide&&!narrow&&hits(r)){el.classList.add('side');r=el.getBoundingClientRect();hide=hits(r)||r.right>hr.right-4;}
+      var bar=hero.querySelector('.heroJourney');if(!hide&&bar&&!(narrow&&el.classList.contains('here'))){var b=bar.getBoundingClientRect();if(r.bottom>b.top-6&&r.top<b.bottom)hide=true;}
+      el.hidden=hide;
+    });
+    pinBox.classList.add('ready');
+  }
+  if(art){if(art.complete)placePins();else art.addEventListener('load',placePins);
+    var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(placePins,120);});
+    if(document.fonts&&document.fonts.ready)document.fonts.ready.then(placePins);}
   var y=document.getElementById('yr');if(y)y.textContent=new Date().getFullYear();
 })();
