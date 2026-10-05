@@ -844,3 +844,19 @@ img.si{width:62px;height:62px}
 .dreamGrid article:hover .dPhoto .dIc{transform:translate(-50%,-50%) scale(1.08)!important}
 /* #11 hero: keep the right side (Legacy tree, family) fully visible; trim the empty sky on the left instead */
 @media (min-width:601px){.heroArt{object-position:100% 60%}}
+
+/* ===== V2.3.3: dream cards — sharp photos, icon beside title, clear rupee amounts ===== */
+.dreamGrid .dPhoto img{filter:none!important;transform:none!important}
+.dreamGrid article:hover .dPhoto img{transform:scale(1.04)!important}
+.dPhoto::after{background:linear-gradient(180deg,rgba(16,33,58,0) 70%,rgba(16,33,58,.18))!important}
+.dPhoto{aspect-ratio:4/3}
+.dreamGrid .dPhoto .dIc,.dreamGrid .dIc{position:static!important;transform:none!important}
+.dreamGrid h3{display:flex;align-items:center;gap:10px;margin:16px 20px 12px}
+.dreamGrid h3 .dIc{display:grid!important;place-items:center;width:40px!important;height:40px!important;border-radius:50%;background:var(--navy)!important;border:1.5px solid var(--gold2)!important;box-shadow:none!important;backdrop-filter:none;flex:none}
+.dreamGrid h3 .dIc .ic{width:20px!important;height:20px!important;color:var(--gold2)}
+.dreamGrid dd,.dreamGrid dd small{font-family:var(--sans)}
+.dreamGrid dd{font-weight:800;font-size:19px;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.dreamGrid dt{font-size:11.5px}
+.calcOut b,.calcIn output,.hcGauge b{font-family:var(--sans);font-weight:800}
+.calcOut b{font-size:clamp(24px,2.6vw,32px)}
+@media (max-width:600px){.dreamGrid h3{margin:12px 12px 8px;font-size:16px}.dreamGrid h3 .dIc{width:34px!important;height:34px!important}.dreamGrid h3 .dIc .ic{width:17px!important;height:17px!important}.dreamGrid dd{font-size:17px}}
