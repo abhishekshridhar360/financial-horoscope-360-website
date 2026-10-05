@@ -842,3 +842,5 @@ img.si{width:62px;height:62px}
 @media (max-width:600px){.dPhoto .dIc{width:60px!important;height:60px!important}.dPhoto .dIc .ic{width:30px!important;height:30px!important}.dreamGrid h3{margin-top:10px}}
 .dreamGrid .dPhoto .dIc{position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important}
 .dreamGrid article:hover .dPhoto .dIc{transform:translate(-50%,-50%) scale(1.08)!important}
+/* #11 hero: keep the right side (Legacy tree, family) fully visible; trim the empty sky on the left instead */
+@media (min-width:601px){.heroArt{object-position:100% 60%}}
