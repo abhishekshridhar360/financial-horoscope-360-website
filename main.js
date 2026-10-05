@@ -64,7 +64,7 @@
   });
   // hide WhatsApp button while the hero journey bar is on screen
   var wa=document.querySelector('.waFloat'),hj=document.querySelector('.heroJourney');
-  if(wa&&hj&&'IntersectionObserver' in window){new IntersectionObserver(function(en){wa.classList.toggle('away',en[0].isIntersecting);}).observe(hj);}
+  var mb=document.querySelector('.mBar');if(hj&&'IntersectionObserver' in window){new IntersectionObserver(function(en){var on=en[0].isIntersecting;if(wa)wa.classList.toggle('away',on);if(mb)mb.classList.toggle('away',on);}).observe(hj);}
 
   // roadmap labels: pin each label to its icon on the hero image (object-fit: cover aware)
   var hero=document.querySelector('.hero'), art=hero&&hero.querySelector('.heroArt'), pinBox=hero&&hero.querySelector('.pins'), copy=hero&&hero.querySelector('.heroContent');
@@ -90,5 +90,58 @@
   if(art){if(art.complete)placePins();else art.addEventListener('load',placePins);
     var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(placePins,120);});
     if(document.fonts&&document.fonts.ready)document.fonts.ready.then(placePins);}
+
+  // ---------- 60-second health check ----------
+  var hcForm=document.getElementById('hcForm');
+  if(hcForm){
+    var names=['ef','lc','hi','sr','emi'];
+    var msgs={danger:'Several basics need attention, such as emergency savings, protection or debt. A complete Financial Horoscope™ shows exactly where to start.',
+      caution:'Some foundations are in place, but there are clear gaps. Your Financial Horoscope™ shows which gaps matter most for your goals.',
+      stable:'A solid base. The next step is checking whether your investments are on track for each of your goals.',
+      growth:'Strong fundamentals. A Financial Horoscope™ can confirm your goals are fully funded and show how to grow with confidence.'};
+    hcForm.addEventListener('change',function(){
+      var total=0,done=0;names.forEach(function(n){var c=hcForm.querySelector('input[name="'+n+'"]:checked');if(c){done++;total+=parseFloat(c.value);}});
+      if(done<names.length){document.getElementById('hcZone').textContent=(names.length-done)+' question'+(names.length-done>1?'s':'')+' left';return;}
+      var s=Math.round(total*10)/10,zone=s<4?'danger':s<6?'caution':s<8?'stable':'growth',label={danger:'Danger Zone',caution:'Caution Zone',stable:'Stable Zone',growth:'Growth Zone'}[zone];
+      document.getElementById('hcScore').textContent=s%1?s.toFixed(1):s;
+      var z=document.getElementById('hcZone');z.textContent=label;z.className='zone '+zone;
+      document.getElementById('hcMsg').textContent=msgs[zone];
+      document.getElementById('hcArc').style.strokeDashoffset=157*(1-s/10);
+      document.getElementById('hcArc').style.stroke={danger:'#c2412f',caution:'#d99a2b',stable:'#c7a04c',growth:'#1d8655'}[zone];
+      document.getElementById('hcResult').classList.add('done');
+    });
+  }
+
+  // ---------- dream calculator ----------
+  var calc=document.getElementById('calc');
+  if(calc){
+    var $=function(id){return document.getElementById(id)};
+    function inr(v){if(v>=1e7)return '₹'+(v/1e7).toFixed(v>=1e9?0:2).replace(/\.?0+$/,'')+' Cr';if(v>=1e5)return '₹'+(v/1e5).toFixed(2).replace(/\.?0+$/,'')+' L';return '₹'+Math.round(v).toLocaleString('en-IN');}
+    function load(){var p=$('cGoal').value.split('|');$('cCost').value=p[0];$('cYears').value=p[1];$('cInf').value=p[2];upd();}
+    function upd(){
+      var c=+$('cCost').value,y=+$('cYears').value,i=+$('cInf').value/100,r=+$('cRet').value/100;
+      $('oCost').textContent=inr(c);$('oYears').textContent=y+(y>1?' years':' year');$('oInf').textContent=(+$('cInf').value)+'%';$('oRet').textContent=(+$('cRet').value)+'% p.a.';
+      var fv=c*Math.pow(1+i,y),rm=Math.pow(1+r,1/12)-1,n=y*12,sip=fv/(((Math.pow(1+rm,n)-1)/rm)*(1+rm)),lump=fv/Math.pow(1+r,y);
+      $('rFuture').textContent=inr(fv);$('rSip').textContent=inr(sip)+' /month';$('rLump').textContent=inr(lump);
+    }
+    $('cGoal').addEventListener('change',load);['cCost','cYears','cInf','cRet'].forEach(function(id){$(id).addEventListener('input',upd);});load();
+  }
+
+  // ---------- hero: labels appear in journey order, a gold spark travels the road ----------
+  var order=['You Are Here','Dream Home','Children’s Education','Travel & Experiences','Children’s Marriage','Financial Freedom','Retirement','Legacy'];
+  var heroAnimated=false;
+  function animateHero(){
+    if(heroAnimated||!pinBox||reduce)return;heroAnimated=true;
+    var pins=[].slice.call(pinBox.querySelectorAll('.pin')).filter(function(p){return !p.hidden;});
+    pins.sort(function(a,b){return order.indexOf(a.textContent.trim())-order.indexOf(b.textContent.trim());});
+    pins.forEach(function(p,k){p.style.opacity='0';p.style.transition='opacity .5s ease, transform .5s ease';setTimeout(function(){p.style.opacity='1';},400+k*380);});
+    if(pins.length<2||!pins[0].animate)return;
+    var spark=document.createElement('i');spark.className='spark';pinBox.appendChild(spark);
+    var pts=pins.map(function(p){return {left:p.style.left,top:p.style.top};});
+    var kf=pts.map(function(pt,k){return {left:pt.left,top:pt.top,opacity:k===0?0:1,offset:k/(pts.length-1)};});kf[kf.length-1].opacity=0;
+    spark.animate(kf,{duration:380*pins.length,delay:400,easing:'ease-in-out',fill:'forwards'});
+  }
+  if(pinBox&&pinBox.classList.contains('ready'))animateHero();
+  else if(pinBox){var mo=new MutationObserver(function(){if(pinBox.classList.contains('ready')){animateHero();mo.disconnect();}});mo.observe(pinBox,{attributes:true,attributeFilter:['class']});}
   var y=document.getElementById('yr');if(y)y.textContent=new Date().getFullYear();
 })();
