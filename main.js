@@ -123,8 +123,58 @@
       $('oCost').textContent=inr(c);$('oYears').textContent=y+(y>1?' years':' year');$('oInf').textContent=(+$('cInf').value)+'%';$('oRet').textContent=(+$('cRet').value)+'% p.a.';
       var fv=c*Math.pow(1+i,y),rm=Math.pow(1+r,1/12)-1,n=y*12,sip=fv/(((Math.pow(1+rm,n)-1)/rm)*(1+rm)),lump=fv/Math.pow(1+r,y);
       $('rFuture').textContent=inr(fv);$('rSip').textContent=inr(sip)+' /month';$('rLump').textContent=inr(lump);
+      // annual top-up: SIP rises by g every year; solve for the starting SIP
+      var g=+$('cStep').value/100,A=((Math.pow(1+rm,12)-1)/rm)*(1+rm),D=0;
+      for(var k=0;k<y;k++)D+=Math.pow(1+g,k)*Math.pow(1+rm,12*(y-1-k));
+      var s0=fv/(A*D),sEnd=s0*Math.pow(1+g,y-1);
+      $('oStep').textContent=(+$('cStep').value)+'%';$('rStepPct').textContent=(+$('cStep').value)+'%';
+      $('rStep').textContent=inr(s0)+' /month';
+      $('rStepEnd').textContent=(g>0&&y>1)?'rising to '+inr(sEnd)+' /month in year '+y+' · '+Math.round((1-s0/sip)*100)+'% lower to start':'Set a top-up above 0% to compare';
     }
-    $('cGoal').addEventListener('change',load);['cCost','cYears','cInf','cRet'].forEach(function(id){$(id).addEventListener('input',upd);});load();
+    $('cGoal').addEventListener('change',load);['cCost','cYears','cInf','cRet','cStep'].forEach(function(id){$(id).addEventListener('input',upd);});load();
+  }
+
+  // ---------- shared helpers for the tools ----------
+  function inrT(v){if(v>=1e7)return '₹'+(v/1e7).toFixed(2).replace(/\.?0+$/,'')+' Cr';if(v>=1e5)return '₹'+(v/1e5).toFixed(2).replace(/\.?0+$/,'')+' L';return '₹'+Math.round(v).toLocaleString('en-IN');}
+  function sipFV(m,rm,n){return n<=0?0:m*((Math.pow(1+rm,n)-1)/rm)*(1+rm);}
+  function g$(id){return document.getElementById(id);}
+
+  // ---------- cost of waiting ----------
+  if(g$('delay')){
+    var dUpd=function(){
+      var m=+g$('dSip').value,y=+g$('dYears').value,d=Math.min(+g$('dDelay').value,y-1),r=+g$('dRet').value/100,rm=Math.pow(1+r,1/12)-1;
+      g$('oDSip').textContent=inrT(m)+' /month';g$('oDYears').textContent=y+' years';g$('oDDelay').textContent=d+(d>1?' years':' year');g$('oDRet').textContent=(+g$('dRet').value)+'% p.a.';
+      var now=sipFV(m,rm,y*12),later=sipFV(m,rm,(y-d)*12),catchUp=now/(((Math.pow(1+rm,(y-d)*12)-1)/rm)*(1+rm));
+      g$('dNow').textContent=inrT(now);g$('dLater').textContent=inrT(later);
+      g$('dLaterLbl').textContent='If you start '+d+(d>1?' years':' year')+' later';g$('bLaterLbl').textContent='Start in '+d+'y';
+      g$('dLoss').textContent=inrT(now-later)+' ('+Math.round((1-later/now)*100)+'% less)';
+      g$('dCatch').textContent=inrT(catchUp)+' /month';
+      g$('bNow').style.width='100%';g$('bLater').style.width=Math.max(2,later/now*100)+'%';
+    };
+    ['dSip','dYears','dDelay','dRet'].forEach(function(id){g$(id).addEventListener('input',dUpd);});dUpd();
+  }
+
+  // ---------- retirement readiness ----------
+  if(g$('retire')){
+    var INF=.06,PRE=.10,POST=.07,PLAN=85;
+    var tUpd=function(){
+      var a=+g$('tAge').value,R=+g$('tRet').value;
+      if(R<=a){R=a+1;g$('tRet').value=R;}
+      var e=+g$('tExp').value,sv=+g$('tSav').value,m=+g$('tSip').value,yrs=R-a,rm=Math.pow(1+PRE,1/12)-1;
+      g$('oTAge').textContent=a;g$('oTRet').textContent=R;g$('oTExp').textContent=inrT(e)+' /month';g$('oTSav').textContent=inrT(sv);g$('oTSip').textContent=inrT(m)+' /month';
+      var exp0=e*12*Math.pow(1+INF,yrs),need=0,n=Math.max(1,PLAN-R);
+      for(var k=0;k<n;k++)need+=exp0*Math.pow((1+INF)/(1+POST),k);
+      var have=sv*Math.pow(1+PRE,yrs)+sipFV(m,rm,yrs*12);
+      g$('tNeedLbl').textContent='Corpus you may need at '+R;g$('tNeed').textContent=inrT(need);g$('tHave').textContent=inrT(have);
+      var bal=have,ex=exp0,age=R;
+      while(age<100){bal-=ex;if(bal<0)break;bal*=1+POST;ex*=1+INF;age++;}
+      var el=g$('tLast');
+      if(age>=PLAN){el.textContent=age>=100?'Age 100+':'Age '+age;el.className='ok';}
+      else{el.textContent='Age '+age+' · '+(PLAN-age)+' yrs short';el.className='short';}
+      var gap=need-have;
+      g$('tExtra').textContent=gap>0?inrT(gap/(((Math.pow(1+rm,yrs*12)-1)/rm)*(1+rm)))+' /month':'None at these assumptions';
+    };
+    ['tAge','tRet','tExp','tSav','tSip'].forEach(function(id){g$(id).addEventListener('input',tUpd);});tUpd();
   }
 
   // ---------- hero: labels appear in journey order, a gold spark travels the road ----------
@@ -144,4 +194,30 @@
   if(pinBox&&pinBox.classList.contains('ready'))animateHero();
   else if(pinBox){var mo=new MutationObserver(function(){if(pinBox.classList.contains('ready')){animateHero();mo.disconnect();}});mo.observe(pinBox,{attributes:true,attributeFilter:['class']});}
   var y=document.getElementById('yr');if(y)y.textContent=new Date().getFullYear();
+
+  // ---------- WhatsApp: send my result ----------
+  function txt(id){var e=document.getElementById(id);return e?e.textContent.trim():'';}
+  function val(id){var e=document.getElementById(id);return e?e.value:'';}
+  var waMsg={
+    hc:function(){return txt('hcScore')==='–'?'':'My 60-second Financial Health Check: '+txt('hcScore')+'/10 ('+txt('hcZone')+').';},
+    calc:function(){var g=document.getElementById('cGoal');return 'My goal: '+g.options[g.selectedIndex].text+' costing '+txt('oCost')+' today, in '+txt('oYears')+'. Future cost '+txt('rFuture')+'. SIP needed: '+txt('rSip')+', or '+txt('rStep')+' with a '+txt('oStep')+' yearly top-up.';},
+    delay:function(){return 'Cost of waiting: investing '+txt('oDSip')+' for '+txt('oDYears')+' gives '+txt('dNow')+' if I start today, but '+txt('dLater')+' if I start after '+txt('oDDelay')+'. Cost of waiting: '+txt('dLoss')+'.';},
+    retire:function(){return 'My retirement check (age '+txt('oTAge')+', retiring at '+txt('oTRet')+'): may need '+txt('tNeed')+', on track for '+txt('tHave')+'. Money may last until '+txt('tLast')+'. Extra SIP needed: '+txt('tExtra')+'.';}
+  };
+  [].forEach.call(document.querySelectorAll('.waRes'),function(a){
+    a.addEventListener('click',function(){
+      var m=(waMsg[a.getAttribute('data-wa')]||function(){return ''})();
+      a.href='https://wa.me/918607777320?text='+encodeURIComponent('Hello, I used the tool on financialhoroscope360.com. '+m+' Please help me with my Financial Horoscope™.');
+    });
+  });
+
+  // ---------- analytics: key clicks ----------
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a');if(!a||typeof gtag!=='function')return;
+    var h=a.getAttribute('href')||'',sec=(a.closest('section')||{}).id||'';
+    if(a.classList.contains('waRes'))gtag('event','tool_result_whatsapp',{tool:a.getAttribute('data-wa')});
+    else if(h.indexOf('quickscan.')>-1)gtag('event','quickscan_click',{section:sec||'header'});
+    else if(h.indexOf('wa.me')>-1)gtag('event','whatsapp_click',{section:sec||'floating'});
+    else if(h.indexOf('tel:')===0)gtag('event','call_click',{section:sec||'bar'});
+  });
 })();
