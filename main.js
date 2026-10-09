@@ -5,6 +5,15 @@
     btn.addEventListener('click',function(){var o=nav.classList.toggle('open');btn.setAttribute('aria-expanded',o);btn.setAttribute('aria-label',o?'Close menu':'Open menu');btn.querySelector('use').setAttribute('href',o?'#i-close':'#i-menu');});
     nav.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){nav.classList.remove('open');btn.setAttribute('aria-expanded','false');btn.querySelector('use').setAttribute('href','#i-menu');});});
   }
+
+  // V2.4.1: Money Check-Ups dropdown (hover on desktop, tap to open on desktop and in the mobile menu)
+  document.querySelectorAll('.navdrop').forEach(function(d){
+    var b=d.querySelector('.navdropBtn');
+    b.addEventListener('click',function(e){e.stopPropagation();var o=d.classList.toggle('open');b.setAttribute('aria-expanded',o);});
+    d.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){d.classList.remove('open');b.setAttribute('aria-expanded','false');});});
+  });
+  document.addEventListener('click',function(e){document.querySelectorAll('.navdrop.open').forEach(function(d){if(!d.contains(e.target)){d.classList.remove('open');d.querySelector('.navdropBtn').setAttribute('aria-expanded','false');}});});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')document.querySelectorAll('.navdrop.open').forEach(function(d){d.classList.remove('open');d.querySelector('.navdropBtn').setAttribute('aria-expanded','false');d.querySelector('.navdropBtn').focus();});});
   // stagger indexes
   ['.qGrid','.outputs','.dreamGrid','.personaGrid','.protectGrid','.youMap','.videoGrid','.teamGrid','.steps'].forEach(function(s){
     document.querySelectorAll(s).forEach(function(g){

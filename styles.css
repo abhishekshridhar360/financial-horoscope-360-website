@@ -957,3 +957,39 @@ img.si{width:62px;height:62px}
 .gStars .ic{width:17px;height:17px;color:#f4b400;fill:#f4b400}
 .gBadge:hover{border-color:var(--gold)}
 .gBadge.onLight{display:flex;width:max-content;max-width:100%;margin:10px auto 6px}
+
+/* V2.4.1: Free Tools dropdown */
+.navdrop{position:relative}
+.navdropBtn{display:inline-flex;align-items:center;gap:5px;background:none;border:0;padding:0;font:inherit;color:#33414f;cursor:pointer}
+.navdropBtn:hover,.navdrop.open .navdropBtn{color:var(--goldDeep)}
+.navdropBtn .chev{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;transition:transform .2s}
+.navdrop.open .chev{transform:rotate(180deg)}
+.navdropMenu{position:absolute;top:calc(100% + 14px);left:50%;transform:translate(-50%,6px);min-width:360px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 40px rgba(16,33,58,.14);padding:8px;display:grid;gap:2px;opacity:0;visibility:hidden;transition:opacity .18s,transform .18s,visibility .18s;z-index:60}
+.navdropMenu::before{content:"";position:absolute;top:-16px;left:0;right:0;height:16px}
+.navdrop.open .navdropMenu{opacity:1;visibility:visible;transform:translate(-50%,0)}
+@media (hover:hover) and (min-width:1181px){.navdrop:hover .navdropMenu{opacity:1;visibility:visible;transform:translate(-50%,0)}.navdrop:hover .chev{transform:rotate(180deg)}}
+.navdropMenu a{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border-radius:10px;color:var(--ink);text-decoration:none}
+.navdropMenu a:hover,.navdropMenu a:focus-visible{background:#faf5ea}
+.navdropMenu .ic{width:22px;height:22px;flex:none;color:var(--goldDeep);margin-top:1px}
+.navdropMenu b{display:block;font-weight:600;font-size:14px;line-height:1.35}
+.navdropMenu small{display:block;font-size:12px;color:#6b7785;margin-top:2px}
+@media (max-width:1180px){
+ .navlinks.open .navdrop{display:block}
+ .navlinks.open .navdropBtn{width:100%;justify-content:space-between;padding:12px 4px;font-size:16px;color:var(--ink)}
+ .navlinks.open .navdropMenu{position:static;transform:none;min-width:0;box-shadow:none;border:0;border-left:2px solid var(--line);border-radius:0;margin:0 0 6px 6px;padding:0 0 0 8px;display:none;opacity:1;visibility:visible;background:transparent}
+ .navlinks.open .navdrop.open .navdropMenu{display:grid;transform:none}
+ .navlinks.open .navdropMenu a{padding:9px 6px}
+}
+/* V2.4.1: keep the desktop menu on one line at 1181–1440px (it wrapped and overlapped the logo) */
+.navlinks>a,.navdropBtn{white-space:nowrap}
+@media (min-width:1181px) and (max-width:1440px){
+ .navlinks{gap:clamp(10px,1.1vw,18px);font-size:13.5px}
+ .brand img{height:52px}
+ .navcta{padding:10px 12px;font-size:12.5px}
+}
+@media (min-width:1181px) and (max-width:1300px){
+ .brand img{height:40px}.brand360{font-size:17px}
+ .navlinks{gap:9px;font-size:12.5px}
+ .navcta{padding:9px 10px;font-size:12px}
+ .navlinks .login{padding-left:10px;padding-right:10px}
+}

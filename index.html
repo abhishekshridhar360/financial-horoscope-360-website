@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="/assets/hero-landscape.webp?v=239">
-<link rel="stylesheet" href="/styles.css?v=244">
+<link rel="stylesheet" href="/styles.css?v=245">
 <script>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FinancialService","name":"My Shubh Nivesh — Financial Horoscope™ 360","url":"https://financialhoroscope360.com/","logo":"https://financialhoroscope360.com/assets/icon-512.png?v=239","image":"https://financialhoroscope360.com/assets/og-image.jpg?v=239","telephone":"+91-8607777320","email":"helpdesk@myshubhnivesh.com","foundingDate":"2009","address":{"@type":"PostalAddress","streetAddress":"282, 2nd Floor, Sector 9-11","addressLocality":"Hisar","addressRegion":"Haryana","postalCode":"125005","addressCountry":"IN"},"areaServed":"IN","sameAs":["https://www.youtube.com/@MyShubhNivesh-com","https://www.facebook.com/MyShubhNivesh/","https://www.linkedin.com/company/myshubhnivesh/"]}
@@ -128,7 +128,15 @@
   <a href="#why">Why</a>
   <a href="#benefits">What You Get</a>
   <a href="#how">How It Works</a>
-  <a href="#health-check">Free Tools</a>
+  <div class="navdrop">
+   <button type="button" class="navdropBtn" aria-expanded="false" aria-controls="toolsMenu">Money Check-Ups<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+   <div class="navdropMenu" id="toolsMenu">
+    <a href="#health-check"><svg class="ic"><use href="#i-gauge"/></svg><span><b>Financial Health Check-Up</b><small>5 questions, 60 seconds</small></span></a>
+    <a href="#calc"><svg class="ic"><use href="#i-rupee-target"/></svg><span><b>What will your dream really cost?</b><small>Goal cost and monthly SIP</small></span></a>
+    <a href="#delay"><svg class="ic"><use href="#i-clock"/></svg><span><b>The real cost of “I’ll start next year”</b><small>Start today vs later</small></span></a>
+    <a href="#retire"><svg class="ic"><use href="#i-sunrise"/></svg><span><b>Will your money retire before you do?</b><small>Retirement-readiness check</small></span></a>
+   </div>
+  </div>
   <a href="#stories">Client Stories</a>
   <a href="#about">Our Team</a>
   <a href="#faq">FAQ</a>
@@ -249,8 +257,8 @@
 <section id="health-check" class="section healthCheck">
  <div class="hcWrap">
   <div class="hcIntro">
-   <p class="kicker">60-second self-check</p>
-   <h2>How healthy are your finances <span class="gold">right now?</span></h2>
+   <p class="kicker">60-second check-up</p>
+   <h2>Your Financial <span class="gold">Health Check-Up</span></h2>
    <p class="lead">Answer five quick questions and see an indicative score and wealth zone. Your complete Financial Horoscope™ goes much deeper.</p>
   </div>
   <form class="hcForm" id="hcForm" novalidate>
@@ -258,7 +266,7 @@
    <div class="hcResult" id="hcResult" aria-live="polite">
     <div class="hcGauge"><svg viewBox="0 0 120 70" aria-hidden="true"><path d="M10 62a50 50 0 0 1 100 0" fill="none" stroke="#e6dcc6" stroke-width="12" stroke-linecap="round"/><path id="hcArc" d="M10 62a50 50 0 0 1 100 0" fill="none" stroke="#c7a04c" stroke-width="12" stroke-linecap="round" stroke-dasharray="157" stroke-dashoffset="157"/></svg><b id="hcScore">–</b><span>out of 10</span></div>
     <div class="hcText"><span class="zone" id="hcZone">Answer all five</span><p id="hcMsg">Your indicative result appears here as soon as you answer all five questions.</p>
-     <a class="btn btn-gold" href="https://quickscan.financialhoroscope360.com/">Get My Complete Financial Horoscope™ <svg class="ic"><use href="#i-arrow"/></svg></a><a class="waRes" data-wa="hc" href="https://wa.me/918607777320" target="_blank" rel="noopener"><svg class="ic"><use href="#i-whatsapp"/></svg>Send me this result on WhatsApp</a></div>
+     <a class="btn btn-gold" href="https://quickscan.financialhoroscope360.com/">Get My Complete Financial Horoscope™ <svg class="ic"><use href="#i-arrow"/></svg></a><a class="waRes" data-wa="hc" href="https://wa.me/918607777320" target="_blank" rel="noopener"><svg class="ic"><use href="#i-whatsapp"/></svg>Discuss this result on WhatsApp</a></div>
    </div>
    <p class="illus">Indicative self-check for awareness only. It is not a Financial Horoscope™, a recommendation or financial advice.</p>
   </form>
@@ -357,7 +365,7 @@
  </div>
  <p class="illus">Illustrative examples, assuming 6% annual inflation (10% for education). Your Financial Horoscope™ uses your own goals, timelines and assumptions.</p>
  <div class="calc" id="calc" data-reveal>
-  <div class="calcHead"><h3>Put a number on <span class="gold">your</span> dream</h3><p>Move the sliders to see what your goal may cost in future and the monthly investment it could need, with or without a yearly top-up.</p></div>
+  <div class="calcHead"><h3>What will your <span class="gold">dream</span> really cost?</h3><p>Move the sliders to see what your goal may cost in future and the monthly investment it could need, with or without a yearly top-up.</p></div>
   <div class="calcGrid">
    <div class="calcIn">
     <label for="cGoal">Your goal</label>
@@ -374,7 +382,7 @@
     <div class="step"><span>Or start lower, with a <em id="rStepPct">10%</em> yearly top-up</span><b id="rStep">–</b><small id="rStepEnd"></small></div>
     <div><span>Or one-time investment today</span><b id="rLump">–</b></div>
     <a class="btn btn-gold" href="https://quickscan.financialhoroscope360.com/">Plan all my goals together <svg class="ic"><use href="#i-arrow"/></svg></a>
-    <a class="waRes" data-wa="calc" href="https://wa.me/918607777320" target="_blank" rel="noopener"><svg class="ic"><use href="#i-whatsapp"/></svg>Send me this result on WhatsApp</a>
+    <a class="waRes" data-wa="calc" href="https://wa.me/918607777320" target="_blank" rel="noopener"><svg class="ic"><use href="#i-whatsapp"/></svg>Discuss this result on WhatsApp</a>
    </div>
   </div>
   <p class="illus">Illustrative calculation using the assumptions you choose. Returns are not guaranteed; actual outcomes will vary.</p>
@@ -387,7 +395,7 @@
  <h2 class="center">Two questions worth <span class="gold">two minutes.</span></h2>
 
  <div class="calc tool" id="delay" data-reveal>
-  <div class="calcHead"><h3>What does waiting <span class="gold">cost you?</span></h3><p>Compare starting your SIP today with starting a few years later, for the same goal date.</p></div>
+  <div class="calcHead"><h3>The real cost of <span class="gold">“I’ll start next year”</span></h3><p>Compare starting your SIP today with starting a few years later, for the same goal date.</p></div>
   <div class="calcGrid">
    <div class="calcIn">
     <label for="dSip">Monthly investment <output id="oDSip"></output></label><input id="dSip" type="range" min="1000" max="200000" step="1000" value="10000">
@@ -405,14 +413,14 @@
     <div class="loss"><span>Cost of waiting</span><b id="dLoss">–</b></div>
     <div><span>To catch up, you would need</span><b id="dCatch">–</b></div>
     <a class="btn btn-gold" href="https://quickscan.financialhoroscope360.com/">Start my Financial Horoscope™ today <svg class="ic"><use href="#i-arrow"/></svg></a>
-    <a class="waRes" data-wa="delay" href="https://wa.me/918607777320" target="_blank" rel="noopener"><svg class="ic"><use href="#i-whatsapp"/></svg>Send me this result on WhatsApp</a>
+    <a class="waRes" data-wa="delay" href="https://wa.me/918607777320" target="_blank" rel="noopener"><svg class="ic"><use href="#i-whatsapp"/></svg>Discuss this result on WhatsApp</a>
    </div>
   </div>
   <p class="illus">Illustrative calculation using the assumptions you choose. Returns are not guaranteed; actual outcomes will vary.</p>
  </div>
 
  <div class="calc tool" id="retire" data-reveal>
-  <div class="calcHead"><h3>Will your money last <span class="gold">as long as you do?</span></h3><p>A quick retirement-readiness check. Your Financial Horoscope™ builds the full age-wise plan.</p></div>
+  <div class="calcHead"><h3>Will your money <span class="gold">retire before you do?</span></h3><p>A quick retirement-readiness check. Your Financial Horoscope™ builds the full age-wise plan.</p></div>
   <div class="calcGrid">
    <div class="calcIn">
     <label for="tAge">Your age <output id="oTAge"></output></label><input id="tAge" type="range" min="20" max="60" step="1" value="35">
@@ -427,7 +435,7 @@
     <div class="lasts"><span>Your money may last until</span><b id="tLast">–</b></div>
     <div><span>Extra monthly investment needed</span><b id="tExtra">–</b></div>
     <a class="btn btn-gold" href="https://quickscan.financialhoroscope360.com/">Get my age-wise roadmap <svg class="ic"><use href="#i-arrow"/></svg></a>
-    <a class="waRes" data-wa="retire" href="https://wa.me/918607777320" target="_blank" rel="noopener"><svg class="ic"><use href="#i-whatsapp"/></svg>Send me this result on WhatsApp</a>
+    <a class="waRes" data-wa="retire" href="https://wa.me/918607777320" target="_blank" rel="noopener"><svg class="ic"><use href="#i-whatsapp"/></svg>Discuss this result on WhatsApp</a>
    </div>
   </div>
   <p class="illus">Illustrative only. Assumes 6% inflation, 10% return before retirement, 7% after retirement, and planning up to age 85. Returns are not guaranteed; actual outcomes will vary.</p>
@@ -598,7 +606,7 @@
    <p>A roadmap for your wealth journey.</p>
    <div class="msn"><span>An initiative of</span><img src="/assets/logo-msn.webp?v=239" alt="My Shubh Nivesh — फायदे का शुभ आरम्भ" width="1080" height="377" loading="lazy"></div>
   </div>
-  <div><h4>Explore</h4><a href="#why">Why</a><a href="#benefits">What You Get</a><a href="#how">How It Works</a><a href="#health-check">Free Tools</a><a href="#for-whom">For Whom</a><a href="#stories">Client Stories</a><a href="#about">Our Team</a><a href="#faq">FAQ</a></div>
+  <div><h4>Explore</h4><a href="#why">Why</a><a href="#benefits">What You Get</a><a href="#how">How It Works</a><a href="#health-check">Money Check-Ups</a><a href="#for-whom">For Whom</a><a href="#stories">Client Stories</a><a href="#about">Our Team</a><a href="#faq">FAQ</a></div>
   <div><h4>Contact</h4>
    <a href="tel:+918607777320"><svg class="ic"><use href="#i-phone"/></svg>+91 86077 77320</a>
    <a href="https://wa.me/918607777320" target="_blank" rel="noopener"><svg class="ic"><use href="#i-whatsapp"/></svg>WhatsApp us</a>
@@ -634,6 +642,6 @@
  <div class="lbInner"><button class="lbClose" aria-label="Close video"><svg class="ic"><use href="#i-close"/></svg></button><div class="lbFrame"></div></div>
 </div>
 
-<script src="/main.js?v=244" defer></script>
+<script src="/main.js?v=245" defer></script>
 </body>
 </html>
