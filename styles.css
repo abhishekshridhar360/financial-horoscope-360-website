@@ -993,3 +993,7 @@ img.si{width:62px;height:62px}
  .navcta{padding:9px 10px;font-size:12px}
  .navlinks .login{padding-left:10px;padding-right:10px}
 }
+
+/* V2.5 sign-in links */
+.footer .fLogin2{opacity:.8;font-size:.92em}
+.footer .fComp b{color:inherit}
