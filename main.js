@@ -82,7 +82,7 @@
     var W=hero.clientWidth,H=hero.clientHeight,iw=art.naturalWidth,ih=art.naturalHeight,s=Math.max(W/iw,H/ih),rw=iw*s,rh=ih*s;
     var pos=getComputedStyle(art).objectPosition.split(' '),px=parseFloat(pos[0])/100,py=parseFloat(pos[1]||'50%')/100;
     var ox=(W-rw)*px,oy=(H-rh)*py,hr=hero.getBoundingClientRect(),narrow=W<700;
-    var textRects=[];copy.querySelectorAll('.kicker,h1,.heroSub,.btn,.trustMini').forEach(function(t){var rg=document.createRange();rg.selectNodeContents(t);[].forEach.call(rg.getClientRects(),function(r){textRects.push(r)});textRects.push(t.classList.contains('btn')?t.getBoundingClientRect():{left:0,right:0,top:0,bottom:0});});
+    var textRects=[];copy.querySelectorAll('.kicker,h1,.heroSub,.btn,.heroNote,.trustMini').forEach(function(t){var rg=document.createRange();rg.selectNodeContents(t);[].forEach.call(rg.getClientRects(),function(r){textRects.push(r)});textRects.push(t.classList.contains('btn')?t.getBoundingClientRect():{left:0,right:0,top:0,bottom:0});});
     pinBox.querySelectorAll('.pin').forEach(function(el){
       var dx=narrow&&el.dataset.mx?el.dataset.mx:el.dataset.x,dy=narrow&&el.dataset.my?el.dataset.my:el.dataset.y;
       var x=ox+rw*parseFloat(dx)/100,y=oy+rh*parseFloat(dy)/100;
@@ -111,7 +111,7 @@
     hcForm.addEventListener('change',function(){
       var total=0,done=0;names.forEach(function(n){var c=hcForm.querySelector('input[name="'+n+'"]:checked');if(c){done++;total+=parseFloat(c.value);}});
       if(done<names.length){document.getElementById('hcZone').textContent=(names.length-done)+' question'+(names.length-done>1?'s':'')+' left';return;}
-      var s=Math.round(total*10)/10,zone=s<4?'danger':s<6?'caution':s<8?'stable':'growth',label={danger:'Danger Zone',caution:'Caution Zone',stable:'Stable Zone',growth:'Growth Zone'}[zone];
+      var s=Math.round(total*10)/10,zone=s<4?'danger':s<6?'caution':s<8?'stable':'growth',label={danger:'Needs attention',caution:'Needs a check',stable:'On track',growth:'On track'}[zone];
       document.getElementById('hcScore').textContent=s%1?s.toFixed(1):s;
       var z=document.getElementById('hcZone');z.textContent=label;z.className='zone '+zone;
       document.getElementById('hcMsg').textContent=msgs[zone];
