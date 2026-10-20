@@ -100,6 +100,31 @@
     var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(placePins,120);});
     if(document.fonts&&document.fonts.ready)document.fonts.ready.then(placePins);}
 
+  // ---------- Money Check-Ups tabs (Round 2) ----------
+  var tabBar=document.querySelector('.tabBar');
+  if(tabBar){
+    var tabs=[].slice.call(tabBar.querySelectorAll('[role="tab"]'));
+    var showTab=function(id,focus){
+      var t=document.getElementById('t-'+id);if(!t)return false;
+      tabs.forEach(function(b){var on=b===t;b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1;document.getElementById(b.getAttribute('aria-controls')).hidden=!on;});
+      if(focus)t.focus();
+      t.scrollIntoView({block:'nearest',inline:'center'});
+      return true;
+    };
+    tabs.forEach(function(b,i){
+      b.addEventListener('click',function(){showTab(b.getAttribute('aria-controls'));});
+      b.addEventListener('keydown',function(e){var d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;if(!d)return;e.preventDefault();var n=tabs[(i+d+tabs.length)%tabs.length];showTab(n.getAttribute('aria-controls'),true);});
+    });
+    // menu links such as #calc or #retire open their tab, then scroll to the block
+    document.addEventListener('click',function(e){
+      var a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;
+      var id=a.getAttribute('href').slice(1);
+      if(showTab(id)){e.preventDefault();document.getElementById('check-ups').scrollIntoView({behavior:reduce?'auto':'smooth'});history.replaceState(null,'','#'+id);}
+    });
+    addEventListener('hashchange',function(){if(showTab(location.hash.slice(1)))document.getElementById('check-ups').scrollIntoView();});
+    if(location.hash&&showTab(location.hash.slice(1)))setTimeout(function(){document.getElementById('check-ups').scrollIntoView();},50);
+  }
+
   // ---------- 60-second health check ----------
   var hcForm=document.getElementById('hcForm');
   if(hcForm){
