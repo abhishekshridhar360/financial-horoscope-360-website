@@ -1,37 +1,24 @@
-# Financial Horoscope™ 360 — LIVE Website Package
+# financialhoroscope360.com
 
-Production-ready static-export Next.js website for Cloudflare Pages.
+Static website for Financial Horoscope™ by My Shubh Nivesh, Hisar. Hosted on Cloudflare Pages.
 
-## Local test
-1. Install Node.js 20+
-2. `npm install`
-3. `npm run dev`
-4. Open http://localhost:3000
+## Files
+- `index.html`, `styles.css`, `main.js`: home page
+- `privacy-policy/`, `terms-and-conditions/`, `disclaimer/`, `404.html`: legal and error pages
+- `assets/`: images and the 40-second film
+- `_headers`: security and cache headers for Cloudflare Pages
 
-## Production build
-`npm run build`
-
-Because `output: "export"` is enabled, the deployable static site is generated in:
-`out/`
-
-## Cloudflare Pages
-- Framework preset: Next.js (Static HTML Export) / or None
-- Build command: `npm run build`
+## Build and deploy
+- Cloudflare Pages build command: `npm run build` (copies the site into `out/`)
 - Build output directory: `out`
-- Node version: 20 or newer
-- Production domain: financialhoroscope360.com
+- Every push to `main` publishes the live site. Other branches get a preview link.
 
-## Frozen routing
-- Discover My Financial Horoscope™ → https://bni.financialhoroscope360.com/
-- Client Login → https://myshubhnivesh.midasx.in/pages/auth/login
+## Links
+- Quick Scan buttons carry `?from=<section>` so Analytics shows which button was used.
+- Sign in: https://my.financialhoroscope360.com/
+- Multi-Asset Account login: https://myshubhnivesh.midasx.in/pages/auth/login
 
-## Assets
-The package contains the approved hero concept, supplied team photographs and supplied Google review screenshots.
-Team photographs are used by crop/reposition only.
-
-## Pre-launch checks
-- Add/confirm final transparent logo if available.
-- Confirm/substantiate public claims: “Among Haryana’s Top 3”, “₹300+ Cr AUM”, “1,000+ Families”.
-- Replace footer Privacy Policy / Terms / Disclaimer labels with final legal pages/URLs when approved.
-- Verify all YouTube testimonial thumbnails and links after deployment.
-- Test desktop/tablet/mobile, Lighthouse, forms/CTA routing and analytics.
+## Copy rules
+- Say "complimentary", never "free". No rupee-value claims, no "No. 1" or "best".
+- My Shubh Nivesh is an AMFI-registered Mutual Fund Distributor, not an adviser.
+- Keep the footer small print, including "Financial Horoscope™ is not astrology".
