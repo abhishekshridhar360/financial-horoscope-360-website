@@ -255,3 +255,17 @@
     else if(h.indexOf('tel:')===0)gtag('event','call_click',{section:sec||'bar'});
   });
 })();
+
+/* live Google rating from the msn-reviews Worker (refreshed daily); keeps the built-in 4.9 if it is unreachable */
+(function(){
+  if(!window.fetch)return;
+  fetch('https://msn-reviews.abhishekshridhar.workers.dev/').then(function(r){return r.ok?r.json():null}).then(function(d){
+    if(!d||!(d.rating>0)||!(d.count>0))return;
+    var r=(+d.rating).toFixed(1),c=(+d.count).toLocaleString('en-IN');
+    document.querySelectorAll('.gBadge').forEach(function(a){
+      var b=a.querySelector('b'),s=a.querySelector('span:last-child');
+      if(b)b.textContent=r;if(s)s.textContent='rated on Google · '+c+' reviews';
+      a.setAttribute('aria-label','Rated '+r+' out of 5 on Google from '+c+' reviews');
+    });
+  }).catch(function(){});
+})();
