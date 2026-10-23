@@ -250,7 +250,7 @@
     var a=e.target.closest&&e.target.closest('a');if(!a||typeof gtag!=='function')return;
     var h=a.getAttribute('href')||'',sec=(a.closest('section')||{}).id||'';
     if(a.classList.contains('waRes'))gtag('event','tool_result_whatsapp',{tool:a.getAttribute('data-wa')});
-    else if(h.indexOf('quickscan.')>-1)gtag('event','quickscan_click',{section:sec||'header'});
+    else if(h.indexOf('/scan/')>-1||h.indexOf('quickscan.')>-1)gtag('event','quickscan_click',{section:sec||'header'});
     else if(h.indexOf('wa.me')>-1)gtag('event','whatsapp_click',{section:sec||'floating'});
     else if(h.indexOf('tel:')===0)gtag('event','call_click',{section:sec||'bar'});
   });
