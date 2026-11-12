@@ -68,6 +68,11 @@ input::placeholder,textarea::placeholder{color:color-mix(in srgb,var(--muted) 70
 .chip:hover{border-style:solid}
 .tip{background:var(--surface-2);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--muted);display:flex;gap:10px}
 .tip b{color:var(--fg)}
+.admin-only{display:none!important}
+.admin .admin-only{display:inline-flex!important}
+.admin-bar{display:none;background:var(--marigold-soft);border:1px solid var(--marigold);border-radius:10px;padding:10px 14px;font-size:13.5px;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.admin .admin-bar{display:flex}
+.admin-bar a{color:var(--accent);font-weight:600}
 .ws{font-size:12.5px;color:var(--muted)}
 .ws summary{cursor:pointer;color:var(--accent);font-weight:600;width:max-content;max-width:100%}
 .ws-row{display:flex;gap:8px;align-items:baseline;margin-top:6px}
@@ -138,15 +143,16 @@ button[disabled]{opacity:.55;cursor:wait}
     <div>
       <div class="eyebrow">Member tool · Biography Sheet</div>
       <h1>Your bio sheet, <em>ready in ten minutes</em></h1>
-      <p class="lede">Answer a few simple questions. Your sheet builds itself as you type, in the format of the BNI Biography Sheet. When it looks good, send it to your Bio Sheet Coordinator on WhatsApp and save a PDF for your 1-2-1s.</p>
+      <p class="lede">Answer a few simple questions. Your sheet builds itself as you type, in the format of the BNI Biography Sheet. When it looks good, send it to your Bio Sheet Coordinator on WhatsApp. You'll get back a polished, finished PDF.</p>
     </div>
     <div class="top-actions">
       <button class="btn small ghost" id="btnExample" type="button">See an example</button>
-      <button class="btn small ghost" id="btnPaste" type="button">Paste text</button>
+      <button class="btn small ghost admin-only" id="btnPaste" type="button">Paste text</button>
       <button class="btn small ghost" id="btnClear" type="button">Start fresh</button>
     </div>
   </header>
 
+  <div class="admin-bar"><span><b>Coordinator mode.</b> Paste a member's polished text, check the preview, then save the PDF.</span><a href="#member" id="exitAdmin">Switch to member view</a></div>
   <section class="panel" id="pastePanel" hidden aria-label="Paste a bio sheet">
     <div class="step-head"><h2>Paste a bio sheet</h2><p>Paste a bio sheet in the WhatsApp format this tool sends, for example one polished by your coordinator. The form fills in and you can save the PDF.</p></div>
     <textarea id="pasteBox" rows="8" placeholder="*BIOGRAPHY SHEET* · Chapter name&#10;Full name · Profession&#10;..."></textarea>
@@ -177,9 +183,16 @@ button[disabled]{opacity:.55;cursor:wait}
 /* ---------- Configuration (set by the coordinator) ---------- */
 const CONFIG = {
   coordinatorName: "Abhishek Shridhar",
-  coordinatorWhatsApp: "",   // e.g. "919812345678" (country code, no +). Blank = member picks the contact.
-  chapterName: ""            // e.g. "BNI Example Chapter". Blank = member types it.
+  coordinatorWhatsApp: "918607777320",   // e.g. "919812345678" (country code, no +). Blank = member picks the contact.
+  chapterName: "Pragati"            // e.g. "BNI Example Chapter". Blank = member types it.
 };
+
+/* ---------- Role: members fill and send; the coordinator polishes and saves PDFs ---------- */
+let ADMIN=false;
+try{ if(location.hash==="#coordinator") localStorage.setItem("bio-sheet-admin","1");
+     if(location.hash==="#member") localStorage.removeItem("bio-sheet-admin");
+     ADMIN = localStorage.getItem("bio-sheet-admin")==="1"; }catch(e){ ADMIN = location.hash==="#coordinator"; }
+if(ADMIN) document.documentElement.classList.add("admin");
 
 /* ---------- Questions ---------- */
 const STEPS = [
@@ -253,9 +266,10 @@ function save(){ if(isExample) return; try{ localStorage.setItem(STORE_KEY, JSON
 const $ = s => document.querySelector(s);
 const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const STORY = ["desire","secret","key"];
-const v = id => { let t=(data[id]||"").replace(/[ \t]+/g," ").trim(); if(!t) return t;
+const v = id => { let t=(data[id]||"").replace(/[ \t]+/g," ").trim().replace(/[\s,;:]+$/,""); if(!t) return t;
   if(STORY.includes(id)){ if(id!=="secret") t=t.replace(/^(my burning desire is to|my key to success is)\s*/i,""); else t=t.replace(/^something no one knows about me is:?\s*/i,""); if(!/[.!?]$/.test(t)) t+="."; }
   if(id==="secret") t=t.charAt(0).toUpperCase()+t.slice(1);
+  if((id==="desire"||id==="key") && /^[A-Z][a-z]/.test(t)) t=t.charAt(0).toLowerCase()+t.slice(1);
   if(["name","city","company"].includes(id)) t=t.replace(/\b([a-z])/g,(m,c)=>c.toUpperCase());
   return t; };
 
@@ -270,6 +284,7 @@ function renderTabs(){
 function fieldHTML(f){
   const val = esc(data[f.id]||"");
   const lab = `<label for="f_${f.id}">${esc(f.label)} ${f.opt?'<span class="opt">(optional)</span>':''}</label>${f.q?`<div class="q">${esc(f.q)}</div>`:''}`;
+  if(f.type==="photo" && !ADMIN) return `<div class="field full"><label>Your photo <span class="opt">(optional)</span></label><div class="tip"><span>After you send your bio sheet, send a clear, smiling headshot in the same WhatsApp chat. It goes on your finished PDF.</span></div></div>`;
   if(f.type==="photo") return `<div class="field full">${lab}
      <div class="photo-row"><div class="photo-thumb" id="thumb">${data.photo?'':'No photo'}</div>
      <input type="file" id="f_photo" accept="image/*">
@@ -350,21 +365,21 @@ function checks(){
   if(v("key") && words("key")<4) out.push({ok:false, t:"Key to success: one word like “hard work” is common. Name the habit behind it.", step:3});
   if(v("secret") && words("secret")<5) out.push({ok:false, t:"Something no one knows: add a small detail so it becomes a story people remember.", step:3});
   if(!v("prevjobs")) out.push({ok:false, t:"Optional: add previous jobs. Members often find a connection there.", step:0});
-  if(!data.photo) out.push({ok:false, t:"Optional: add a photo. Members remember faces faster than names."});
+  if(ADMIN && !data.photo) out.push({ok:false, t:"Optional: add a photo. Members remember faces faster than names."});
   if(!missing.length && !over.length) out.push({ok:true, t:"Your sheet fits on one page."});
   return out;
 }
 function reviewHTML(){
   return `<div class="field full" style="margin-top:18px"><label>Check before you send</label><ul class="checklist" id="checklist"></ul></div>
   <div class="actions" style="margin-top:14px">
-    <button type="button" class="btn wa wide" id="btnWA">Send to ${esc(CONFIG.coordinatorName.split(" ")[0]||"coordinator")} on WhatsApp</button>
-    <button type="button" class="btn primary" id="btnPDF">Save PDF</button>
-    <button type="button" class="btn" id="btnPNG">Save as image</button>
+    <button type="button" class="btn wa wide" id="btnWA">${ADMIN?"Open WhatsApp":`Send to ${esc(CONFIG.coordinatorName.split(" ")[0]||"coordinator")} on WhatsApp`}</button>
+    ${ADMIN?`<button type="button" class="btn primary" id="btnPDF">Save PDF</button>
+    <button type="button" class="btn" id="btnPNG">Save as image</button>`:""}
     <button type="button" class="btn ghost wide" id="btnCopy">Copy as text</button>
   </div>
   <div class="status" id="status" role="status" aria-live="polite"></div>
   <textarea class="copybox" id="copybox" hidden readonly aria-label="Bio sheet text"></textarea>
-  <div class="tip"><span><b>How to send:</b> tap WhatsApp to send your answers as a message, then attach the PDF (or image) you saved in the same chat. Your answers are saved on this device, so you can come back and update them any time.</span></div>`;
+  ${ADMIN?`<div class="tip"><span><b>Next:</b> save the PDF, then send it back to the member on WhatsApp to check.</span></div>`:`<div class="tip"><span><b>How it works:</b> tap the green button to send your answers to ${esc(CONFIG.coordinatorName.split(" ")[0]||"your coordinator")} on WhatsApp. They'll polish your sheet and send you the finished PDF. Your answers stay saved on this device, so you can come back and update them any time.</span></div>`}`;
 }
 function renderChecks(){
   const ul=$("#checklist"); if(!ul) return;
@@ -458,10 +473,10 @@ let downloads=null;
 async function offer(filename, blob){
   if(!downloads){
     try{ const u=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=u; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(u),4000);
-      setStatus("Saved to your downloads. Attach it in your WhatsApp chat with the coordinator.","ok"); }
+      setStatus("Saved to your downloads. Send it to the member on WhatsApp.","ok"); }
     catch(e){ setStatus("Could not save the file here. Use “Copy as text”, or take a screenshot of the preview.","err"); }
     return; }
-  try{ await downloads.save({filename, data:blob}); setStatus("Saved. Attach it in your WhatsApp chat with the coordinator.","ok"); }
+  try{ await downloads.save({filename, data:blob}); setStatus("Saved. Send it to the member on WhatsApp.","ok"); }
   catch(e){ if(e?.code==="declined") setStatus("Save cancelled."); else setStatus("Could not save the file here. Try “Copy as text” instead.","err"); }
 }
 function wireActions(){
@@ -470,12 +485,12 @@ function wireActions(){
   $("#btnWA").onclick=()=>{
     const missing=ALL.filter(f=>f.req&&!v(f.id));
     if(missing.length){ setStatus("Please fill the items marked above first.","err"); return; }
-    const num=(CONFIG.coordinatorWhatsApp||"").replace(/\D/g,"");
+    const num=ADMIN?"":(CONFIG.coordinatorWhatsApp||"").replace(/\D/g,"");
     const url=`https://wa.me/${num}?text=${encodeURIComponent(asText(true))}`;
     const a=document.createElement("a"); a.href=url; a.target="_blank"; a.rel="noopener"; document.body.appendChild(a); a.click(); a.remove();
-    setStatus(num?"WhatsApp should open with your bio sheet ready to send. Attach your PDF there too.":"WhatsApp should open. Pick your Bio Sheet Coordinator and press send.","ok");
+    setStatus(num?"WhatsApp should open with your bio sheet ready to send. Press send, then send your photo in the same chat.":"WhatsApp should open. Pick your Bio Sheet Coordinator and press send.","ok");
   };
-  $("#btnPDF").onclick=async()=>{
+  if($("#btnPDF")) $("#btnPDF").onclick=async()=>{
     const b=$("#btnPDF"); busy(b,true,"Preparing PDF…");
     try{ const c=await capture(); const { jsPDF } = window.jspdf;
       const pdf=new jsPDF({unit:"mm",format:"a4"}); const W=210,H=297; let w=W,h=c.height*W/c.width; if(h>H){ h=H; w=c.width*H/c.height; }
@@ -483,7 +498,7 @@ function wireActions(){
     }catch(e){ setStatus("Could not build the PDF here. Try “Save as image”.","err"); }
     busy(b,false,"Save PDF");
   };
-  $("#btnPNG").onclick=async()=>{
+  if($("#btnPNG")) $("#btnPNG").onclick=async()=>{
     const b=$("#btnPNG"); busy(b,true,"Preparing image…");
     try{ const c=await capture(); const blob=await new Promise(r=>c.toBlob(r,"image/png")); await offer(fileBase()+".png", blob); }
     catch(e){ setStatus("Could not build the image here. Try “Copy as text”.","err"); }
@@ -511,7 +526,7 @@ function parseSheet(txt){
       if(k==="city of residence"){ const c=m[2].match(/^(.*?)\s*\((.*)\)\s*$/); if(c){out.city=c[1];out.cityyears=c[2];} else out.city=m[2]; continue; }
       if(k==="years in the city") { out.cityyears=m[2]; continue; }
       if(LAB[k]){ out[LAB[k]]=m[2].trim(); continue; } }
-    if(headSeen && !out.name && l.includes("·")){ const [n,...r]=l.split("·"); out.name=n.trim(); out.profession=r.join("·").trim(); continue; }
+    if(!out.name && l.includes("·") && !/:/.test(l)){ const [n,...r]=l.split("·"); out.name=n.trim(); out.profession=r.join("·").trim(); continue; }
   }
   return out;
 }
@@ -525,6 +540,8 @@ $("#btnPasteApply").onclick=()=>{
   $("#pastePanel").hidden=true; $("#pasteBox").value="";
   setStatus(`Filled ${n} answers from the pasted text. Check the preview, then save the PDF.`,"ok");
 };
+
+window.addEventListener("hashchange",()=>{ if(location.hash==="#member"||location.hash==="#coordinator") location.reload(); });
 
 /* ---------- Boot ---------- */
 renderStep(); renderSheet();
