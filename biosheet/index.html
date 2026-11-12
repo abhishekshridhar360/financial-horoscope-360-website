@@ -226,6 +226,17 @@ select{width:100%;font:15px var(--font-ui);color:var(--fg);background:var(--bg);
     <div class="status" id="dashStatus" role="status" aria-live="polite"></div>
   </section>
 
+  <section class="panel" id="pwForm" hidden aria-label="Change password">
+    <div class="step-head"><h2>Change your coordinator password</h2><p>Use at least 8 characters. Other phones and computers signed in as coordinator will be signed out.</p></div>
+    <div class="fields">
+      <div class="field full"><label for="pw_cur">Current password</label><input type="password" id="pw_cur" autocomplete="current-password"></div>
+      <div class="field"><label for="pw_new">New password</label><input type="password" id="pw_new" autocomplete="new-password"></div>
+      <div class="field"><label for="pw_new2">New password again</label><input type="password" id="pw_new2" autocomplete="new-password"></div>
+    </div>
+    <div class="nav"><button class="btn ghost" id="pwCancel" type="button">Cancel</button><button class="btn primary" id="pwSave" type="button">Change password</button></div>
+    <div class="status" id="pwStatus" role="status" aria-live="polite"></div>
+  </section>
+
   <section class="panel" id="memberForm" hidden aria-label="Member details">
     <div class="step-head"><h2 id="mfTitle">Add a member</h2><p>Members sign in with this mobile number and email.</p></div>
     <div class="fields">
@@ -795,8 +806,9 @@ function paintAdminBar(){
     btns.innerHTML = `<button type="button" class="btn small" id="btnBackList">← All members</button><button type="button" class="linkbtn" id="btnAdminOut">Sign out</button>`;
   } else {
     $("#adminText").innerHTML = `<b>Coordinator mode.</b> Only you can see this page's data.`;
-    btns.innerHTML = `<a href="#member" class="linkbtn">Member view</a><button type="button" class="linkbtn" id="btnAdminOut">Sign out</button>`;
+    btns.innerHTML = `<a href="#member" class="linkbtn">Member view</a><button type="button" class="linkbtn" id="btnPw">Change password</button><button type="button" class="linkbtn" id="btnAdminOut">Sign out</button>`;
   }
+  const bp=$("#btnPw"); if(bp) bp.onclick=()=>{ ["#pw_cur","#pw_new","#pw_new2"].forEach(i=>$(i).value=""); $("#pwStatus").textContent=""; show("#pwForm",true); $("#pwForm").scrollIntoView({behavior:"smooth",block:"start"}); $("#pw_cur").focus(); };
   const bl=$("#btnBackList"); if(bl) bl.onclick=backToList;
   $("#btnAdminOut").onclick=()=>{ lsSet(TOK_A,null); location.reload(); };
 }
@@ -880,6 +892,20 @@ async function doAdminLogin(){
   b.disabled=false;
 }
 $("#btnAdminLogin").onclick=doAdminLogin;
+$("#pwCancel").onclick=()=>show("#pwForm",false);
+$("#pwSave").onclick=async()=>{
+  const st=$("#pwStatus"), cur=$("#pw_cur").value, nx=$("#pw_new").value;
+  const bad = t => { st.textContent=t; st.className="status err"; };
+  if(!cur) return bad("Enter your current password.");
+  if(nx.length<8) return bad("Use at least 8 characters for the new password.");
+  if(nx!==$("#pw_new2").value) return bad("The two new passwords don't match.");
+  if(nx===cur) return bad("The new password is the same as the current one.");
+  $("#pwSave").disabled=true;
+  try{ const r=await api("/admin/password",{method:"POST",body:{current:cur,next:nx},tok:TOK_A}); lsSet(TOK_A,r.token);
+    show("#pwForm",false); $("#dashStatus").textContent="Password changed. Use the new one next time you sign in."; $("#dashStatus").className="status ok"; }
+  catch(e){ if(e.status===401 && /sign in/i.test(e.message)) return adminGate("Please sign in again."); bad(e.message); }
+  $("#pwSave").disabled=false;
+};
 $("#adminPass").addEventListener("keydown",e=>{ if(e.key==="Enter") doAdminLogin(); });
 
 /* ---------- Boot ---------- */
