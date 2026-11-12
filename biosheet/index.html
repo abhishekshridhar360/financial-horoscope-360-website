@@ -68,6 +68,12 @@ input::placeholder,textarea::placeholder{color:color-mix(in srgb,var(--muted) 70
 .chip:hover{border-style:solid}
 .tip{background:var(--surface-2);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--muted);display:flex;gap:10px}
 .tip b{color:var(--fg)}
+.ws{font-size:12.5px;color:var(--muted)}
+.ws summary{cursor:pointer;color:var(--accent);font-weight:600;width:max-content;max-width:100%}
+.ws-row{display:flex;gap:8px;align-items:baseline;margin-top:6px}
+.ws-tag{flex:none;font:600 10px var(--font-mono);letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:1px 7px}
+.ws-tag.weak{background:var(--surface-2);color:var(--muted)}
+.ws-tag.strong{background:var(--marigold-soft);color:var(--fg);border:1px solid var(--marigold)}
 .nav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:16px}
 button.btn{font:600 14px var(--font-ui);border-radius:10px;padding:10px 16px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--fg);display:inline-flex;align-items:center;gap:8px;justify-content:center}
 button.btn:hover{border-color:var(--accent)}
@@ -136,9 +142,17 @@ button[disabled]{opacity:.55;cursor:wait}
     </div>
     <div class="top-actions">
       <button class="btn small ghost" id="btnExample" type="button">See an example</button>
+      <button class="btn small ghost" id="btnPaste" type="button">Paste text</button>
       <button class="btn small ghost" id="btnClear" type="button">Start fresh</button>
     </div>
   </header>
+
+  <section class="panel" id="pastePanel" hidden aria-label="Paste a bio sheet">
+    <div class="step-head"><h2>Paste a bio sheet</h2><p>Paste a bio sheet in the WhatsApp format this tool sends, for example one polished by your coordinator. The form fills in and you can save the PDF.</p></div>
+    <textarea id="pasteBox" rows="8" placeholder="*BIOGRAPHY SHEET* · Chapter name&#10;Full name · Profession&#10;..."></textarea>
+    <div class="nav" style="border:0;padding:0"><button class="btn ghost" id="btnPasteCancel" type="button">Cancel</button><button class="btn primary" id="btnPasteApply" type="button">Fill the form</button></div>
+    <div class="status" id="pasteStatus" role="status" aria-live="polite"></div>
+  </section>
 
   <div class="grid">
     <section class="panel" aria-label="Questions">
@@ -173,11 +187,11 @@ const STEPS = [
     sub:"The facts members need to remember you and refer you.",
     fields:[
       {id:"name", label:"Your full name", q:"As you want it read out when you are introduced.", ph:"Priya Mehta", req:true, max:40},
-      {id:"profession", label:"Profession / classification", q:"Your BNI classification, in plain words.", ph:"Interior Designer (Residential)", req:true, max:50},
+      {id:"profession", weak:"Consultant", strong:"Interior Designer for homes and apartments", label:"Profession / classification", q:"Your BNI classification, in plain words.", ph:"Interior Designer (Residential)", req:true, max:50},
       {id:"company", label:"Company name", ph:"Studio Aangan Interiors", req:true, max:50},
       {id:"location", label:"Business location", q:"Area and city where you work.", ph:"Baner, Pune", req:true, max:40},
       {id:"years", label:"Years in this business", ph:"12 years", req:true, max:20},
-      {id:"prevjobs", label:"Previous types of jobs", q:"What did you do before? This often sparks a connection.", ph:"Architect at a design firm; site supervisor", full:true, area:true, max:140}
+      {id:"prevjobs", weak:"Job", strong:"8 years in bank sales at HDFC, then ran my own trading firm", label:"Previous types of jobs", q:"What did you do before? This often sparks a connection.", ph:"Architect at a design firm; site supervisor", full:true, area:true, max:140}
     ]},
   { key:"family", title:"Family", heading:"Family and home",
     sub:"Share only what you are comfortable sharing. Members connect over these details.",
@@ -191,18 +205,18 @@ const STEPS = [
   { key:"life", title:"Interests", heading:"Life outside work",
     sub:"Hobbies, activities and interests. A good 1-2-1 often starts here.",
     fields:[
-      {id:"hobbies", label:"Hobbies, activities and interests", q:"List three to five. Be specific: \"trekking in the Sahyadris\" beats \"travel\".", ph:"Trekking in the Sahyadris, Hindustani classical music, gardening, weekend cycling", full:true, area:true, req:true, max:160,
+      {id:"hobbies", weak:"Travel, music, reading", strong:"Trekking in the Sahyadris, Hindustani classical music, reading business biographies", label:"Hobbies, activities and interests", q:"List three to five. Be specific: \"trekking in the Sahyadris\" beats \"travel\".", ph:"Trekking in the Sahyadris, Hindustani classical music, gardening, weekend cycling", full:true, area:true, req:true, max:160,
         chips:["Reading ","Travel to ","Cricket","Yoga","Cooking ","Music: ","Volunteering with "]}
     ],
     tip:"<b>Why this matters:</b> people refer people they know and like. A shared hobby is the quickest way for another member to remember you."},
   { key:"story", title:"Your story", heading:"The three questions that make you memorable",
     sub:"These are read aloud when you are introduced as the speaker. Write them as full sentences.",
     fields:[
-      {id:"desire", label:"My burning desire is to…", q:"A big personal or business goal. Make it specific enough that someone could help.", ph:"design 100 homes that families never want to leave, and open a studio in Mumbai by 2028.", full:true, area:true, req:true, max:180,
+      {id:"desire", weak:"grow my business", strong:"help 500 families in Hisar plan their children's education, and take my parents to Kedarnath next year", label:"My burning desire is to…", q:"A big personal or business goal. Make it specific enough that someone could help.", ph:"design 100 homes that families never want to leave, and open a studio in Mumbai by 2028.", full:true, area:true, req:true, max:180,
         chips:["help 100 families ","build a business that ","travel to ","write a book on ","open a second office in "]},
-      {id:"secret", label:"Something no one knows about me is…", q:"A surprising, light and positive fact. Keep it chapter-friendly.", ph:"I was a state-level table tennis player in college.", full:true, area:true, req:true, max:160,
+      {id:"secret", weak:"I like food", strong:"I cooked for 200 guests at my sister's wedding, single-handed", label:"Something no one knows about me is…", q:"A surprising, light and positive fact. Keep it chapter-friendly.", ph:"I was a state-level table tennis player in college.", full:true, area:true, req:true, max:160,
         chips:["I was a state-level ","I once ","I can speak ","I have run "]},
-      {id:"key", label:"My key to success is…", q:"The habit, value or belief behind your results.", ph:"listening first. A home should reflect the family, not the designer.", full:true, area:true, req:true, max:160,
+      {id:"key", weak:"hard work", strong:"calling every client back the same day, no matter how busy I am", label:"My key to success is…", q:"The habit, value or belief behind your results.", ph:"listening first. A home should reflect the family, not the designer.", full:true, area:true, req:true, max:160,
         chips:["listening first","showing up every day","keeping my word","never stopping learning","treating clients like family"]}
     ],
     tip:"<b>Tip:</b> keep each answer to one or two sentences so your sheet fits on one page and reads well aloud."},
@@ -238,7 +252,12 @@ function save(){ if(isExample) return; try{ localStorage.setItem(STORE_KEY, JSON
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const v = id => (data[id]||"").trim();
+const STORY = ["desire","secret","key"];
+const v = id => { let t=(data[id]||"").replace(/[ \t]+/g," ").trim(); if(!t) return t;
+  if(STORY.includes(id)){ if(id!=="secret") t=t.replace(/^(my burning desire is to|my key to success is)\s*/i,""); else t=t.replace(/^something no one knows about me is:?\s*/i,""); if(!/[.!?]$/.test(t)) t+="."; }
+  if(id==="secret") t=t.charAt(0).toUpperCase()+t.slice(1);
+  if(["name","city","company"].includes(id)) t=t.replace(/\b([a-z])/g,(m,c)=>c.toUpperCase());
+  return t; };
 
 /* ---------- Steps UI ---------- */
 function stepComplete(i){ return STEPS[i].fields.every(f=>!f.req || v(f.id)); }
@@ -261,7 +280,8 @@ function fieldHTML(f){
     : `<input type="${f.type||'text'}" id="f_${f.id}" data-id="${f.id}" maxlength="${f.max+20}" placeholder="${esc('e.g. '+f.ph)}" value="${val}" autocomplete="off">`;
   const chips = f.chips?`<div class="chips">${f.chips.map(c=>`<button type="button" class="chip" data-for="${f.id}" data-t="${esc(c)}">+ ${esc(c.trim())}</button>`).join("")}</div>`:"";
   const count = f.area?`<div class="count" id="c_${f.id}"></div>`:"";
-  return `<div class="field ${f.full?'full':''}">${lab}${input}${chips}${count}</div>`;
+  const ws = f.strong?`<details class="ws"><summary>See a weak vs strong answer</summary><div class="ws-row"><span class="ws-tag weak">Weak</span><span>${esc(f.weak)}</span></div><div class="ws-row"><span class="ws-tag strong">Strong</span><span>${esc(f.strong)}</span></div></details>`:"";
+  return `<div class="field ${f.full?'full':''}">${lab}${input}${chips}${count}${ws}</div>`;
 }
 function renderStep(){
   const s = STEPS[step];
@@ -322,6 +342,14 @@ function checks(){
   if(over.length) out.push({ok:false, t:`A little long for one page: ${over.map(f=>f.label.replace("…","")).join(", ")}. Try to trim.`});
   if(v("desire") && v("desire").split(/\s+/).length<6) out.push({ok:false, t:"Your burning desire is very short. Add something specific a member could help with."});
   if(v("hobbies") && v("hobbies").split(/,|\band\b/).length<2) out.push({ok:false, t:"Add at least two or three interests so members find common ground."});
+  const words = id => v(id).split(/\s+/).filter(Boolean).length;
+  if(/^(consultant|business|businessman|service|services|agent|trader|self.?employed)$/i.test(v("profession"))) out.push({ok:false, t:"Your profession is broad. Say who you serve, e.g. “Tax Consultant for small businesses”.", step:0});
+  const generic = v("hobbies").split(/,|\band\b/).map(x=>x.trim().toLowerCase()).filter(x=>/^(travel|travelling|traveling|music|reading|movies|sports|cooking|friends|food)$/.test(x));
+  if(generic.length) out.push({ok:false, t:`Make “${generic[0]}” specific: where, what kind, or how often. Specific interests start conversations.`, step:2});
+  if(v("desire") && !/\d|by 20|this year|next year|in \w+ years/i.test(v("desire"))) out.push({ok:false, t:"Burning desire: add a number or a date (e.g. “100 families by 2028”). It makes the goal real.", step:3});
+  if(v("key") && words("key")<4) out.push({ok:false, t:"Key to success: one word like “hard work” is common. Name the habit behind it.", step:3});
+  if(v("secret") && words("secret")<5) out.push({ok:false, t:"Something no one knows: add a small detail so it becomes a story people remember.", step:3});
+  if(!v("prevjobs")) out.push({ok:false, t:"Optional: add previous jobs. Members often find a connection there.", step:0});
   if(!data.photo) out.push({ok:false, t:"Optional: add a photo. Members remember faces faster than names."});
   if(!missing.length && !over.length) out.push({ok:true, t:"Your sheet fits on one page."});
   return out;
@@ -467,6 +495,36 @@ function wireActions(){
       .catch(()=>{ box.hidden=false; box.value=t; box.focus(); box.select(); setStatus("Select all the text in the box and copy it.",""); });
   };
 }
+
+/* ---------- Paste text back into the form ---------- */
+function parseSheet(txt){
+  const out={}; const lines=txt.replace(/\r/g,"").split("\n").map(l=>l.replace(/\*/g,"").trim()).filter(Boolean);
+  const LAB={"company":"company","company name":"company","location":"location","business location":"location","years in the business":"years","years in business":"years","previous jobs":"prevjobs","previous types of jobs":"prevjobs","spouse / partner":"spouse","spouse":"spouse","partner":"spouse","children":"children","pets":"pets","hobbies & interests":"hobbies","hobbies":"hobbies","hobbies, activities and interests":"hobbies","mobile":"phone","mobile / whatsapp":"phone","phone":"phone","email":"email","chapter":"chapter","name":"name","profession":"profession"};
+  const story=[[/^my burning desire is to\s*/i,"desire"],[/^something no one knows about me is:?\s*/i,"secret"],[/^my key to success is:?\s*/i,"key"]];
+  let headSeen=false;
+  for(const l of lines){
+    if(/^biography sheet/i.test(l)){ const c=l.split("·")[1]; if(c) out.chapter=c.trim(); headSeen=true; continue; }
+    if(/^(business information|personal information|in my own words)$/i.test(l)) continue;
+    const st=story.find(([re])=>re.test(l)); if(st){ out[st[1]]=l.replace(st[0],"").trim(); continue; }
+    const m=l.match(/^([^:]{2,40}):\s*(.*)$/);
+    if(m){ const k=m[1].trim().toLowerCase();
+      if(k==="city of residence"){ const c=m[2].match(/^(.*?)\s*\((.*)\)\s*$/); if(c){out.city=c[1];out.cityyears=c[2];} else out.city=m[2]; continue; }
+      if(k==="years in the city") { out.cityyears=m[2]; continue; }
+      if(LAB[k]){ out[LAB[k]]=m[2].trim(); continue; } }
+    if(headSeen && !out.name && l.includes("·")){ const [n,...r]=l.split("·"); out.name=n.trim(); out.profession=r.join("·").trim(); continue; }
+  }
+  return out;
+}
+$("#btnPaste").onclick=()=>{ $("#pastePanel").hidden=false; $("#pasteBox").focus(); };
+$("#btnPasteCancel").onclick=()=>{ $("#pastePanel").hidden=true; };
+$("#btnPasteApply").onclick=()=>{
+  const got=parseSheet($("#pasteBox").value); const n=Object.keys(got).length;
+  if(n<3){ $("#pasteStatus").textContent="That text doesn't look like a bio sheet. Paste the whole message, starting with the BIOGRAPHY SHEET line."; $("#pasteStatus").className="status err"; return; }
+  if(isExample) leaveExample();
+  data={...(data.photo?{photo:data.photo}:{}), ...got}; step=STEPS.length-1; save(); renderStep(); renderSheet();
+  $("#pastePanel").hidden=true; $("#pasteBox").value="";
+  setStatus(`Filled ${n} answers from the pasted text. Check the preview, then save the PDF.`,"ok");
+};
 
 /* ---------- Boot ---------- */
 renderStep(); renderSheet();
