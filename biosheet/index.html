@@ -253,9 +253,10 @@ function save(){ if(isExample) return; try{ localStorage.setItem(STORE_KEY, JSON
 const $ = s => document.querySelector(s);
 const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const STORY = ["desire","secret","key"];
-const v = id => { let t=(data[id]||"").replace(/[ \t]+/g," ").trim(); if(!t) return t;
+const v = id => { let t=(data[id]||"").replace(/[ \t]+/g," ").trim().replace(/[\s,;:]+$/,""); if(!t) return t;
   if(STORY.includes(id)){ if(id!=="secret") t=t.replace(/^(my burning desire is to|my key to success is)\s*/i,""); else t=t.replace(/^something no one knows about me is:?\s*/i,""); if(!/[.!?]$/.test(t)) t+="."; }
   if(id==="secret") t=t.charAt(0).toUpperCase()+t.slice(1);
+  if((id==="desire"||id==="key") && /^[A-Z][a-z]/.test(t)) t=t.charAt(0).toLowerCase()+t.slice(1);
   if(["name","city","company"].includes(id)) t=t.replace(/\b([a-z])/g,(m,c)=>c.toUpperCase());
   return t; };
 
@@ -511,7 +512,7 @@ function parseSheet(txt){
       if(k==="city of residence"){ const c=m[2].match(/^(.*?)\s*\((.*)\)\s*$/); if(c){out.city=c[1];out.cityyears=c[2];} else out.city=m[2]; continue; }
       if(k==="years in the city") { out.cityyears=m[2]; continue; }
       if(LAB[k]){ out[LAB[k]]=m[2].trim(); continue; } }
-    if(headSeen && !out.name && l.includes("·")){ const [n,...r]=l.split("·"); out.name=n.trim(); out.profession=r.join("·").trim(); continue; }
+    if(!out.name && l.includes("·") && !/:/.test(l)){ const [n,...r]=l.split("·"); out.name=n.trim(); out.profession=r.join("·").trim(); continue; }
   }
   return out;
 }
