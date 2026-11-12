@@ -1,0 +1,10 @@
+# Cloudflare Pages settings for financialhoroscope360.com.
+# Adds the Bio Sheet database. Build command and output folder stay as set in the Pages dashboard.
+name = "financial-horoscope-360-website"
+pages_build_output_dir = "out"
+compatibility_date = "2024-09-23"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "bni-biosheet"
+database_id = "313e513f-1c48-4902-81e3-bf064eae382b"
