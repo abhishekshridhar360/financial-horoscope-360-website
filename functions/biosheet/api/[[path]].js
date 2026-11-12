@@ -106,11 +106,24 @@ export async function onRequest({ request, env, params }) {
     if (!(await throttle(db, "admin:" + ip))) return err("Too many tries. Please wait 15 minutes.", 429);
     const h = await pbkdf2(String(body.password || ""), c.admin_salt);
     if (h !== c.admin_hash) return err("Wrong password.", 401);
-    return json({ token: await makeToken(c.signing_key, { r: "a", exp: Date.now() + 7 * 864e5 }) });
+    return json({ token: await makeToken(c.signing_key, { r: "a", v: c.admin_ver || "0", exp: Date.now() + 7 * 864e5 }) });
   }
   if (path.startsWith("/admin/")) {
     const t = await readToken(c.signing_key, request);
-    if (!t || t.r !== "a") return err("Please sign in again.", 401);
+    if (!t || t.r !== "a" || (t.v || "0") !== (c.admin_ver || "0")) return err("Please sign in again.", 401);
+
+    if (path === "/admin/password" && method === "POST") {
+      if (!(await throttle(db, "admin:" + ip))) return err("Too many tries. Please wait 15 minutes.", 429);
+      if ((await pbkdf2(String(body.current || ""), c.admin_salt)) !== c.admin_hash) return err("Your current password is wrong.", 401);
+      const next = String(body.next || "");
+      if (next.length < 8) return err("Use at least 8 characters for the new password.");
+      const salt = hex(crypto.getRandomValues(new Uint8Array(16)));
+      const ver = String(Date.now());
+      const put = (k, v) => db.prepare("INSERT OR REPLACE INTO config (k, v) VALUES (?, ?)").bind(k, v);
+      await db.batch([put("admin_salt", salt), put("admin_hash", await pbkdf2(next, salt)), put("admin_ver", ver)]);
+      // Changing the password signs out every other device; this one gets a fresh token.
+      return json({ ok: true, token: await makeToken(c.signing_key, { r: "a", v: ver, exp: Date.now() + 7 * 864e5 }) });
+    }
 
     if (path === "/admin/sheets" && method === "GET") {
       const { results } = await db.prepare(
