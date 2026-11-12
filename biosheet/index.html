@@ -132,20 +132,47 @@ button[disabled]{opacity:.55;cursor:wait}
 .sheet-scaler{transform-origin:top left}
 
 /* the sheet: official 2023 BNI Biography Sheet layout, landscape A4, filled in */
-.sheet{width:1123px;min-height:794px;background:#fff;color:#111;font-family:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",sans-serif;padding:44px 64px 40px;display:flex;flex-direction:column}
-.bs-title{font-weight:700;font-size:30px;text-align:center;margin:6px 0 22px;letter-spacing:.2px}
-.bs-table{border:1.4px solid #111;display:flex;flex-direction:column;flex:1}
-.bs-row{border-top:1.2px solid #111;display:flex;align-items:stretch;min-height:36px;font-size:15px;line-height:1.35}
-.bs-row:first-child{border-top:0}
-.bs-row.tall{min-height:62px;flex:1}
-.bs-cell{flex:1;display:flex;gap:8px;align-items:baseline;padding:8px 10px;min-width:0}
-.bs-cell.half{flex:0 0 50%}
-.bs-cell.right{flex:0 0 37%}
-.bs-row.tall .bs-cell{align-items:center}
-.bs-lab{flex:none;color:#111;white-space:nowrap}
-.bs-row.tall .bs-lab{width:150px;white-space:normal}
-.bs-val{color:#13307A;font-weight:600;overflow-wrap:anywhere;white-space:pre-wrap;min-width:0}
-.bs-val.empty{color:#B8BCC8;font-weight:400;font-style:italic}
+.sheet{width:1056px;background:#fff;color:#111;font-family:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",sans-serif;display:flex;flex-direction:column;gap:18px}
+.pg{width:1056px;height:816px;background:#fff;padding:30px 64px 18px;display:flex;flex-direction:column;position:relative;font-size:13.5px;line-height:1.3}
+.sheet-frame .pg{box-shadow:0 0 0 1px #E2E4EC}
+.pg-foot{text-align:center;font-size:10.5px;color:#333;margin-top:auto;padding-top:8px}
+.pg-head{display:flex;align-items:flex-end;gap:10px;border:1px solid #111;padding:4px 8px}
+.pg-head img{height:24px;width:auto}
+.pg-head .t{flex:1;text-align:center;font-size:21px;margin-right:34px}
+.pg-head .t.i{font-style:italic}
+.box1{border:1px solid #111;display:flex;flex-direction:column;flex:1;min-height:0}
+.box1 .pg-head{border:0;border-bottom:1px solid #111}
+.band{background:#111;color:#fff;font-weight:700;font-size:13.5px;padding:4px 8px;margin-top:10px}
+.ln{display:flex;align-items:flex-end;gap:8px;padding:4px 8px 0;flex:1 1 auto;max-height:44px}
+.box1 .band{flex:none}
+.ln .l{flex:none;white-space:nowrap}
+.ln .l.ind{padding-left:24px}
+.v{flex:1;min-width:0;border-bottom:1px solid #111;min-height:18px;color:#13307A;font-weight:700;white-space:pre-wrap;overflow-wrap:anywhere;padding:0 2px 1px}
+.v.empty{color:#B8BCC8;font-weight:400;font-style:italic}
+.ln .yrs{flex:0 0 260px;display:flex;align-items:flex-end;gap:8px}
+.g-row{display:grid;grid-template-columns:330px 1fr;gap:14px;flex:1;min-height:0}
+.g-desc b{display:block;font-style:italic;font-size:14px;margin-bottom:2px}
+.g-desc{font-size:10px;line-height:1.25;padding-top:4px}
+.g-box{border:1px solid #111;display:flex;flex-direction:column;min-height:0}
+.g-box .h{font-weight:700;font-style:italic;border-bottom:1px solid #111;padding:3px 6px}
+.g-box .v{border:0;padding:6px 8px;font-size:13px}
+.g-wrap{display:flex;flex-direction:column;gap:8px;flex:1;margin-top:10px;min-height:0}
+.g-note{font-size:10.5px;line-height:1.3;margin-top:8px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:28px;flex:1;margin-top:12px;min-height:0}
+.h2i{font-weight:700;font-style:italic;font-size:16px;margin:4px 0 8px}
+.num{display:flex;gap:8px;align-items:flex-end;padding:5px 0}
+.num .n{flex:none;width:22px;color:#2B6CB0}
+.small{font-size:11.5px;line-height:1.35}
+.top3h{font-weight:700;font-size:24px;text-align:center;margin:6px 0 14px}
+.qbox{border:1px solid #111;padding:6px 10px;min-height:150px}
+.qbox .q{font-weight:700;font-size:12px;text-align:center;margin-bottom:6px}
+.vr{border-left:2px solid #111;padding-left:12px}
+.chk{list-style:none;margin:2px 0 8px;padding:0;font-size:12px}
+.chk li:before{content:"✓  "}
+.nbox{border:1px solid #111;padding:6px 10px;min-height:120px;font-size:12.5px}
+.nbox .q{font-style:italic;font-size:11.5px;text-align:center;margin-bottom:4px}
+.nbox .v{border:0}
+.dropping::after{content:"Drop your bio sheet (Word .docx) to fill the answers";position:fixed;inset:12px;border:3px dashed var(--accent);border-radius:16px;background:color-mix(in srgb,var(--bg) 88%,transparent);display:grid;place-items:center;font:700 20px var(--font-ui);color:var(--accent);z-index:50;pointer-events:none}
 .capture-host{position:fixed;left:-12000px;top:0;pointer-events:none}
 /* sign-in, coordinator dashboard */
 .gate{max-width:520px;width:100%;margin:0 auto}
@@ -191,6 +218,7 @@ select{width:100%;font:15px var(--font-ui);color:var(--fg);background:var(--bg);
       <div class="whobar" id="whoBar" hidden></div>
     </div>
     <div class="top-actions" id="topActions" hidden>
+      <button class="btn small" id="btnUpload" type="button">Upload a filled bio sheet</button><input type="file" id="fileIn" accept=".docx,.txt,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" hidden>
       <button class="btn small ghost" id="btnExample" type="button">See an example</button>
       <button class="btn small ghost admin-only" id="btnPaste" type="button">Paste text</button>
       <button class="btn small ghost" id="btnClear" type="button">Start fresh</button>
@@ -270,7 +298,7 @@ select{width:100%;font:15px var(--font-ui);color:var(--fg);background:var(--bg);
     </section>
 
     <aside class="preview-col" aria-label="Live preview">
-      <div class="preview-bar"><span>Live preview · official 2023 format</span><span class="badge" id="exampleBadge" hidden>Example data</span></div>
+      <div class="preview-bar"><span>Live preview · BNI Member Bio Sheet (4 pages)</span><span class="badge" id="exampleBadge" hidden>Example data</span></div>
       <div class="sheet-frame" id="frame"><div class="sheet-scaler" id="scaler"><div class="sheet" id="sheet"></div></div></div>
     </aside>
   </div>
@@ -295,6 +323,7 @@ if(ADMIN) document.documentElement.classList.add("admin");
 /* ---------- Business categories: tailor examples and quick picks ---------- */
 const CATS = {"Finance & Insurance": {"prof": ["Financial Planner", "Mutual Fund Distributor", "Life Insurance Advisor", "General Insurance Advisor", "Health Insurance Advisor", "Loan & Mortgage Advisor", "Stock Broker"], "desire": "help 1,000 families in my city plan for their children's education and retirement by 2030", "key": "explaining every product in plain language, so clients decide with confidence", "prev": "8 years in bank sales, then relationship manager at a private bank"}, "Legal & Accounting": {"prof": ["Chartered Accountant", "Company Secretary", "Tax Consultant", "Corporate Lawyer", "Property Lawyer", "GST Consultant", "Cost Accountant"], "desire": "make my firm the first call for 300 small businesses when they need tax or legal help, by 2028", "key": "meeting every deadline before the client has to remind me", "prev": "Articleship at a Big Four firm; audit manager"}, "Real Estate & Construction": {"prof": ["Real Estate Agent (Residential)", "Commercial Property Consultant", "Builder / Developer", "Civil Contractor", "Architect", "Structural Engineer", "Waterproofing Specialist"], "desire": "complete 50 homes that families are proud to live in, and launch my own project by 2028", "key": "telling buyers the honest picture, even when it costs me a sale", "prev": "Site engineer for a large builder; sales at a property portal"}, "Home & Interiors": {"prof": ["Interior Designer", "Modular Kitchen Specialist", "Furniture Manufacturer", "Painting Contractor", "Electrician", "Home Automation", "Solar Installer"], "desire": "design 100 homes that families never want to leave, and open a studio in a metro by 2028", "key": "listening first, so the home reflects the family, not the designer", "prev": "Draftsman at an architecture firm; site supervisor"}, "Health & Wellness": {"prof": ["Physiotherapist", "Dentist", "Dietitian / Nutritionist", "Yoga Trainer", "Gym Owner", "Pathology Lab", "Homeopath"], "desire": "help 5,000 people in my city live without chronic pain, and open a second clinic by 2027", "key": "treating every patient the way I would want my parents to be treated", "prev": "Resident at a government hospital; clinical trainer"}, "Marketing & Media": {"prof": ["Digital Marketing Agency", "Graphic Designer", "Photographer", "Videographer", "Printing & Branding", "Social Media Manager", "Public Relations"], "desire": "build the brands of 100 local businesses and see them become household names in my city", "key": "measuring every campaign by the business it brings, not by likes", "prev": "Copywriter at an ad agency; brand executive at an FMCG company"}, "IT & Technology": {"prof": ["Software Developer", "Website Developer", "IT Hardware & Networking", "CCTV & Security Systems", "Cyber Security", "ERP / Billing Software", "Mobile App Developer"], "desire": "digitise 200 small businesses in my region so they can serve customers online, by 2028", "key": "building simple systems that clients can actually use", "prev": "Software engineer at an IT services company; freelance developer"}, "Events, Travel & Hospitality": {"prof": ["Event Planner", "Wedding Planner", "Caterer", "Travel Agent", "Hotel / Banquet", "Decorator", "Gift & Corporate Hamper Supplier"], "desire": "run 100 events a year that guests talk about for years, and expand to destination weddings", "key": "planning for what can go wrong, so the client only sees what goes right", "prev": "Banquet manager at a hotel; event coordinator"}, "Manufacturing & Trading": {"prof": ["Manufacturer", "Wholesaler / Distributor", "Exporter", "Packaging Supplier", "Industrial Supplies", "Steel & Hardware Trader", "Textile Trader"], "desire": "take our products to 10 new states and start exporting by 2028", "key": "consistent quality and delivering on the promised date, every time", "prev": "Joined the family business after an MBA; purchase manager"}, "Education & Training": {"prof": ["Coaching Institute", "Corporate Trainer", "Career Counsellor", "Preschool / Play School", "Language Trainer", "Skill Development Centre", "Overseas Education Consultant"], "desire": "guide 10,000 students to the right career, and open three new centres by 2029", "key": "believing every student can do it, and showing them how", "prev": "School teacher; trainer at an ed-tech company"}, "Other": {"prof": [], "desire": "", "key": "", "prev": ""}};
 
+const SPHERE = {"Finance & Insurance": ["Chartered Accountant", "Real Estate Agent", "Lawyer", "Home Loan Advisor", "Tax Consultant", "Car Dealer"], "Legal & Accounting": ["Financial Planner", "Loan Advisor", "Insurance Advisor", "Company Secretary", "Business Consultant", "Billing Software"], "Real Estate & Construction": ["Architect", "Interior Designer", "Home Loan Advisor", "Property Lawyer", "Vastu Consultant", "Packers & Movers"], "Home & Interiors": ["Architect", "Builder / Developer", "Real Estate Agent", "Electrician", "Furniture Manufacturer", "Painting Contractor"], "Health & Wellness": ["Gym Owner", "Dietitian", "Yoga Trainer", "Health Insurance Advisor", "Pathology Lab", "Physiotherapist"], "Marketing & Media": ["Printer", "Website Developer", "Photographer", "Event Planner", "Public Relations", "Corporate Gifting"], "IT & Technology": ["Digital Marketing Agency", "CCTV & Security", "Chartered Accountant", "Office Furniture", "Printer", "Telecom Provider"], "Events, Travel & Hospitality": ["Caterer", "Decorator", "Photographer", "Hotel / Banquet", "Gift Supplier", "Wedding Planner"], "Manufacturing & Trading": ["Transporter / Logistics", "Packaging Supplier", "Chartered Accountant", "Exporter", "Industrial Supplies", "Loan Advisor"], "Education & Training": ["Career Counsellor", "Overseas Education Consultant", "School", "Coaching Institute", "Printer", "Travel Agent"]};
 /* The chapter list lives in the private database, never on this page. */
 let MEMBER=null;   // signed-in member record
 
@@ -328,7 +357,9 @@ const STEPS = [
     sub:"Hobbies, activities and interests. A good 1-2-1 often starts here.",
     fields:[
       {id:"hobbies", weak:"Travel, music, reading", strong:"Trekking in the Sahyadris, Hindustani classical music, reading business biographies", label:"Hobbies, activities and interests", q:"List three to five. Be specific: \"trekking in the Sahyadris\" beats \"travel\".", ph:"Trekking in the Sahyadris, Hindustani classical music, gardening, weekend cycling", full:true, area:true, req:true, max:160,
-        chips:["Reading ","Travel to ","Cricket","Yoga","Cooking ","Music: ","Volunteering with "]}
+        chips:["Reading ","Travel to ","Cricket","Yoga","Cooking ","Music: ","Volunteering with "]},
+      {id:"activities", label:"Activities of interest", q:"Clubs, associations, community or sports activities you take part in.", ph:"Rotary Club of Hisar, Sunday cricket league, temple committee", full:true, area:true, opt:true, max:140,
+        chips:["Rotary / Lions Club","Industry association","Alumni group","Temple / Gurudwara committee","Running group","NGO volunteering"]}
     ],
     tip:"<b>Why this matters:</b> people refer people they know and like. A shared hobby is the quickest way for another member to remember you."},
   { key:"story", title:"Your story", heading:"The three questions that make you memorable",
@@ -342,12 +373,38 @@ const STEPS = [
         chips:["listening first","showing up every day","keeping my word","never stopping learning","treating clients like family"]}
     ],
     tip:"<b>Tip:</b> keep each answer to one or two sentences so your sheet fits on one page and reads well aloud."},
+  { key:"gains", title:"GAINS", heading:"GAINS: what you want people to know",
+    sub:"Page 2 of your bio sheet. Your 1-2-1 partners read this to help you.",
+    fields:[
+      {id:"goals", label:"Goals", q:"Business or personal goals you want to meet this year. Be specific so others can help.", weak:"Grow business", strong:"Add 40 new SIP families in Hisar this year, and start my own office by March", ph:"Add 40 new families this year, and open a second office by March", full:true, area:true, req:true, max:200},
+      {id:"accomplishments", label:"Accomplishments", q:"What you are proud of: milestones, awards, results for clients.", weak:"Many happy clients", strong:"Built a 300-family client base from scratch in 8 years; MDRT qualified in 2024", ph:"Built a 300-family client base in 8 years; MDRT qualified in 2024", full:true, area:true, req:true, max:200},
+      {id:"ginterests", label:"Interests", q:"Things you enjoy that others might share. Leave blank to use your hobbies.", ph:"Cricket, Hindustani classical music, trekking", full:true, area:true, opt:true, max:160},
+      {id:"networks", label:"Networks", q:"Groups, associations, companies and people you are connected with.", ph:"Hisar Chamber of Commerce, CA association, my college alumni group", full:true, area:true, opt:true, max:180,
+        chips:["Chamber of Commerce","Rotary / Lions Club","Alumni association","Industry association","Residents' welfare association"]},
+      {id:"skills", label:"Skills", q:"Talents and abilities others can refer you for.", weak:"Good at work", strong:"Explaining complex money matters simply; retirement and tax planning; public speaking", ph:"Explaining complex topics simply; project planning; public speaking", full:true, area:true, req:true, max:180}
+    ],
+    tip:"<b>GAINS</b> stands for Goals, Accomplishments, Interests, Networks and Skills. Members who know these about you can refer you far better."},
+  { key:"sphere", title:"Contact Sphere", heading:"Your contact sphere",
+    sub:"Page 3. Businesses that naturally send you referrals, and you send them.",
+    fields:[
+      {id:"sphere", list:5, label:"Your contact sphere", q:"Up to five professions that serve the same clients as you, without competing. One per line, or tap the suggestions.", ph:"Chartered Accountant\nReal Estate Agent\nLawyer", full:true, area:true, req:true, max:200},
+      {id:"top3", list:3, label:"Contact Sphere Top-3", q:"Three professions you would most like to see in the chapter. One per line.", ph:"Home Loan Advisor\nCar Dealer\nTax Consultant", full:true, area:true, req:true, max:120}
+    ],
+    tip:"<b>Tip:</b> members will invite people from your Top-3 to the chapter, so pick the professions that would bring you the most referrals."},
+  { key:"customers", title:"Last 10 Customers", heading:"Your last 10 customers",
+    sub:"Page 4. This helps your partners find you more customers like these.",
+    fields:[
+      {id:"customers", list:10, label:"Your last 10 customers", q:"One per line. A type of customer is fine if you'd rather not name them, e.g. \"Doctor couple, Sector 15\".", ph:"Doctor couple, Sector 15 (retirement plan)\nTextile trader (child education plan)", full:true, area:true, opt:true, max:500},
+      {id:"custNotes", label:"Notes on these customers", q:"Where did they come from? What did you do for them? Are they your average client?", ph:"Most came from existing clients. Mostly salaried families aged 30-45 planning for children's education.", full:true, area:true, opt:true, max:260},
+      {id:"refNotes", label:"Notes on referrals", q:"What are good referral sources? What is a good referral, and what is a \"bad\" one for you?", ph:"Good: a family that just had a child or bought a home. Bad: someone looking only for quick stock tips.", full:true, area:true, req:true, max:260}
+    ]},
   { key:"send", title:"Send", heading:"Contact details and send",
     sub:"Add how members can reach you, check your sheet, then send it.",
     fields:[
       {id:"phone", label:"Mobile / WhatsApp", type:"tel", ph:"+91 98xxx xxxxx", req:true, max:20},
       {id:"email", label:"Email", type:"email", opt:true, ph:"priya@studioaangan.in", max:50},
-      {id:"chapter", label:"Chapter name", ph:"Your chapter", req:true, max:40}
+      {id:"chapter", label:"Chapter name", ph:"Your chapter", req:true, max:40},
+      {id:"speakDate", label:"Date of your feature presentation", q:"Leave blank if it isn't fixed yet.", ph:"21 Nov 2026", opt:true, max:20}
     ]}
 ];
 const ALL = STEPS.flatMap(s=>s.fields);
@@ -361,7 +418,17 @@ const EXAMPLE = {
   desire:"design 100 homes that families never want to leave, and open a studio in Mumbai by 2028.",
   secret:"I was a state-level table tennis player in college.",
   key:"listening first. A home should reflect the family, not the designer.",
-  phone:"+91 98xxx xxxxx", email:"priya@example.in", chapter:"Example Chapter", photo:""
+  activities:"Pune Architects' Forum, residents' association cultural committee",
+  goals:"Design 12 homes this year, and set up a small studio in Mumbai by 2028.",
+  accomplishments:"120 homes designed in 12 years; featured in a national interiors magazine in 2024.",
+  ginterests:"", networks:"Pune Architects' Forum, college alumni (CEPT), two builder groups in Baner",
+  skills:"Space planning for small apartments; Vastu-friendly layouts; managing site teams to deadline.",
+  sphere:"Architect\nBuilder / Developer\nReal Estate Agent\nModular Kitchen Specialist\nElectrician",
+  top3:"Home Loan Advisor\nVastu Consultant\nPackers & Movers",
+  customers:"Doctor couple, Baner (3BHK)\nIT family, Wakad (2BHK)\nRestaurant owner (café interiors)\nRetired bank manager (renovation)\nYoung couple, Aundh (first home)",
+  custNotes:"Most came from builders and past clients. Typical client: a working couple moving into their first or second home.",
+  refNotes:"Good: anyone who just got possession of a flat. Good sources: builders, home-loan advisors. Bad: people wanting only a cheap carpenter.",
+  phone:"+91 98xxx xxxxx", email:"priya@example.in", chapter:"Example Chapter", speakDate:"", photo:""
 };
 
 /* ---------- State ---------- */
@@ -441,9 +508,10 @@ function fieldHTML(f){
   if(f.id==="desire" && C.desire) f={...f, ph:C.desire+".", strong:C.desire};
   if(f.id==="key" && C.key) f={...f, ph:C.key+".", strong:C.key};
   if(f.id==="prevjobs" && C.prev) f={...f, ph:C.prev, strong:C.prev};
+  if((f.id==="sphere"||f.id==="top3") && SPHERE[data.cat]) f={...f, chips:SPHERE[data.cat]};
   if(f.id==="children"){ const n=data.kidCount; f={...f, ph: n==="1"?"A son, Vihaan (8)": n==="2"?"Two daughters, Anaya (10) and Myra (6)": n==="3"?"Aarav (14), Diya (11) and Kabir (6)":"Names and ages, e.g. Aarav (14), Diya (11)…"}; }
   const input = f.area
-    ? `<textarea id="f_${f.id}" data-id="${f.id}" maxlength="${f.max+40}" placeholder="${esc('e.g. '+f.ph)}" rows="3" enterkeyhint="next">${val}</textarea>`
+    ? `<textarea id="f_${f.id}" data-id="${f.id}" maxlength="${f.max+40}" placeholder="${esc('e.g. '+f.ph)}" rows="${f.list?Math.min(f.list,6):3}" enterkeyhint="next">${val}</textarea>`
     : `<input type="${f.type||'text'}" id="f_${f.id}" data-id="${f.id}" maxlength="${f.max+20}" placeholder="${esc('e.g. '+f.ph)}" value="${val}" autocomplete="off" enterkeyhint="next">`;
   const chips = f.chips?`<div class="chips">${f.chips.map(c=>`<button type="button" class="chip" data-for="${f.id}" data-t="${esc(c)}">+ ${esc(c.trim())}</button>`).join("")}</div>`:"";
   const count = f.area?`<div class="count" id="c_${f.id}"></div>`:"";
@@ -460,19 +528,20 @@ function renderStep(){
     html = `<div class="step-head"><h2>${ADMIN?"Check and save":"Your bio sheet is ready"}</h2><p>${ADMIN?"Check the sheet, then save the PDF.":"Check it on the preview, then send it."}</p></div>${reviewHTML()}${summaryHTML()}`;
   } else {
     const f = QS[step];
-    html = fieldHTML(f) + (f.tip && (QS[step-1]||{}).section!==f.section ? `<div class="tip" style="margin-top:14px"><span>${f.tip}</span></div>` : "");
+    html = (step===0 && !ADMIN && !isExample ? `<div class="tip" style="margin-bottom:14px"><span><b>Already have a filled bio sheet in Word?</b> Tap <b>Upload a filled bio sheet</b> at the top, or drag the file here, and your answers fill in for you.</span></div>` : "") + fieldHTML(f) + (f.tip && (QS[step-1]||{}).section!==f.section ? `<div class="tip" style="margin-top:14px"><span>${f.tip}</span></div>` : "");
   }
   $("#stepBody").innerHTML = html;
   $("#stepBody").querySelectorAll("[data-id]").forEach(el=>{
     el.addEventListener("input",()=>{ if(isExample) return; data[el.dataset.id]=el.value; $("#qerr").textContent=""; updateCount(el.dataset.id); onChange(); });
-    el.addEventListener("keydown",e=>{ if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); next(); } });
+    el.addEventListener("keydown",e=>{ if(e.key==="Enter" && !e.shiftKey && !(ALL.find(x=>x.id===el.dataset.id)||{}).list){ e.preventDefault(); next(); } });
     updateCount(el.dataset.id);
   });
   $("#stepBody").querySelectorAll(".chip").forEach(c=>c.onclick=()=>{
     if(isExample) return;
     const id=c.dataset.for, t=c.dataset.t, el=$("#f_"+id);
     const cur=(data[id]||"");
-    data[id] = id==="profession" ? t : id==="hobbies" ? (cur.trim()? cur.replace(/[,\s]*$/,"")+", "+t : t) : (cur.trim()? cur : t);
+    const F=ALL.find(x=>x.id===id)||{};
+    data[id] = id==="profession" ? t : F.list ? (cur.trim()? cur.replace(/\s*$/,"")+"\n"+t : t) : (id==="hobbies"||id==="activities"||id==="networks") ? (cur.trim()? cur.replace(/[,\s]*$/,"")+", "+t : t) : (cur.trim()? cur : t);
     el.value=data[id]; el.focus(); el.setSelectionRange(el.value.length,el.value.length); updateCount(id); onChange();
   });
   $("#stepBody").querySelectorAll(".choice").forEach(b=>b.onclick=()=>{ if(isExample) return; data[b.dataset.choice]=b.dataset.v; onChange(); setTimeout(()=>go(step+1),160); });
@@ -530,8 +599,10 @@ function checks(){
   if(v("desire") && !/\d|by 20|this year|next year|in \w+ years/i.test(v("desire"))) out.push({ok:false, t:"Burning desire: add a number or a date (e.g. “100 families by 2028”). It makes the goal real.", id:"desire"});
   if(v("key") && words("key")<4) out.push({ok:false, t:"Key to success: one word like “hard work” is common. Name the habit behind it.", id:"key"});
   if(v("secret") && words("secret")<5) out.push({ok:false, t:"Something no one knows: add a small detail so it becomes a story people remember.", id:"secret"});
+  if(lines("sphere").length && lines("sphere").length<3) out.push({ok:false, t:"Contact sphere: try to list at least three professions.", id:"sphere"});
+  if(!v("customers")) out.push({ok:false, t:"Optional: list your last few customers. Partners use it to find you more like them.", id:"customers"});
   if(!v("prevjobs")) out.push({ok:false, t:"Optional: add previous jobs. Members often find a connection there.", id:"prevjobs"});
-  if(!missing.length && !over.length) out.push({ok:true, t:"Your sheet fits on one page."});
+  if(!missing.length && !over.length) out.push({ok:true, t:"Your answers fit the four pages."});
   return out;
 }
 function reviewHTML(){
@@ -578,33 +649,57 @@ function renderChecks(){
 /* ---------- Sheet ---------- */
 function sv(id){ /* value as written on the official form */
   if(!shown(id)){ const g={spouse:"hasSpouse",children:"hasKids",pets:"hasPets"}[id]; return g&&data[g]?"—":""; }
-  let t=v(id); if(!t) return t;
-  if(id==="desire" && !/^to\b/i.test(t)) t="To "+t;
-  if(id==="desire"||id==="key"||id==="hobbies"||id==="prevjobs") t=t.charAt(0).toUpperCase()+t.slice(1);
+  let t=v(id); if(!t && id==="ginterests") t=[v("hobbies"),v("activities")].filter(Boolean).join("; ");
+  if(!t) return t;
+  if(id==="desire") t=t.replace(/^to\s+/i,"");
+  if(["hobbies","prevjobs","activities","goals","accomplishments","ginterests","networks","skills","custNotes","refNotes"].includes(id)) t=t.charAt(0).toUpperCase()+t.slice(1);
   return t; }
-function cell(lab,id,cls){ const val=sv(id), f=ALL.find(x=>x.id===id);
-  const shown = val || (f? f.ph : "");
-  return `<div class="bs-cell ${cls||''}"><span class="bs-lab">${lab}</span><span class="bs-val ${val?'':'empty'}">${esc(shown)}</span></div>`; }
-function row(inner,tall){ return `<div class="bs-row ${tall?'tall':''}">${inner}</div>`; }
+const LOGO = "data:image/jpeg;base64,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";
+function V(id, fb){ const val=sv(id); const f=ALL.find(x=>x.id===id); const ph=fb!==undefined?fb:(f?f.ph||"":"");
+  return `<span class="v ${val?'':'empty'}">${esc(val|| (isExample?"":ph.split("\n")[0]))}</span>`; }
+const ln = (lab,id,cls) => `<div class="ln"><span class="l ${cls||''}">${lab}</span>${V(id)}</div>`;
+const lines = id => (sv(id)||"").split(/\n|;\s*/).map(x=>x.trim()).filter(Boolean);
+function numList(id,n){ const a=lines(id); const f=ALL.find(x=>x.id===id)||{}; const ph=(f.ph||"").split("\n");
+  return Array.from({length:n},(_,i)=>`<div class="num"><span class="n">${i+1}.</span><span class="v ${a[i]?'':'empty'}">${esc(a[i]|| (i<ph.length&&!a.length&&!isExample?ph[i]:""))}</span></div>`).join(""); }
+const head = (t,i) => `<div class="pg-head"><img src="${LOGO}" alt="BNI"><div class="t ${i?'i':''}">${t}</div></div>`;
+const foot = `<div class="pg-foot">© Copyright 2008 – All Rights Reserved – BNI</div>`;
 function sheetHTML(){
-  return `<div class="bs-title">Biography Sheet</div>
-  <div class="bs-table">
-    ${row(cell("Name:","name","half")+cell("Company Name:","company"))}
-    ${row(cell("Location:","location"))}
-    ${row(cell("Profession:","profession")+cell("Years in the Business:","years","right"))}
-    ${row(cell("Previous Types of Jobs:","prevjobs"),true)}
-    ${row(cell("Spouse/Partner:","spouse"))}
-    ${row(cell("Children:","children"))}
-    ${row(cell("Pets:","pets"))}
-    ${row(cell("City of Residence:","city")+cell("Years in the City:","cityyears","right"))}
-    ${row(cell("Hobbies/activities/ interests:","hobbies"),true)}
-    ${row(cell("Burning desire:","desire"),true)}
-    ${row(cell("Something no one knows about you:","secret"),true)}
-    ${row(cell("Key to success:","key"),true)}
-  </div>`;
+  const p1 = `<div class="pg"><div class="box1">${head("BNI Member Bio Sheet")}
+    <div class="ln"><span class="l">Our Speaker:</span>${V("name")}<span class="yrs"><span class="l">Date:</span>${V("speakDate","")}</span></div>
+    <div class="band">Business Information</div>
+    ${ln("Business Name:","company")}${ln("Profession:","profession")}
+    <div class="ln"><span class="l">Location:</span>${V("location")}<span class="yrs"><span class="l">Years in Business:</span>${V("years")}</span></div>
+    ${ln("Previous Types of Jobs:","prevjobs")}
+    <div class="band">Personal Information</div>
+    <div class="ln"><span class="l">Family Information:</span></div>
+    ${ln("A. Spouse:","spouse","ind")}${ln("B. Children:","children","ind")}${ln("C. Animals:","pets","ind")}
+    ${ln("Hobbies:","hobbies")}${ln("Activities of Interest:","activities")}
+    <div class="ln"><span class="l">City of Residence:</span>${V("city")}<span class="yrs"><span class="l">How Long?</span>${V("cityyears")}</span></div>
+    <div class="band">Miscellaneous:</div>
+    ${ln("My burning desire is to…","desire")}${ln("Something no one knows about me is:","secret")}${ln("My key to success is. . .","key")}
+    <div style="height:8px"></div></div>${foot}</div>`;
+  const G=[["Goals","goals","Goals are the business or personal objectives you want or need to meet for yourself or the people who are important to you.  You need to define your goals and have a clear picture of the other person’s goals.  The best way to build a relationship with someone is to help them achieve their goals."],
+    ["Accomplishments","accomplishments","People like to talk about the things they are proud of.  Remember, some of your best insight into others comes from knowing what goals they have already achieved.  Your knowledge, skills, experiences, and value can be surmised from your achievements.  Be ready to share your accomplishments with the people you meet."],
+    ["Interests","ginterests","Your interests can help you connect with others.  Interests are things like playing sports, reading books, and listening to music.  People like to spend time with those who share their interests.  When you and your network source share the same interests, it will strengthen your relationship."],
+    ["Networks","networks","You have many networks, both formal and informal.  A network can be an organization, institution, company or individual you associate with."],
+    ["Skills","skills","The more you know about the talents and abilities of the people in your network the better equipped you are to find (and refer!) competent affordable products and services when the need arises.  And when you’re trying to round up business opportunities, the more people know about your skills, the better your chances!"]];
+  const p2 = `<div class="pg">${head("Gains Worksheet",1)}<div class="g-wrap">${G.map(([t,id,d])=>`<div class="g-row"><div class="g-desc"><b>${t}</b>${d}</div><div class="g-box"><div class="h">${t}</div>${V(id)}</div></div>`).join("")}</div>
+    <div class="g-note">How well do you know the people you want to include in your network?  Chances are you have a little homework to do.  Spend more time with the people you already know and concentrate on learning these five essentials – their goals, accomplishments, interests, networks and skills.  Make sure you give back the same kind of information.  The more they know about you, the faster your name will come to mind when an opportunity arises in which your products, services, knowledge, skills or experience might play a part.</div>${foot}</div>`;
+  const p3 = `<div class="pg">${head("BNI Contact Sphere Planning Worksheet",1)}<div class="cols">
+    <div><div class="h2i">Contact Sphere</div>${numList("sphere",5)}
+      <p class="small" style="margin-top:22px">Contact Spheres are made up of businesses or professions that naturally provide a source of referrals for one another.  They are in somewhat related but non-competitive businesses.  Businesses in the same Contact Sphere have a symbiotic relationship in that they support and enhance one another.</p></div>
+    <div><div class="top3h">Contact Sphere Top-3!</div><div class="qbox"><div class="q">What three professions would help you round out your contact sphere?</div>${numList("top3",3)}</div>
+      <p class="small" style="margin-top:16px">Make a commitment to your one to one partner to help fill their contact sphere by inviting people to BNI that are in their Top-3!</p></div></div>${foot}</div>`;
+  const p4 = `<div class="pg">${head("BNI Last 10 Customers Worksheet",1)}<div class="cols" style="grid-template-columns:1fr 1fr">
+    <div><div class="h2i">Last 10 Customers</div><p class="small" style="font-style:italic">List your last ten customers.  Think about how you can increase the referrals you receive by helping your partner understand how to find you more customers like these!  Were these customers in a certain kind of business or market?  Were these customers in a specific position that you are targeting?  Are there other specific companies that you are targeting that are similar to these?</p>${numList("customers",10)}</div>
+    <div class="vr"><div style="font-weight:700">Notes on Customers</div><ul class="chk"><li>Where did they come from?</li><li>What did you do for them?</li><li>Are these average clients?</li></ul>
+      <div class="nbox"><div class="q">Make notes in the space below about your last 10 customers.</div>${V("custNotes")}</div>
+      <div style="font-weight:700;margin-top:12px;font-style:italic">Notes on Referrals</div><ul class="chk" style="font-style:italic"><li>What are good referral sources?</li><li>What are good referrals?</li><li>What are “bad” referrals?</li></ul>
+      <div class="nbox"><div class="q">Make notes in the space below about referrals.</div>${V("refNotes")}</div></div></div>${foot}</div>`;
+  return p1+p2+p3+p4;
 }
 function renderSheet(){ $("#sheet").innerHTML = sheetHTML(); fit(); }
-function fit(){ const fr=$("#frame"), sc=$("#scaler"), sh=$("#sheet"); const k=fr.clientWidth/1123; sc.style.transform=`scale(${k})`; fr.style.height=(sh.offsetHeight*k)+"px"; }
+function fit(){ const fr=$("#frame"), sc=$("#scaler"), sh=$("#sheet"); const k=fr.clientWidth/1056; sc.style.transform=`scale(${k})`; fr.style.height=(sh.offsetHeight*k)+"px"; }
 new ResizeObserver(fit).observe($("#frame"));
 
 function onChange(){ save(); renderSheet(); renderTabs(); renderChecks(); }
@@ -627,7 +722,7 @@ $("#btnClear").onclick=()=>{
 /* ---------- Output ---------- */
 function asText(wa){
   const b = s => wa?`*${s}*`:s.toUpperCase();
-  const line=(l,id)=>v(id)?`${l}: ${v(id)}`:null;
+  const line=(l,id)=>v(id)?`${l}: ${v(id).split(/\n+/).map(x=>x.trim()).filter(Boolean).join("; ")}`:null;
   return [
     `${b("BIOGRAPHY SHEET")}${v("chapter")?" · "+v("chapter"):""}`,
     `${v("name")} · ${v("profession")}`, "",
@@ -636,12 +731,18 @@ function asText(wa){
     b("Personal information"),
     line("Spouse / partner","spouse"), line("Children","children"), line("Pets","pets"),
     v("city")?`City of residence: ${v("city")}${v("cityyears")?` (${v("cityyears")})`:""}`:null,
-    line("Hobbies & interests","hobbies"), "",
+    line("Hobbies & interests","hobbies"), line("Activities of interest","activities"), "",
     b("In my own words"),
     v("desire")?`My burning desire is to ${v("desire")}`:null,
     v("secret")?`Something no one knows about me is: ${v("secret")}`:null,
     v("key")?`My key to success is ${v("key")}`:null, "",
-    line("Mobile","phone"), line("Email","email")
+    b("GAINS"),
+    line("Goals","goals"), line("Accomplishments","accomplishments"), line("Interests","ginterests"), line("Networks","networks"), line("Skills","skills"), "",
+    b("Contact sphere"),
+    line("Contact sphere","sphere"), line("Top 3 professions I need","top3"), "",
+    b("Last 10 customers"),
+    line("Last 10 customers","customers"), line("Notes on customers","custNotes"), line("Notes on referrals","refNotes"), "",
+    line("Mobile","phone"), line("Email","email"), line("Date of presentation","speakDate")
   ].filter(x=>x!==null).join("\n").replace(/\n{3,}/g,"\n\n").trim();
 }
 function setStatus(t,cls){ const s=$("#status"); if(s){ s.textContent=t; s.className="status "+(cls||""); } }
@@ -649,8 +750,8 @@ async function capture(){
   if(!window.html2canvas) throw new Error("lib");
   try{ await document.fonts.ready; }catch(e){}
   const host=$("#captureHost"); host.innerHTML=`<div class="sheet">${sheetHTML()}</div>`;
-  const canvas = await html2canvas(host.firstElementChild,{scale:2,backgroundColor:"#ffffff",useCORS:true,logging:false});
-  host.innerHTML=""; return canvas;
+  const out=[]; for(const pg of host.querySelectorAll(".pg")) out.push(await html2canvas(pg,{scale:2,backgroundColor:"#ffffff",useCORS:true,logging:false}));
+  host.innerHTML=""; return out;
 }
 function fileBase(){ return "Bio Sheet - "+(v("name")||"Member").replace(/[^\w .-]/g,"").trim(); }
 let downloads=null;
@@ -698,15 +799,18 @@ function wireActions(){
     setStatus("WhatsApp opens with a message to the member. Attach the PDF you saved, then send.","ok"); };
   if($("#btnPDF")) $("#btnPDF").onclick=async()=>{
     const b=$("#btnPDF"); busy(b,true,"Preparing PDF…");
-    try{ const c=await capture(); const { jsPDF } = window.jspdf;
-      const pdf=new jsPDF({unit:"mm",format:"a4",orientation:"landscape"}); const W=297,H=210; let w=W,h=c.height*W/c.width; if(h>H){ h=H; w=c.width*H/c.height; }
-      pdf.addImage(c.toDataURL("image/jpeg",.94),"JPEG",(W-w)/2,0,w,h); await offer(fileBase()+".pdf", pdf.output("blob"));
+    try{ const cs=await capture(); const { jsPDF } = window.jspdf;
+      const pdf=new jsPDF({unit:"pt",format:"letter",orientation:"landscape"}); const W=792,H=612;
+      cs.forEach((c,i)=>{ if(i) pdf.addPage("letter","landscape"); pdf.addImage(c.toDataURL("image/jpeg",.92),"JPEG",0,0,W,H); });
+      await offer(fileBase()+".pdf", pdf.output("blob"));
     }catch(e){ setStatus("Could not build the PDF here. Try “Save as image”.","err"); }
     busy(b,false,"Save PDF");
   };
   if($("#btnPNG")) $("#btnPNG").onclick=async()=>{
     const b=$("#btnPNG"); busy(b,true,"Preparing image…");
-    try{ const c=await capture(); const blob=await new Promise(r=>c.toBlob(r,"image/png")); await offer(fileBase()+".png", blob); }
+    try{ const cs=await capture(); const c=document.createElement("canvas"); c.width=cs[0].width; c.height=cs.reduce((h,x)=>h+x.height+20,-20);
+      const x=c.getContext("2d"); x.fillStyle="#d9dce7"; x.fillRect(0,0,c.width,c.height); let y=0; cs.forEach(k=>{ x.drawImage(k,0,y); y+=k.height+20; });
+      const blob=await new Promise(r=>c.toBlob(r,"image/png")); await offer(fileBase()+".png", blob); }
     catch(e){ setStatus("Could not build the image here. Try “Copy as text”.","err"); }
     busy(b,false,"Save as image");
   };
@@ -720,18 +824,19 @@ function wireActions(){
 /* ---------- Paste text back into the form ---------- */
 function parseSheet(txt){
   const out={}; const lines=txt.replace(/\r/g,"").split("\n").map(l=>l.replace(/\*/g,"").trim()).filter(Boolean);
-  const LAB={"company":"company","company name":"company","location":"location","business location":"location","years in the business":"years","years in business":"years","previous jobs":"prevjobs","previous types of jobs":"prevjobs","spouse / partner":"spouse","spouse":"spouse","partner":"spouse","children":"children","pets":"pets","hobbies & interests":"hobbies","hobbies":"hobbies","hobbies, activities and interests":"hobbies","mobile":"phone","mobile / whatsapp":"phone","phone":"phone","email":"email","chapter":"chapter","name":"name","profession":"profession"};
+  const LAB={"company":"company","company name":"company","location":"location","business location":"location","years in the business":"years","years in business":"years","previous jobs":"prevjobs","previous types of jobs":"prevjobs","spouse / partner":"spouse","spouse":"spouse","partner":"spouse","children":"children","pets":"pets","hobbies & interests":"hobbies","hobbies":"hobbies","hobbies, activities and interests":"hobbies","mobile":"phone","mobile / whatsapp":"phone","phone":"phone","email":"email","chapter":"chapter","name":"name","profession":"profession","business name":"company","activities of interest":"activities","goals":"goals","accomplishments":"accomplishments","interests":"ginterests","networks":"networks","skills":"skills","contact sphere":"sphere","top 3 professions i need":"top3","contact sphere top-3":"top3","top-3":"top3","last 10 customers":"customers","notes on customers":"custNotes","notes on referrals":"refNotes","date of presentation":"speakDate","date":"speakDate","our speaker":"name","a. spouse":"spouse","b. children":"children","c. animals":"pets","animals":"pets","years in the city":"cityyears","how long?":"cityyears","how long":"cityyears"};
+  const LIST={sphere:1,top3:1,customers:1};
   const story=[[/^my burning desire is to\s*/i,"desire"],[/^something no one knows about me is:?\s*/i,"secret"],[/^my key to success is:?\s*/i,"key"]];
   let headSeen=false;
   for(const l of lines){
     if(/^biography sheet/i.test(l)){ const c=l.split("·")[1]; if(c) out.chapter=c.trim(); headSeen=true; continue; }
-    if(/^(business information|personal information|in my own words)$/i.test(l)) continue;
+    if(/^(business information|personal information|in my own words|gains|contact sphere|last 10 customers)$/i.test(l)) continue;
     const st=story.find(([re])=>re.test(l)); if(st){ out[st[1]]=l.replace(st[0],"").trim(); continue; }
     const m=l.match(/^([^:]{2,40}):\s*(.*)$/);
     if(m){ const k=m[1].trim().toLowerCase();
       if(k==="city of residence"){ const c=m[2].match(/^(.*?)\s*\((.*)\)\s*$/); if(c){out.city=c[1];out.cityyears=c[2];} else out.city=m[2]; continue; }
       if(k==="years in the city") { out.cityyears=m[2]; continue; }
-      if(LAB[k]){ out[LAB[k]]=m[2].trim(); continue; } }
+      if(LAB[k]){ const id=LAB[k]; out[id]= LIST[id] ? m[2].split(/\s*;\s*/).filter(Boolean).join("\n") : m[2].trim(); continue; } }
     if(!out.name && l.includes("·") && !/:/.test(l)){ const [n,...r]=l.split("·"); out.name=n.trim(); out.profession=r.join("·").trim(); continue; }
   }
   return fillGates(out);
@@ -739,7 +844,7 @@ function parseSheet(txt){
 function openLink(url){ const a=document.createElement("a"); a.href=url; a.target="_blank"; a.rel="noopener"; document.body.appendChild(a); a.click(); a.remove(); }
 function openClaude(sheetText){ const full=POLISH_PROMPT+sheetText; try{ navigator.clipboard.writeText(full).catch(()=>{}); }catch(e){} openLink("https://claude.ai/new?q="+encodeURIComponent(full)); }
 $("#btnPaste").onclick=()=>{ $("#pastePanel").hidden=false; $("#pasteBox").focus(); };
-const POLISH_PROMPT = "You are helping me, my chapter's Bio Sheet Coordinator for BNI in India, polish a member's BNI Biography Sheet. The sheet is read aloud when the member is introduced as Feature speaker, and shared before 1-2-1 meetings. It should make the member warm, memorable and easy to refer.\n\nRULES\n1. Keep every fact the member gave. Never invent facts, numbers, names, awards, clients or family details. If something would help but is missing, ask about it in the QUESTIONS section; do not guess.\n2. Fix grammar, spelling and capitalisation. Write in clear, warm, professional Indian English. No exaggeration, no \"best\", \"No. 1\", \"guaranteed\".\n3. Profession: make it specific about who they serve, e.g. \"Tax Consultant for small businesses and NRIs\", using only what the member said.\n4. Hobbies: make them specific and conversational (3 to 5 items, comma separated).\n5. \"My burning desire is to\u2026\": one or two sentences, a concrete goal a listener could help with. Keep their goal; sharpen the wording.\n6. \"Something no one knows about me is\u2026\": one light, positive, chapter-friendly sentence with a small detail.\n7. \"My key to success is\u2026\": the habit or belief behind their results, one or two sentences.\n8. Keep each answer short so the sheet fits on one A4 page: about 25 words max for each \"In my own words\" answer, 20 words for hobbies.\n9. Leave out any line the member left blank. Keep phone and email exactly as given.\n\nOUTPUT\nReply with exactly two sections.\n\nSection 1: the polished sheet inside one code block, in EXACTLY this format and with these labels (the tool reads it back):\n\n*BIOGRAPHY SHEET* \u00b7 <chapter name>\n<Full name> \u00b7 <Profession>\n\n*Business information*\nCompany: ...\nLocation: ...\nYears in the business: ...\nPrevious jobs: ...\n\n*Personal information*\nSpouse / partner: ...\nChildren: ...\nPets: ...\nCity of residence: <city> (<years in the city>)\nHobbies & interests: ...\n\n*In my own words*\nMy burning desire is to ...\nSomething no one knows about me is: ...\nMy key to success is ...\n\nMobile: ...\nEmail: ...\n\nSection 2: QUESTIONS FOR THE MEMBER. Up to 3 short, friendly questions I can forward on WhatsApp to make the sheet stronger. Write \"None\" if the sheet is already strong.\n\nMEMBER'S SHEET\n";
+const POLISH_PROMPT = "You are helping me, my chapter's Bio Sheet Coordinator for BNI in India, polish a member's BNI Member Bio Sheet. It has four pages: the Bio Sheet (read aloud when the member is the Feature speaker), the GAINS worksheet, the Contact Sphere worksheet and the Last 10 Customers worksheet, all shared before 1-2-1 meetings. It should make the member warm, memorable and easy to refer.\n\nRULES\n1. Keep every fact the member gave. Never invent facts, numbers, names, awards, clients, customers or family details. If something would help but is missing, ask about it in the QUESTIONS section; do not guess.\n2. Fix grammar, spelling and capitalisation. Write in clear, warm, professional Indian English. No exaggeration, no \"best\", \"No. 1\", \"guaranteed\".\n3. Profession: make it specific about who they serve, e.g. \"Tax Consultant for small businesses and NRIs\", using only what the member said.\n4. Hobbies and Activities of interest: specific and conversational, comma separated.\n5. \"My burning desire is to…\": one or two sentences, a concrete goal a listener could help with. Keep their goal; sharpen the wording.\n6. \"Something no one knows about me is…\": one light, positive, chapter-friendly sentence with a small detail.\n7. \"My key to success is…\": the habit or belief behind their results, one or two sentences.\n8. GAINS: Goals, Accomplishments and Skills as one or two crisp sentences each; Networks as a comma separated list of named groups. Leave Interests blank if the member left it blank.\n9. Contact sphere (up to 5) and Top 3 professions: short profession names separated by \"; \".\n10. Last 10 customers: keep as given, separated by \"; \". Never add customers. Tidy the two notes into one or two sentences each.\n11. Keep each answer short so every page fits: about 25 words max for each answer.\n12. Leave out any line the member left blank. Keep phone, email and date exactly as given.\n\nOUTPUT\nReply with exactly two sections.\n\nSection 1: the polished sheet inside one code block, in EXACTLY this format and with these labels (the tool reads it back):\n\n*BIOGRAPHY SHEET* · <chapter name>\n<Full name> · <Profession>\n\n*Business information*\nCompany: ...\nLocation: ...\nYears in the business: ...\nPrevious jobs: ...\n\n*Personal information*\nSpouse / partner: ...\nChildren: ...\nPets: ...\nCity of residence: <city> (<years in the city>)\nHobbies & interests: ...\nActivities of interest: ...\n\n*In my own words*\nMy burning desire is to ...\nSomething no one knows about me is: ...\nMy key to success is ...\n\n*GAINS*\nGoals: ...\nAccomplishments: ...\nInterests: ...\nNetworks: ...\nSkills: ...\n\n*Contact sphere*\nContact sphere: ...; ...; ...\nTop 3 professions I need: ...; ...; ...\n\n*Last 10 customers*\nLast 10 customers: ...; ...; ...\nNotes on customers: ...\nNotes on referrals: ...\n\nMobile: ...\nEmail: ...\nDate of presentation: ...\n\nSection 2: QUESTIONS FOR THE MEMBER. Up to 3 short, friendly questions I can forward on WhatsApp to make the sheet stronger. Write \"None\" if the sheet is already strong.\n\nMEMBER'S SHEET\n";
 $("#btnPolish").onclick=()=>{
   const t=$("#pasteBox").value.trim(); const st=$("#pasteStatus");
   if(t.length<20){ st.textContent="Paste the member's WhatsApp message first."; st.className="status err"; return; }
@@ -759,6 +864,93 @@ $("#btnPasteApply").onclick=()=>{
 };
 
 window.addEventListener("hashchange",()=>{ if(location.hash==="#member"||location.hash==="#coordinator") location.reload(); });
+
+
+/* ---------- Upload or drag in an existing bio sheet (.docx or text) ---------- */
+async function unzipEntry(buf, name){
+  const dv=new DataView(buf); let eocd=-1;
+  for(let i=buf.byteLength-22;i>=Math.max(0,buf.byteLength-65557);i--) if(dv.getUint32(i,true)===0x06054b50){eocd=i;break;}
+  if(eocd<0) throw new Error("notzip");
+  const n=dv.getUint16(eocd+10,true); let off=dv.getUint32(eocd+16,true);
+  for(let k=0;k<n;k++){
+    const method=dv.getUint16(off+10,true), csize=dv.getUint32(off+20,true), nlen=dv.getUint16(off+28,true), elen=dv.getUint16(off+30,true), clen=dv.getUint16(off+32,true), lho=dv.getUint32(off+42,true);
+    const fname=new TextDecoder().decode(new Uint8Array(buf,off+46,nlen));
+    if(fname===name){
+      const start=lho+30+dv.getUint16(lho+26,true)+dv.getUint16(lho+28,true); const raw=new Uint8Array(buf,start,csize);
+      if(method===0) return new TextDecoder().decode(raw);
+      if(!window.DecompressionStream) throw new Error("old");
+      return await new Response(new Blob([raw]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).text();
+    }
+    off+=46+nlen+elen+clen;
+  }
+  throw new Error("notword");
+}
+function docxParas(xml){
+  const doc=new DOMParser().parseFromString(xml,"application/xml"); const W="http://schemas.openxmlformats.org/wordprocessingml/2006/main";
+  return [...doc.getElementsByTagNameNS(W,"p")].map(p=>{ let t=""; p.querySelectorAll("*").forEach(n=>{ if(n.namespaceURI!==W) return; if(n.localName==="t") t+=n.textContent; else if(n.localName==="tab") t+=" "; else if(n.localName==="br"||n.localName==="cr") t+="\n"; }); return t.replace(/[  ]+/g," ").trim(); }).filter(Boolean);
+}
+const norm = t => t.toLowerCase().replace(/[“”"’']/g,"").replace(/[.…:?!\s]+/g," ").trim();
+const DOCX_LABELS = [["our speaker","name"],["date","speakDate"],["business name","company"],["profession","profession"],["location","location"],["years in business","years"],["previous types of jobs","prevjobs"],
+  ["a spouse","spouse"],["b children","children"],["c animals","pets"],["hobbies","hobbies"],["activities of interest","activities"],["city of residence","city"],["how long","cityyears"],
+  ["my burning desire is to","desire"],["something no one knows about me is","secret"],["my key to success is","key"],
+  ["goals","goals"],["accomplishments","accomplishments"],["interests","ginterests"],["networks","networks"],["skills","skills"],
+  ["what three professions would help you round out your contact sphere","top3"],["contact sphere top-3","-"],["contact sphere","sphere"],["last 10 customers","customers"],
+  ["make notes in the space below about your last 10 customers","custNotes"],["make notes in the space below about referrals","refNotes"],
+  ["notes on customers","-"],["notes on referrals","-"],["family information","-"],["business information","-"],["personal information","-"],["miscellaneous","-"],
+  ["bni member bio sheet","-"],["bni gains worksheet","-"],["gains worksheet","-"],["bni contact sphere planning worksheet","-"],["bni last 10 customers worksheet","-"]].sort((a,b)=>b[0].length-a[0].length);
+const BOILER = ["goals are the business","people like to talk","your interests can help","you have many networks","the more you know about the talents","how well do you know","contact spheres are made up","make a commitment","list your last ten","where did they come from","what did you do for them","are these average","what are good referral","what are good referrals","what are bad referrals","© copyright","copyright 2008"];
+function parseDocx(paras){
+  const out={}; let cur=null;
+  const add=(id,t)=>{ t=t.replace(/^[\s:.…_\-]+/,"").replace(/_{3,}/g,"").trim(); if(!t||id==="-") return; t=t.replace(/^\d+\s*[.)]\s*/,""); if(!t) return; out[id]=out[id]? out[id]+(["sphere","top3","customers"].includes(id)?"\n":" ")+t : t; };
+  for(const raw of paras){
+    // A line can hold several labels (e.g. "Location: Hisar   Years in Business: 10"), so split on known labels.
+    let rest=raw, n=norm(raw);
+    if(BOILER.some(b=>n.startsWith(norm(b)))){ cur=null; continue; }
+    let hit=null;
+    for(const [lab,id] of DOCX_LABELS){ if(n===lab || n.startsWith(lab+" ")){ hit=[lab,id]; break; } }
+    if(!hit){ if(cur) add(cur, rest); continue; }
+    cur=hit[1];
+    // drop the label words from the start of the raw text
+    const words=hit[0].split(" ").length; rest=rest.replace(new RegExp("^\\s*(\\S+\\s*){"+words+"}"),"");
+    // second label on the same line?
+    for(const [lab,id] of DOCX_LABELS){ const re=new RegExp("\\s"+lab.split(" ").map(w=>w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("[\\s.…:?]*")+"[\\s.…:?]*","i"); const m=rest.match(re); if(m && id!=="-" && lab.length>4){ add(cur, rest.slice(0,m.index)); cur=id; rest=rest.slice(m.index+m[0].length); break; } }
+    if(cur!=="-") add(cur, rest); else cur=null;
+  }
+  for(const [id,g] of [["spouse","hasSpouse"],["children","hasKids"],["pets","hasPets"]]) if(out[id] && /^(none|no|nil|n\/a|na|-+|—)$/i.test(out[id].trim())){ delete out[id]; out[g]="No"; }
+  if(out.city){ const c=out.city.match(/^(.*?)\s*\((.*)\)\s*$/); if(c){ out.city=c[1]; out.cityyears=out.cityyears||c[2]; } }
+  return fillGates(out);
+}
+async function importFile(file){
+  const say=(t,cls)=>{ if(REVIEW()&&$("#status")) setStatus(t,cls); else { const e=$("#qerr"); if(e) e.textContent=t; } toast(t,cls); };
+  if(!file) return;
+  const nm=file.name.toLowerCase();
+  if(/\.(pdf|jpe?g|png|heic|webp)$/.test(nm)) return toast("This tool can read Word (.docx) bio sheets. For a PDF or a photo, send it to "+(ADMIN?"Claude with the Polish prompt":"your Bio Sheet Coordinator on WhatsApp")+".", "err");
+  if(/\.doc$/.test(nm)) return toast("This is an old Word file (.doc). Open it in Word and save it as .docx, then upload again.","err");
+  let got={};
+  try{
+    if(nm.endsWith(".txt")) got=parseSheet(await file.text());
+    else { const xml=await unzipEntry(await file.arrayBuffer(),"word/document.xml"); const paras=docxParas(xml); got=parseDocx(paras);
+      if(Object.keys(got).length<3) got=parseSheet(paras.join("\n")); }
+  }catch(e){ return toast(e.message==="old"?"Your browser is too old to read Word files. Please update it, or type your answers.":"Couldn't read that file. Please upload a Word (.docx) bio sheet.","err"); }
+  const n=Object.keys(got).length;
+  if(n<3) return toast("That file doesn't look like a filled bio sheet, so nothing was changed.","err");
+  if(isExample) leaveExample();
+  if(MEMBER){ if(MEMBER.name) delete got.name; data=prefill({...data,...got},MEMBER); }
+  else if(CURRENT) data=prefill({...data,...got},CURRENT.member);
+  else { data={...data,...got}; $("#main").hidden=false; }
+  QS=buildQS(); step=QS.length; save(); renderStep(); renderSheet();
+  setStatus(`Filled ${n} answers from “${file.name}”. Check each one below and fix anything that came across wrongly.`,"ok");
+}
+function toast(t,cls){ const s=$("#status")||$("#dashStatus"); let el=$("#toast"); if(!el){ el=document.createElement("div"); el.id="toast"; el.setAttribute("role","status"); el.style.cssText="position:fixed;left:50%;bottom:20px;transform:translateX(-50%);max-width:min(560px,calc(100vw - 32px));padding:12px 16px;border-radius:10px;font:500 14px var(--font-ui);z-index:60;box-shadow:0 8px 30px rgba(0,0,0,.25)"; document.body.appendChild(el); }
+  el.textContent=t; el.style.background=cls==="err"?"#7A2E00":"#16192B"; el.style.color="#fff"; el.hidden=false; clearTimeout(toast.t); toast.t=setTimeout(()=>el.hidden=true,6000); }
+$("#btnUpload").onclick=()=>$("#fileIn").click();
+$("#fileIn").onchange=e=>{ importFile(e.target.files[0]); e.target.value=""; };
+let dragN=0;
+const canDrop = () => !$("#topActions").hidden;
+document.addEventListener("dragenter",e=>{ if(!canDrop()||![...(e.dataTransfer?.types||[])].includes("Files")) return; e.preventDefault(); dragN++; document.body.classList.add("dropping"); });
+document.addEventListener("dragover",e=>{ if(canDrop()&&[...(e.dataTransfer?.types||[])].includes("Files")) e.preventDefault(); });
+document.addEventListener("dragleave",()=>{ if(--dragN<=0){ dragN=0; document.body.classList.remove("dropping"); } });
+document.addEventListener("drop",e=>{ dragN=0; document.body.classList.remove("dropping"); if(!canDrop()) return; e.preventDefault(); const f=e.dataTransfer?.files?.[0]; if(f) importFile(f); });
 
 /* ---------- Member sign in ---------- */
 function show(id,on){ $(id).hidden=!on; }
