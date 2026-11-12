@@ -3,6 +3,6 @@
   "version": "3.0.0",
   "private": true,
   "scripts": {
-    "build": "node -e \"const fs=require('fs');fs.rmSync('out',{recursive:true,force:true});fs.mkdirSync('out');for(const f of ['index.html','styles.css','main.js','404.html','assets','privacy-policy','terms-and-conditions','disclaimer','favicon.ico','robots.txt','sitemap.xml','_headers']){fs.cpSync(f,'out/'+f,{recursive:true})}console.log('Site built in out/')\""
+    "build": "node -e \"const fs=require('fs');fs.rmSync('out',{recursive:true,force:true});fs.mkdirSync('out');for(const f of ['index.html','styles.css','main.js','404.html','assets','privacy-policy','terms-and-conditions','disclaimer','biosheet','favicon.ico','robots.txt','sitemap.xml','_headers']){fs.cpSync(f,'out/'+f,{recursive:true})}console.log('Site built in out/')\""
   }
 }
