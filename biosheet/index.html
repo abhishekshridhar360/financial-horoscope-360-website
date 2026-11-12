@@ -147,24 +147,98 @@ button[disabled]{opacity:.55;cursor:wait}
 .bs-val{color:#13307A;font-weight:600;overflow-wrap:anywhere;white-space:pre-wrap;min-width:0}
 .bs-val.empty{color:#B8BCC8;font-weight:400;font-style:italic}
 .capture-host{position:fixed;left:-12000px;top:0;pointer-events:none}
+/* sign-in, coordinator dashboard */
+.gate{max-width:520px;width:100%;margin:0 auto}
+.gate .fields{grid-template-columns:1fr}
+.whobar{margin-top:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13.5px;color:var(--muted)}
+.whobar b{color:var(--fg)}
+.sync{font:500 12px var(--font-mono);color:var(--muted)}
+.sync.err{color:var(--warn)}
+.linkbtn{all:unset;cursor:pointer;color:var(--accent);font-weight:600}
+.linkbtn:focus-visible{outline:2px solid var(--marigold);outline-offset:2px}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:620px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tile{all:unset;cursor:pointer;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column}
+.tile b{font-size:24px;line-height:1.1}
+.tile span{font-size:12.5px;color:var(--muted)}
+.tile.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.dash-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.dash-tools input{flex:1 1 220px}
+.mlist{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.mrow{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:10px 12px;border-top:1px solid var(--line)}
+.mrow:first-child{border-top:0}
+.mrow .nm{font-weight:600}
+.mrow .sub{font-size:12.5px;color:var(--muted);overflow-wrap:anywhere}
+.mrow .btns{display:flex;gap:6px}
+@media (max-width:620px){.mrow{grid-template-columns:minmax(0,1fr) auto}.mrow .btns{grid-column:1/-1}}
+.st{font:600 10.5px var(--font-mono);letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:3px 9px;white-space:nowrap}
+.st-new{background:var(--surface-2);color:var(--muted)}
+.st-draft{background:var(--marigold-soft);color:var(--fg)}
+.st-submitted{background:var(--accent);color:var(--accent-fg)}
+.st-polished{background:var(--ok);color:#fff}
+select{width:100%;font:15px var(--font-ui);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px 12px}
+.admin-bar .btns{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
-</style></head><body>
+</style>
+</head><body>
 
 <div class="wrap">
   <header class="top">
     <div>
-      <div class="eyebrow">Member tool · Biography Sheet</div>
-      <h1>Your bio sheet, <em>ready in ten minutes</em></h1>
-      <p class="lede">Answer a few simple questions. Your sheet builds itself as you type, in the format of the BNI Biography Sheet. When it looks good, send it to your Bio Sheet Coordinator on WhatsApp. You'll get back a polished, finished PDF.</p>
+      <div class="eyebrow" id="eyebrow">Member tool · Biography Sheet</div>
+      <h1 id="h1">Your bio sheet, <em>ready in ten minutes</em></h1>
+      <p class="lede" id="lede">Answer a few simple questions, one at a time. Your sheet builds itself as you type, in the official BNI Biography Sheet format. Your answers save as you go, and your Bio Sheet Coordinator sends you back a polished, finished PDF.</p>
+      <div class="whobar" id="whoBar" hidden></div>
     </div>
-    <div class="top-actions">
+    <div class="top-actions" id="topActions" hidden>
       <button class="btn small ghost" id="btnExample" type="button">See an example</button>
       <button class="btn small ghost admin-only" id="btnPaste" type="button">Paste text</button>
       <button class="btn small ghost" id="btnClear" type="button">Start fresh</button>
     </div>
   </header>
 
-  <div class="admin-bar"><span><b>Coordinator mode.</b> Paste a member's polished text, check the preview, then save the PDF.</span><a href="#member" id="exitAdmin">Switch to member view</a></div>
+  <section class="panel gate" id="gate" hidden aria-label="Sign in">
+    <div id="gateMember" hidden>
+      <div class="step-head"><h2>Sign in to fill your bio sheet</h2><p>Use the mobile number and email you gave the chapter. Only chapter members can sign in.</p></div>
+      <div class="fields" style="margin-top:16px">
+        <div class="field"><label for="loginMobile">Mobile number</label><input type="tel" id="loginMobile" inputmode="numeric" autocomplete="tel" placeholder="98xxx xxxxx"></div>
+        <div class="field"><label for="loginEmail">Email</label><input type="email" id="loginEmail" autocomplete="email" placeholder="you@example.com"></div>
+      </div>
+      <div class="nav" style="border:0;padding-top:16px"><span></span><button class="btn primary" id="btnLogin" type="button">Continue</button></div>
+      <div class="status" id="gateStatus" role="status" aria-live="polite"></div>
+      <div class="tip"><span>New to the chapter, or your details have changed? <a id="gateHelp" href="#" target="_blank" rel="noopener">Message your Bio Sheet Coordinator on WhatsApp</a> to be added.</span></div>
+    </div>
+    <div id="gateAdmin" hidden>
+      <div class="step-head"><h2>Coordinator sign in</h2><p>Enter the coordinator password to see every member's bio sheet.</p></div>
+      <div class="fields" style="margin-top:16px"><div class="field"><label for="adminPass">Password</label><input type="password" id="adminPass" autocomplete="current-password"></div></div>
+      <div class="nav" style="border:0;padding-top:16px"><a href="#member" class="linkbtn">I'm a member</a><button class="btn primary" id="btnAdminLogin" type="button">Sign in</button></div>
+      <div class="status" id="adminStatus" role="status" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <div class="admin-bar" id="adminBar" hidden><span id="adminText"><b>Coordinator mode.</b></span><span class="btns" id="adminBtns"></span></div>
+
+  <section class="panel" id="dash" hidden aria-label="Members">
+    <div class="step-head" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:flex-end"><div><h2>Chapter bio sheets</h2><p>Open a member to polish their sheet, save the PDF and send it back.</p></div><button class="btn primary small" id="btnAddMember" type="button">+ Add member</button></div>
+    <div class="tiles" id="tiles"></div>
+    <div class="dash-tools"><input type="text" id="dashFind" placeholder="Search by name, business or mobile" autocomplete="off"><button class="btn small ghost" id="btnReload" type="button">Refresh</button></div>
+    <div class="mlist" id="mlist"></div>
+    <div class="status" id="dashStatus" role="status" aria-live="polite"></div>
+  </section>
+
+  <section class="panel" id="memberForm" hidden aria-label="Member details">
+    <div class="step-head"><h2 id="mfTitle">Add a member</h2><p>Members sign in with this mobile number and email.</p></div>
+    <div class="fields">
+      <div class="field"><label for="mf_name">Full name</label><input type="text" id="mf_name"></div>
+      <div class="field"><label for="mf_mobile">Mobile (10 digits)</label><input type="tel" id="mf_mobile" inputmode="numeric"></div>
+      <div class="field"><label for="mf_email">Email <span class="opt">(leave blank to allow mobile-only sign in)</span></label><input type="email" id="mf_email"></div>
+      <div class="field"><label for="mf_classification">Classification</label><input type="text" id="mf_classification" placeholder="e.g. Mutual Fund Advisor"></div>
+      <div class="field"><label for="mf_company">Company</label><input type="text" id="mf_company"></div>
+      <div class="field"><label for="mf_cat">Business area</label><select id="mf_cat"></select></div>
+    </div>
+    <div class="nav"><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn ghost" id="mfCancel" type="button">Cancel</button><button class="btn ghost" id="mfRemove" type="button" hidden>Remove from chapter</button></span><button class="btn primary" id="mfSave" type="button">Save member</button></div>
+    <div class="status" id="mfStatus" role="status" aria-live="polite"></div>
+  </section>
   <section class="panel" id="pastePanel" hidden aria-label="Paste a bio sheet">
     <div class="step-head"><h2>Polish a member's sheet</h2><p>Paste the bio sheet message a member sent you on WhatsApp.</p></div>
     <textarea id="pasteBox" rows="8" placeholder="*BIOGRAPHY SHEET* · Chapter name&#10;Full name · Profession&#10;..."></textarea>
@@ -173,7 +247,7 @@ button[disabled]{opacity:.55;cursor:wait}
     <div class="status" id="pasteStatus" role="status" aria-live="polite"></div>
   </section>
 
-  <div class="grid">
+  <div class="grid" id="main" hidden>
     <section class="panel" aria-label="Questions" id="qtop">
       <nav class="steps" id="steps" aria-label="Steps"></nav>
       <div class="progress" aria-hidden="true"><span id="prog"></span></div>
@@ -210,12 +284,15 @@ if(ADMIN) document.documentElement.classList.add("admin");
 /* ---------- Business categories: tailor examples and quick picks ---------- */
 const CATS = {"Finance & Insurance": {"prof": ["Financial Planner", "Mutual Fund Distributor", "Life Insurance Advisor", "General Insurance Advisor", "Health Insurance Advisor", "Loan & Mortgage Advisor", "Stock Broker"], "desire": "help 1,000 families in my city plan for their children's education and retirement by 2030", "key": "explaining every product in plain language, so clients decide with confidence", "prev": "8 years in bank sales, then relationship manager at a private bank"}, "Legal & Accounting": {"prof": ["Chartered Accountant", "Company Secretary", "Tax Consultant", "Corporate Lawyer", "Property Lawyer", "GST Consultant", "Cost Accountant"], "desire": "make my firm the first call for 300 small businesses when they need tax or legal help, by 2028", "key": "meeting every deadline before the client has to remind me", "prev": "Articleship at a Big Four firm; audit manager"}, "Real Estate & Construction": {"prof": ["Real Estate Agent (Residential)", "Commercial Property Consultant", "Builder / Developer", "Civil Contractor", "Architect", "Structural Engineer", "Waterproofing Specialist"], "desire": "complete 50 homes that families are proud to live in, and launch my own project by 2028", "key": "telling buyers the honest picture, even when it costs me a sale", "prev": "Site engineer for a large builder; sales at a property portal"}, "Home & Interiors": {"prof": ["Interior Designer", "Modular Kitchen Specialist", "Furniture Manufacturer", "Painting Contractor", "Electrician", "Home Automation", "Solar Installer"], "desire": "design 100 homes that families never want to leave, and open a studio in a metro by 2028", "key": "listening first, so the home reflects the family, not the designer", "prev": "Draftsman at an architecture firm; site supervisor"}, "Health & Wellness": {"prof": ["Physiotherapist", "Dentist", "Dietitian / Nutritionist", "Yoga Trainer", "Gym Owner", "Pathology Lab", "Homeopath"], "desire": "help 5,000 people in my city live without chronic pain, and open a second clinic by 2027", "key": "treating every patient the way I would want my parents to be treated", "prev": "Resident at a government hospital; clinical trainer"}, "Marketing & Media": {"prof": ["Digital Marketing Agency", "Graphic Designer", "Photographer", "Videographer", "Printing & Branding", "Social Media Manager", "Public Relations"], "desire": "build the brands of 100 local businesses and see them become household names in my city", "key": "measuring every campaign by the business it brings, not by likes", "prev": "Copywriter at an ad agency; brand executive at an FMCG company"}, "IT & Technology": {"prof": ["Software Developer", "Website Developer", "IT Hardware & Networking", "CCTV & Security Systems", "Cyber Security", "ERP / Billing Software", "Mobile App Developer"], "desire": "digitise 200 small businesses in my region so they can serve customers online, by 2028", "key": "building simple systems that clients can actually use", "prev": "Software engineer at an IT services company; freelance developer"}, "Events, Travel & Hospitality": {"prof": ["Event Planner", "Wedding Planner", "Caterer", "Travel Agent", "Hotel / Banquet", "Decorator", "Gift & Corporate Hamper Supplier"], "desire": "run 100 events a year that guests talk about for years, and expand to destination weddings", "key": "planning for what can go wrong, so the client only sees what goes right", "prev": "Banquet manager at a hotel; event coordinator"}, "Manufacturing & Trading": {"prof": ["Manufacturer", "Wholesaler / Distributor", "Exporter", "Packaging Supplier", "Industrial Supplies", "Steel & Hardware Trader", "Textile Trader"], "desire": "take our products to 10 new states and start exporting by 2028", "key": "consistent quality and delivering on the promised date, every time", "prev": "Joined the family business after an MBA; purchase manager"}, "Education & Training": {"prof": ["Coaching Institute", "Corporate Trainer", "Career Counsellor", "Preschool / Play School", "Language Trainer", "Skill Development Centre", "Overseas Education Consultant"], "desire": "guide 10,000 students to the right career, and open three new centres by 2029", "key": "believing every student can do it, and showing them how", "prev": "School teacher; trainer at an ed-tech company"}, "Other": {"prof": [], "desire": "", "key": "", "prev": ""}};
 
+/* The chapter list lives in the private database, never on this page. */
+let MEMBER=null;   // signed-in member record
+
 /* ---------- Questions ---------- */
 const STEPS = [
   { key:"business", title:"Business", heading:"You and your business",
     sub:"The facts members need to remember you and refer you.",
     fields:[
-      {id:"cat", label:"Which area is your business in?", type:"choice", options:["Finance & Insurance", "Legal & Accounting", "Real Estate & Construction", "Home & Interiors", "Health & Wellness", "Marketing & Media", "IT & Technology", "Events, Travel & Hospitality", "Manufacturing & Trading", "Education & Training", "Other"], req:true},
+      {id:"cat", skipIf:()=>!!(MEMBER&&MEMBER.cat), label:"Which area is your business in?", type:"choice", options:["Finance & Insurance", "Legal & Accounting", "Real Estate & Construction", "Home & Interiors", "Health & Wellness", "Marketing & Media", "IT & Technology", "Events, Travel & Hospitality", "Manufacturing & Trading", "Education & Training", "Other"], req:true},
       {id:"name", label:"Your full name", q:"As you want it read out when you are introduced.", ph:"Priya Mehta", req:true, max:40},
       {id:"profession", weak:"Consultant", strong:"Interior Designer for homes and apartments", label:"Profession / classification", q:"Your BNI classification, in plain words. Tap one below or type your own.", ph:"Interior Designer (Residential)", req:true, max:50},
       {id:"company", label:"Company name", ph:"Studio Aangan Interiors", req:true, max:50},
@@ -277,13 +354,49 @@ const EXAMPLE = {
 };
 
 /* ---------- State ---------- */
-const STORE_KEY = "bio-sheet-builder-v1";
+const STORE_KEY = "bio-sheet-builder-v2";   // + ":" + mobile, a backup copy on this device
+const TOK_M = "bio-sheet-token", TOK_A = "bio-sheet-admin-token";
 let data = {}; let step = 0; let isExample = false;
-try{ const s = JSON.parse(localStorage.getItem(STORE_KEY)||"null"); if(s){ data = s.data||{}; step = Math.max(0, s.step||0);} }catch(e){}
-if(CONFIG.chapterName && !data.chapter) data.chapter = CONFIG.chapterName;
+let CURRENT = null;   // coordinator: the member sheet that is open {member, answers, polished, status, dirty, view}
+const lsGet = k => { try{ return localStorage.getItem(k); }catch(e){ return null; } };
+const lsSet = (k,val) => { try{ val==null ? localStorage.removeItem(k) : localStorage.setItem(k,val); }catch(e){} };
 function fillGates(d){ if(d.spouse&&!d.hasSpouse) d.hasSpouse="Yes"; if(d.children&&!d.hasKids) d.hasKids="Yes"; if(d.pets&&!d.hasPets) d.hasPets="Yes"; return d; }
-fillGates(data);
-function save(){ if(isExample) return; try{ localStorage.setItem(STORE_KEY, JSON.stringify({data,step})); }catch(e){} }
+const fmtMobile = m => m ? "+91 "+String(m).replace(/^(\d{5})(\d{5})$/,"$1 $2") : "";
+function prefill(d, m){ d={...(d||{})}; if(m){
+    if(!d.name) d.name=m.name; if(!d.company && m.company) d.company=m.company; if(m.cat) d.cat=m.cat;
+    if(!d.profession && m.classification) d.profession=m.classification;
+    if(!d.phone) d.phone=fmtMobile(m.mobile); if(!d.email && m.email) d.email=m.email; }
+  if(CONFIG.chapterName && !d.chapter) d.chapter=CONFIG.chapterName;
+  return fillGates(d); }
+const clean = d => { const o={}; for(const k in d){ if(k!=="photo" && d[k]!=null && d[k]!=="") o[k]=d[k]; } return o; };
+
+/* ---------- Server (Cloudflare D1 via /biosheet/api) ---------- */
+const API = "/biosheet/api";
+async function api(path, {method="GET", body, tok}={}){
+  let r;
+  try{ const t=lsGet(tok||TOK_M); r = await fetch(API+path, {method, headers:{"content-type":"application/json", ...(t?{authorization:"Bearer "+t}:{})}, body: body?JSON.stringify(body):undefined}); }
+  catch(e){ const x=new Error("Couldn't reach the server. Check your internet and try again."); x.status=0; throw x; }
+  let j=null; try{ j = await r.json(); }catch(e){}
+  if(!r.ok || !j){ const x=new Error((j&&j.error) || "Something went wrong. Please try again in a minute."); x.status=r.status; throw x; }
+  return j;
+}
+let syncT=null, lastPushed="";
+function setSync(t,cls){ const s=$("#sync"); if(s){ s.textContent=t; s.className="sync "+(cls||""); } }
+async function push(submit){
+  clearTimeout(syncT); if(!MEMBER) return;
+  const body = clean(data), js = JSON.stringify(body);
+  if(!submit && js===lastPushed){ setSync("Saved"); return; }
+  setSync("Saving…");
+  try{ const r = await api("/sheet", {method:"PUT", body:{answers:body, submit:!!submit}}); lastPushed=js; MEMBER.status=r.status; setSync("Saved"); return r; }
+  catch(e){ if(e.status===401){ setSync("Signed out. Sign in again to save.","err"); } else setSync("Not saved yet. We'll keep trying.","err"); if(!submit) syncT=setTimeout(push,8000); throw e; }
+}
+function save(){
+  if(isExample) return;
+  if(ADMIN){ if(CURRENT && !CURRENT.dirty){ CURRENT.dirty=true; paintAdminBar(); } return; }
+  if(!MEMBER) return;
+  lsSet(STORE_KEY+":"+MEMBER.mobile, JSON.stringify({data,step}));
+  clearTimeout(syncT); syncT=setTimeout(()=>push().catch(()=>{}),1200);
+}
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -297,7 +410,7 @@ const v = id => { if(!shown(id)) return ""; let t=(data[id]||"").replace(/[ \t]+
   return t; };
 
 /* ---------- Progressive questions: one at a time ---------- */
-function buildQS(){ return STEPS.flatMap(st=>st.fields.filter(f=>f.type!=="photo" && !(f.id==="chapter" && CONFIG.chapterName && !ADMIN) && (!f.showIf || f.showIf(data))).map(f=>({...f, section:st.title, tip:st.tip}))); }
+function buildQS(){ return STEPS.flatMap(st=>st.fields.filter(f=>f.type!=="photo" && !(f.id==="chapter" && CONFIG.chapterName && !ADMIN) && (!f.showIf || f.showIf(data)) && !(f.skipIf && f.skipIf(data))).map(f=>({...f, section:st.title, tip:st.tip}))); }
 let QS = buildQS();
 const QI = id => Math.max(0, QS.findIndex(f=>f.id===id));
 const REVIEW = () => step>=QS.length;
@@ -327,7 +440,7 @@ function fieldHTML(f){
   return `<div class="qcard"><label class="qlabel" for="f_${f.id}">${esc(f.label)}${f.opt?' <span class="opt">(optional)</span>':''}</label>${f.q?`<div class="q">${esc(f.q)}</div>`:''}${input}${chips}${count}${ws}<div class="qerr" id="qerr" role="alert"></div></div>`;
 }
 function summaryHTML(){
-  return `<div class="field full"><label>Your answers</label><div class="q">Tap any answer to change it.</div><div class="answers">${QS.map((f,i)=>`<button type="button" class="ans" data-q="${i}"><span class="ans-l">${esc(f.label.replace("…",""))}</span><span class="ans-v ${v(f.id)?'':'none'}">${esc(v(f.id)||(f.opt?"Skipped":"Missing"))}</span></button>`).join("")}</div></div>`;
+  return `<div class="field full"><label>Your answers</label><div class="q">Tap any answer to change it.</div><div class="answers">${QS.filter(f=>f.type!=="choice").map(f=>({...f,_go:QS.indexOf(f)})).map((f)=>`<button type="button" class="ans" data-q="${f._go}"><span class="ans-l">${esc(f.label.replace("…",""))}</span><span class="ans-v ${v(f.id)?'':'none'}">${esc(v(f.id)||(f.opt?"Skipped":"Missing"))}</span></button>`).join("")}</div></div>`;
 }
 function renderStep(){
   QS = buildQS();
@@ -412,15 +525,38 @@ function checks(){
 }
 function reviewHTML(){
   return `<div class="field full" style="margin-top:18px"><label>Check before you send</label><ul class="checklist" id="checklist"></ul></div>
-  <div class="actions" style="margin-top:14px">
-    <button type="button" class="btn wa wide" id="btnWA">${ADMIN?"Open WhatsApp":`Send to ${esc(CONFIG.coordinatorName.split(" ")[0]||"coordinator")} on WhatsApp`}</button>
-    ${ADMIN?`<button type="button" class="btn primary" id="btnPDF">Save PDF</button>
-    <button type="button" class="btn" id="btnPNG">Save as image</button>`:""}
-    <button type="button" class="btn ghost wide" id="btnCopy">Copy as text</button>
-  </div>
+  ${ADMIN?adminActionsHTML():memberActionsHTML()}
   <div class="status" id="status" role="status" aria-live="polite"></div>
-  <textarea class="copybox" id="copybox" hidden readonly aria-label="Bio sheet text"></textarea>
-  ${ADMIN?`<div class="tip"><span><b>Next:</b> save the PDF, then send it back to the member on WhatsApp to check.</span></div>`:`<div class="tip"><span><b>How it works:</b> tap the green button to send your answers to ${esc(CONFIG.coordinatorName.split(" ")[0]||"your coordinator")} on WhatsApp. They'll polish your sheet and send you the finished PDF. Your answers stay saved on this device, so you can come back and update them any time.</span></div>`}`;
+  <textarea class="copybox" id="copybox" hidden readonly aria-label="Bio sheet text"></textarea>`;
+}
+const COORD = () => esc(CONFIG.coordinatorName.split(" ")[0]||"your coordinator");
+function memberActionsHTML(){
+  if(!MEMBER) return `<div class="actions" style="margin-top:14px"><button type="button" class="btn ghost wide" id="btnCopy">Copy as text</button></div>`;
+  const st = MEMBER.status;
+  const note = st==="submitted" ? `<div class="tip" style="margin-top:14px"><span><b>Submitted.</b> ${COORD()} has your sheet. Any change you make now saves automatically; tap Submit again so ${COORD()} knows it changed.</span></div>`
+    : st==="polished" ? `<div class="tip" style="margin-top:14px"><span><b>${COORD()} has polished your sheet</b> and will send you the finished PDF on WhatsApp. If you change anything, tap Submit again.</span></div>` : "";
+  return `${note}<div class="actions" style="margin-top:14px">
+    <button type="button" class="btn primary wide" id="btnSubmit">${st==="submitted"||st==="polished"?"Submit my changes":`Submit to ${COORD()}`}</button>
+    <button type="button" class="btn wa" id="btnWA">Also send on WhatsApp</button>
+    <button type="button" class="btn ghost" id="btnCopy">Copy as text</button>
+  </div>
+  <div class="tip" style="margin-top:12px"><span><b>How it works:</b> your answers save as you type, so you can stop and come back any time on any phone. When you submit, ${COORD()} polishes your sheet and sends you the finished PDF.</span></div>`;
+}
+function adminActionsHTML(){
+  if(!CURRENT) return `<div class="actions" style="margin-top:14px"><button type="button" class="btn primary" id="btnPDF">Save PDF</button><button type="button" class="btn" id="btnPNG">Save as image</button><button type="button" class="btn ghost wide" id="btnCopy">Copy as text</button></div>`;
+  const has = !!CURRENT.polished;
+  return `<div class="field full" style="margin-top:18px"><label>Polish ${esc(CURRENT.member.name.split(" ")[0])}'s sheet</label>
+    ${has?`<div class="q">Showing your ${CURRENT.view==="original"?"member's original answers":"polished version"}. <button type="button" class="linkbtn" id="btnView">${CURRENT.view==="original"?"Show polished version":"Show member's original answers"}</button></div>`:""}</div>
+  <div class="actions" style="margin-top:10px">
+    <button type="button" class="btn" id="btnPolishNow">1 · Polish with Claude</button>
+    <button type="button" class="btn" id="btnPasteNow">2 · Paste Claude's reply</button>
+    <button type="button" class="btn primary wide" id="btnSavePolished">3 · Save polished version</button>
+    <button type="button" class="btn" id="btnPDF">Save PDF</button>
+    <button type="button" class="btn" id="btnPNG">Save as image</button>
+    <button type="button" class="btn wa" id="btnWAMember">WhatsApp ${esc(CURRENT.member.name.split(" ")[0])}</button>
+    <button type="button" class="btn ghost" id="btnCopy">Copy as text</button>
+  </div>
+  <div class="tip" style="margin-top:12px"><span><b>Flow:</b> Polish with Claude opens Claude with this sheet and the prompt ready; press send. Copy Claude's sheet, tap Paste Claude's reply, then Fill the form. Edit anything by tapping it below, save the polished version, save the PDF, and WhatsApp it to the member.</span></div>`;
 }
 function renderChecks(){
   const ul=$("#checklist"); if(!ul) return;
@@ -473,7 +609,7 @@ $("#btnExample").onclick=()=>{
 let clearArmed=false;
 $("#btnClear").onclick=()=>{
   if(!clearArmed){ clearArmed=true; $("#btnClear").textContent="Tap again to clear"; setTimeout(()=>{clearArmed=false;$("#btnClear").textContent="Start fresh";},3000); return; }
-  clearArmed=false; isExample=false; $("#exampleBadge").hidden=true; data={}; if(CONFIG.chapterName) data.chapter=CONFIG.chapterName; step=0; save();
+  clearArmed=false; isExample=false; $("#exampleBadge").hidden=true; data=prefill({}, MEMBER); step=0; save();
   $("#btnClear").textContent="Start fresh"; $("#btnExample").textContent="See an example"; renderStep(); renderSheet();
 };
 
@@ -520,14 +656,35 @@ async function offer(filename, blob){
 function wireActions(){
   renderChecks();
   const busy=(b,on,label)=>{ b.disabled=on; if(label) b.textContent=label; };
-  $("#btnWA").onclick=()=>{
-    const missing=buildQS().filter(f=>f.req&&!v(f.id));
-    if(missing.length){ setStatus("Please fill the items marked above first.","err"); return; }
-    const num=ADMIN?"":(CONFIG.coordinatorWhatsApp||"").replace(/\D/g,"");
-    const url=`https://wa.me/${num}?text=${encodeURIComponent(asText(true))}`;
-    const a=document.createElement("a"); a.href=url; a.target="_blank"; a.rel="noopener"; document.body.appendChild(a); a.click(); a.remove();
-    setStatus(num?"WhatsApp should open with your bio sheet ready to send. Just press send.":"WhatsApp should open. Pick your Bio Sheet Coordinator and press send.","ok");
+  const missingNow = () => buildQS().filter(f=>f.req&&!v(f.id));
+  if($("#btnWA")) $("#btnWA").onclick=()=>{
+    if(missingNow().length){ setStatus("Please fill the items marked above first.","err"); return; }
+    const num=(CONFIG.coordinatorWhatsApp||"").replace(/\D/g,"");
+    openLink(`https://wa.me/${num}?text=${encodeURIComponent(asText(true))}`);
+    setStatus("WhatsApp should open with your bio sheet ready to send. Just press send.","ok");
   };
+  if($("#btnSubmit")) $("#btnSubmit").onclick=async()=>{
+    if(missingNow().length){ setStatus("Please fill the items marked above first.","err"); return; }
+    const b=$("#btnSubmit"); busy(b,true,"Submitting…");
+    try{ await push(true); renderStep(); setStatus(`Submitted. ${CONFIG.coordinatorName.split(" ")[0]} will polish your sheet and send you the finished PDF on WhatsApp.`,"ok"); }
+    catch(e){ busy(b,false,"Try again"); setStatus(e.status===401?"You were signed out. Sign out and sign in again; your answers are kept on this phone.":e.message,"err"); }
+  };
+  if($("#btnView")) $("#btnView").onclick=()=>{ CURRENT.view = CURRENT.view==="original"?"polished":"original";
+    data = prefill(CURRENT.view==="original"?CURRENT.answers:CURRENT.polished, CURRENT.member); CURRENT.dirty=false; paintAdminBar(); renderStep(); renderSheet(); };
+  if($("#btnPolishNow")) $("#btnPolishNow").onclick=()=>{ openClaude(asText(true)); $("#pastePanel").hidden=false; $("#pasteBox").value=""; $("#pasteBox").placeholder="Paste Claude's polished sheet here, then tap Fill the form";
+    setStatus("Claude should open with the prompt and this sheet ready. Press send, then copy the sheet from Claude's first box.","ok"); };
+  if($("#btnPasteNow")) $("#btnPasteNow").onclick=()=>{ $("#pastePanel").hidden=false; $("#pasteBox").placeholder="Paste Claude's polished sheet here, then tap Fill the form"; $("#pastePanel").scrollIntoView({behavior:"smooth"}); $("#pasteBox").focus(); };
+  if($("#btnSavePolished")) $("#btnSavePolished").onclick=async()=>{
+    const b=$("#btnSavePolished"); busy(b,true,"Saving…");
+    try{ const pol=clean(data); await api("/admin/sheet/"+CURRENT.member.mobile,{method:"PUT",body:{polished:pol},tok:TOK_A});
+      CURRENT.polished=pol; CURRENT.status="polished"; CURRENT.view="polished"; CURRENT.dirty=false; paintAdminBar(); renderStep();
+      setStatus("Polished version saved. Next: Save PDF and WhatsApp it to the member.","ok"); }
+    catch(e){ busy(b,false,"3 · Save polished version"); setStatus(e.message,"err"); }
+  };
+  if($("#btnWAMember")) $("#btnWAMember").onclick=()=>{ const m=CURRENT.member, first=m.name.replace(/^(dr\.?|ca)\s+/i,"").split(" ")[0];
+    const msg=`Hi ${first}, your BNI ${CONFIG.chapterName||""} bio sheet is ready. I'm sending you the PDF here. Please check it and tell me if anything should change.`.replace(/\s+/g," ");
+    openLink(`https://wa.me/91${m.mobile}?text=${encodeURIComponent(msg)}`);
+    setStatus("WhatsApp opens with a message to the member. Attach the PDF you saved, then send.","ok"); };
   if($("#btnPDF")) $("#btnPDF").onclick=async()=>{
     const b=$("#btnPDF"); busy(b,true,"Preparing PDF…");
     try{ const c=await capture(); const { jsPDF } = window.jspdf;
@@ -568,14 +725,14 @@ function parseSheet(txt){
   }
   return fillGates(out);
 }
+function openLink(url){ const a=document.createElement("a"); a.href=url; a.target="_blank"; a.rel="noopener"; document.body.appendChild(a); a.click(); a.remove(); }
+function openClaude(sheetText){ const full=POLISH_PROMPT+sheetText; try{ navigator.clipboard.writeText(full).catch(()=>{}); }catch(e){} openLink("https://claude.ai/new?q="+encodeURIComponent(full)); }
 $("#btnPaste").onclick=()=>{ $("#pastePanel").hidden=false; $("#pasteBox").focus(); };
 const POLISH_PROMPT = "You are helping me, my chapter's Bio Sheet Coordinator for BNI in India, polish a member's BNI Biography Sheet. The sheet is read aloud when the member is introduced as Feature speaker, and shared before 1-2-1 meetings. It should make the member warm, memorable and easy to refer.\n\nRULES\n1. Keep every fact the member gave. Never invent facts, numbers, names, awards, clients or family details. If something would help but is missing, ask about it in the QUESTIONS section; do not guess.\n2. Fix grammar, spelling and capitalisation. Write in clear, warm, professional Indian English. No exaggeration, no \"best\", \"No. 1\", \"guaranteed\".\n3. Profession: make it specific about who they serve, e.g. \"Tax Consultant for small businesses and NRIs\", using only what the member said.\n4. Hobbies: make them specific and conversational (3 to 5 items, comma separated).\n5. \"My burning desire is to\u2026\": one or two sentences, a concrete goal a listener could help with. Keep their goal; sharpen the wording.\n6. \"Something no one knows about me is\u2026\": one light, positive, chapter-friendly sentence with a small detail.\n7. \"My key to success is\u2026\": the habit or belief behind their results, one or two sentences.\n8. Keep each answer short so the sheet fits on one A4 page: about 25 words max for each \"In my own words\" answer, 20 words for hobbies.\n9. Leave out any line the member left blank. Keep phone and email exactly as given.\n\nOUTPUT\nReply with exactly two sections.\n\nSection 1: the polished sheet inside one code block, in EXACTLY this format and with these labels (the tool reads it back):\n\n*BIOGRAPHY SHEET* \u00b7 <chapter name>\n<Full name> \u00b7 <Profession>\n\n*Business information*\nCompany: ...\nLocation: ...\nYears in the business: ...\nPrevious jobs: ...\n\n*Personal information*\nSpouse / partner: ...\nChildren: ...\nPets: ...\nCity of residence: <city> (<years in the city>)\nHobbies & interests: ...\n\n*In my own words*\nMy burning desire is to ...\nSomething no one knows about me is: ...\nMy key to success is ...\n\nMobile: ...\nEmail: ...\n\nSection 2: QUESTIONS FOR THE MEMBER. Up to 3 short, friendly questions I can forward on WhatsApp to make the sheet stronger. Write \"None\" if the sheet is already strong.\n\nMEMBER'S SHEET\n";
 $("#btnPolish").onclick=()=>{
   const t=$("#pasteBox").value.trim(); const st=$("#pasteStatus");
   if(t.length<20){ st.textContent="Paste the member's WhatsApp message first."; st.className="status err"; return; }
-  const full=POLISH_PROMPT+t;
-  try{ navigator.clipboard.writeText(full).catch(()=>{}); }catch(e){}
-  const a=document.createElement("a"); a.href="https://claude.ai/new?q="+encodeURIComponent(full); a.target="_blank"; a.rel="noopener"; document.body.appendChild(a); a.click(); a.remove();
+  openClaude(t);
   st.textContent="Claude should open with the prompt ready (it's also copied, in case you need to paste it). When Claude replies, copy the sheet from its first box and paste it here."; st.className="status ok";
   $("#pasteBox").value=""; $("#pasteBox").placeholder="Paste Claude's polished sheet here, then tap Fill the form";
 };
@@ -584,15 +741,160 @@ $("#btnPasteApply").onclick=()=>{
   const got=parseSheet($("#pasteBox").value); const n=Object.keys(got).length;
   if(n<3){ $("#pasteStatus").textContent="That text doesn't look like a bio sheet. Paste the whole message, starting with the BIOGRAPHY SHEET line."; $("#pasteStatus").className="status err"; return; }
   if(isExample) leaveExample();
-  data={...(data.photo?{photo:data.photo}:{}), ...got}; step=QS.length; save(); renderStep(); renderSheet();
+  data = CURRENT ? prefill({...data, ...got}, CURRENT.member) : got; if(!CURRENT) $("#main").hidden=false;
+  QS=buildQS(); step=QS.length; save(); renderStep(); renderSheet();
   $("#pastePanel").hidden=true; $("#pasteBox").value="";
-  setStatus(`Filled ${n} answers from the pasted text. Check the preview, then save the PDF.`,"ok");
+  setStatus(CURRENT?`Filled ${n} answers from Claude's reply. Check the preview, then tap Save polished version.`:`Filled ${n} answers from the pasted text. Check the preview, then save the PDF.`,"ok");
 };
 
 window.addEventListener("hashchange",()=>{ if(location.hash==="#member"||location.hash==="#coordinator") location.reload(); });
 
+/* ---------- Member sign in ---------- */
+function show(id,on){ $(id).hidden=!on; }
+function startMember(r){
+  MEMBER = {...r.member, status:r.status};
+  let local=null; try{ local=JSON.parse(lsGet(STORE_KEY+":"+MEMBER.mobile)||"null"); }catch(e){}
+  const server = r.answers||{};
+  // Prefer the server copy; fall back to this device's copy if the server has nothing yet.
+  data = prefill(Object.keys(server).length ? server : (local&&local.data)||{}, MEMBER);
+  lastPushed = JSON.stringify(server);
+  QS = buildQS();
+  step = local && Object.keys(server).length===0 ? Math.min(local.step||0, QS.length) : (Object.keys(server).length ? (MEMBER.status==="new"||MEMBER.status==="draft" ? firstGap() : QS.length) : 0);
+  show("#gate",false); show("#main",true); show("#topActions",true);
+  $("#whoBar").innerHTML = `<span>Signed in as <b>${esc(MEMBER.name)}</b></span><span class="sync" id="sync">Saved</span><button type="button" class="linkbtn" id="btnSignOut">Sign out</button>`;
+  show("#whoBar",true);
+  $("#btnSignOut").onclick=()=>{ lsSet(TOK_M,null); location.reload(); };
+  renderStep(); renderSheet();
+  if(local && Object.keys(server).length===0 && Object.keys(clean(local.data||{})).length) push().catch(()=>{});
+}
+function firstGap(){ const i = QS.findIndex(f=>f.req && !v(f.id)); return i<0 ? QS.length : i; }
+function memberGate(msg){
+  show("#gate",true); show("#gateMember",true); show("#main",false); show("#topActions",false);
+  const num=(CONFIG.coordinatorWhatsApp||"").replace(/\D/g,"");
+  $("#gateHelp").href=`https://wa.me/${num}?text=${encodeURIComponent("Hi, I'd like to fill my BNI bio sheet but I can't sign in.")}`;
+  if(msg){ $("#gateStatus").textContent=msg; $("#gateStatus").className="status err"; }
+}
+async function doLogin(){
+  const b=$("#btnLogin"), st=$("#gateStatus"); b.disabled=true; st.textContent="Checking…"; st.className="status";
+  try{ const r = await api("/login",{method:"POST",body:{mobile:$("#loginMobile").value,email:$("#loginEmail").value}});
+    lsSet(TOK_M,r.token); st.textContent=""; startMember(r); }
+  catch(e){ st.textContent=e.message; st.className="status err"; }
+  b.disabled=false;
+}
+$("#btnLogin").onclick=doLogin;
+["#loginMobile","#loginEmail"].forEach(id=>$(id).addEventListener("keydown",e=>{ if(e.key==="Enter") doLogin(); }));
+
+/* ---------- Coordinator ---------- */
+const ST_LABEL = {new:"Not started", draft:"In progress", submitted:"Submitted", polished:"Polished"};
+const ST_ORDER = {submitted:0, draft:1, polished:2, new:3};
+let ROWS=[], FILTER="all", EDITING=null;
+function paintAdminBar(){
+  const btns=$("#adminBtns");
+  if(CURRENT){
+    $("#adminText").innerHTML = `<b>${esc(CURRENT.member.name)}</b> · <span class="st st-${CURRENT.status}">${ST_LABEL[CURRENT.status]||CURRENT.status}</span>${CURRENT.dirty?' · <span style="color:var(--warn)">Unsaved changes</span>':''}`;
+    btns.innerHTML = `<button type="button" class="btn small" id="btnBackList">← All members</button><button type="button" class="linkbtn" id="btnAdminOut">Sign out</button>`;
+  } else {
+    $("#adminText").innerHTML = `<b>Coordinator mode.</b> Only you can see this page's data.`;
+    btns.innerHTML = `<a href="#member" class="linkbtn">Member view</a><button type="button" class="linkbtn" id="btnAdminOut">Sign out</button>`;
+  }
+  const bl=$("#btnBackList"); if(bl) bl.onclick=backToList;
+  $("#btnAdminOut").onclick=()=>{ lsSet(TOK_A,null); location.reload(); };
+}
+function backToList(){
+  if(CURRENT && CURRENT.dirty && !backToList.armed){ backToList.armed=true; $("#btnBackList").textContent="Unsaved changes. Tap again to leave"; setTimeout(()=>{backToList.armed=false; const b=$("#btnBackList"); if(b) b.textContent="← All members";},3500); return; }
+  backToList.armed=false; CURRENT=null; data={}; show("#main",false); show("#pastePanel",false); show("#dash",true); paintAdminBar(); loadDash();
+}
+const when = s => { if(!s) return ""; const d=new Date(s.replace(" ","T")+"Z"); return isNaN(d)?"":d.toLocaleDateString("en-IN",{day:"numeric",month:"short"}); };
+async function loadDash(){
+  const ds=$("#dashStatus"); ds.textContent="Loading…"; ds.className="status";
+  try{ const r=await api("/admin/sheets",{tok:TOK_A}); ROWS=r.members; ds.textContent=""; renderDash(); }
+  catch(e){ if(e.status===401) return adminGate("Please sign in again."); ds.textContent=e.message; ds.className="status err"; }
+}
+function renderDash(){
+  const c={all:ROWS.length,submitted:0,draft:0,polished:0,new:0}; ROWS.forEach(r=>c[r.status]=(c[r.status]||0)+1);
+  $("#tiles").innerHTML = [["submitted","To polish"],["draft","In progress"],["new","Not started"],["polished","Polished"]]
+    .map(([k,l])=>`<button type="button" class="tile ${FILTER===k?'on':''}" data-f="${k}"><b>${c[k]||0}</b><span>${l}</span></button>`).join("");
+  $("#tiles").querySelectorAll(".tile").forEach(t=>t.onclick=()=>{ FILTER = FILTER===t.dataset.f ? "all" : t.dataset.f; renderDash(); });
+  const q=$("#dashFind").value.trim().toLowerCase();
+  const rows = ROWS.filter(r=>(FILTER==="all"||r.status===FILTER) && (!q || [r.name,r.company,r.classification,r.mobile].join(" ").toLowerCase().includes(q)))
+    .sort((a,b)=>(ST_ORDER[a.status]??9)-(ST_ORDER[b.status]??9) || a.name.localeCompare(b.name));
+  $("#mlist").innerHTML = rows.length ? rows.map(r=>`<div class="mrow"><div><div class="nm">${esc(r.name)}</div><div class="sub">${esc([r.classification,r.company].filter(Boolean).join(" · "))}<br>${esc(fmtMobile(r.mobile))}${r.email?" · "+esc(r.email):" · no email on file"}</div></div>
+      <span class="st st-${r.status}" title="${r.updated_at?'Updated '+esc(when(r.updated_at)):''}">${ST_LABEL[r.status]||r.status}${r.updated_at&&r.status!=="new"?" · "+esc(when(r.updated_at)):""}</span>
+      <span class="btns"><button type="button" class="btn small ${r.status==="submitted"?"primary":""}" data-open="${r.mobile}">Open</button><button type="button" class="btn small ghost" data-edit="${r.mobile}">Edit</button></span></div>`).join("")
+    : `<div class="mrow"><div class="sub">No members match.</div></div>`;
+  $("#mlist").querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openMember(b.dataset.open));
+  $("#mlist").querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>editMember(ROWS.find(r=>r.mobile===b.dataset.edit)));
+}
+$("#dashFind").oninput=renderDash;
+$("#btnReload").onclick=loadDash;
+async function openMember(mobile){
+  const ds=$("#dashStatus"); ds.textContent="Opening…"; ds.className="status";
+  try{ const r=await api("/admin/sheet/"+mobile,{tok:TOK_A});
+    CURRENT={...r, dirty:false, view:r.polished?"polished":"original"};
+    data=prefill(r.polished||r.answers, r.member); QS=buildQS(); step=QS.length; ds.textContent="";
+    show("#dash",false); show("#memberForm",false); show("#main",true); paintAdminBar(); renderStep(); renderSheet();
+    if(!Object.keys(r.answers||{}).length && !r.polished) setStatus("This member hasn't started yet. You can fill the sheet for them from what they tell you, then save it.","");
+    window.scrollTo({top:0,behavior:"smooth"}); }
+  catch(e){ if(e.status===401) return adminGate("Please sign in again."); ds.textContent=e.message; ds.className="status err"; }
+}
+$("#mf_cat").innerHTML = `<option value="">Choose…</option>`+Object.keys(CATS).map(k=>`<option>${esc(k)}</option>`).join("");
+const MF=["name","mobile","email","classification","company","cat"];
+function editMember(m){
+  EDITING=m||null; $("#mfTitle").textContent = m?"Edit member":"Add a member";
+  MF.forEach(k=>$("#mf_"+k).value = m ? (m[k]||"") : "");
+  show("#mfRemove",!!m); $("#mfRemove").textContent="Remove from chapter"; $("#mfStatus").textContent="";
+  show("#memberForm",true); $("#memberForm").scrollIntoView({behavior:"smooth",block:"start"}); $("#mf_name").focus();
+}
+$("#btnAddMember").onclick=()=>editMember(null);
+$("#mfCancel").onclick=()=>show("#memberForm",false);
+$("#mfSave").onclick=async()=>{
+  const body=Object.fromEntries(MF.map(k=>[k,$("#mf_"+k).value.trim()])); const st=$("#mfStatus");
+  if(!body.name || body.mobile.replace(/\D/g,"").slice(-10).length!==10){ st.textContent="A name and a 10-digit mobile number are needed."; st.className="status err"; return; }
+  if(EDITING) body.original_mobile=EDITING.mobile;
+  $("#mfSave").disabled=true;
+  try{ await api("/admin/members",{method:"POST",body,tok:TOK_A}); show("#memberForm",false); await loadDash(); $("#dashStatus").textContent=`Saved ${body.name}.`; $("#dashStatus").className="status ok"; }
+  catch(e){ st.textContent=e.message; st.className="status err"; }
+  $("#mfSave").disabled=false;
+};
+$("#mfRemove").onclick=async()=>{
+  const b=$("#mfRemove");
+  if(!b.dataset.armed){ b.dataset.armed="1"; b.textContent="Tap again to remove"; setTimeout(()=>{ delete b.dataset.armed; b.textContent="Remove from chapter"; },3500); return; }
+  delete b.dataset.armed;
+  try{ await api("/admin/members/"+EDITING.mobile,{method:"DELETE",tok:TOK_A}); show("#memberForm",false); await loadDash(); $("#dashStatus").textContent=`Removed ${EDITING.name}. Their sheet is kept; add them again to restore it.`; $("#dashStatus").className="status ok"; }
+  catch(e){ $("#mfStatus").textContent=e.message; $("#mfStatus").className="status err"; }
+};
+function adminGate(msg){
+  show("#dash",false); show("#main",false); show("#adminBar",false); show("#topActions",false);
+  show("#gate",true); show("#gateAdmin",true);
+  if(msg){ $("#adminStatus").textContent=msg; $("#adminStatus").className="status err"; }
+  $("#adminPass").focus();
+}
+function startAdmin(){
+  show("#gate",false); show("#adminBar",true); show("#dash",true); show("#topActions",true); show("#btnClear",false); show("#btnExample",false);
+  paintAdminBar(); loadDash();
+}
+async function doAdminLogin(){
+  const st=$("#adminStatus"), b=$("#btnAdminLogin"); b.disabled=true; st.textContent="Checking…"; st.className="status";
+  try{ const r=await api("/admin/login",{method:"POST",body:{password:$("#adminPass").value}}); lsSet(TOK_A,r.token); $("#adminPass").value=""; st.textContent=""; startAdmin(); }
+  catch(e){ st.textContent=e.message; st.className="status err"; }
+  b.disabled=false;
+}
+$("#btnAdminLogin").onclick=doAdminLogin;
+$("#adminPass").addEventListener("keydown",e=>{ if(e.key==="Enter") doAdminLogin(); });
+
 /* ---------- Boot ---------- */
-renderStep(); renderSheet();
+(async()=>{
+  if(ADMIN){
+    $("#eyebrow").textContent="Coordinator · Biography Sheets";
+    $("#h1").innerHTML=`${esc(CONFIG.chapterName||"Chapter")} <em>bio sheets</em>`;
+    $("#lede").textContent="See who has filled their sheet, polish it with Claude, save the PDF and send it back. Add or update members here too.";
+    if(lsGet(TOK_A)) startAdmin(); else adminGate();
+    return;
+  }
+  if(!lsGet(TOK_M)) return memberGate();
+  try{ startMember(await api("/me")); }
+  catch(e){ if(e.status===401) lsSet(TOK_M,null); memberGate(e.status===401?"":e.message); }
+})();
 if(document.fonts) document.fonts.ready.then(fit);
 </script>
 </body></html>
