@@ -68,6 +68,27 @@ input::placeholder,textarea::placeholder{color:color-mix(in srgb,var(--muted) 70
 .chip:hover{border-style:solid}
 .tip{background:var(--surface-2);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--muted);display:flex;gap:10px}
 .tip b{color:var(--fg)}
+.steps{justify-content:space-between;align-items:baseline}
+.qsec{font:600 11px var(--font-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--marigold)}
+.qcount{font-size:13px;color:var(--muted);font-weight:600}
+.qcard{display:flex;flex-direction:column;gap:10px;animation:qin .25s ease-out}
+@keyframes qin{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
+.qlabel{font-size:clamp(20px,3.4vw,24px);font-weight:700;line-height:1.25;text-wrap:balance}
+.qcard input,.qcard textarea{font-size:17px;padding:14px 14px}
+.qerr{color:var(--warn);font-size:13px;min-height:1em}
+.answers{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.ans{all:unset;cursor:pointer;display:grid;grid-template-columns:minmax(110px,38%) 1fr;gap:10px;padding:9px 12px;border-top:1px solid var(--line);font-size:13.5px}
+.ans:first-child{border-top:0}
+.ans:hover,.ans:focus-visible{background:var(--surface-2)}
+.ans-l{color:var(--muted)}
+.ans-v{overflow-wrap:anywhere}
+.ans-v.none{color:var(--warn);font-style:italic}
+.choices{display:flex;gap:10px;flex-wrap:wrap}
+.choice{font:600 17px var(--font-ui);min-width:96px;padding:14px 22px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer}
+.choice:hover{border-color:var(--accent)}
+.choices.many{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.choices.many .choice{font-size:15px;padding:12px 14px;text-align:left}
+.choice.on{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
 .admin-only{display:none!important}
 .admin .admin-only{display:inline-flex!important}
 .admin-bar{display:none;background:var(--marigold-soft);border:1px solid var(--marigold);border-radius:10px;padding:10px 14px;font-size:13.5px;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
@@ -110,30 +131,21 @@ button[disabled]{opacity:.55;cursor:wait}
 .sheet-frame{width:100%;overflow:hidden;border-radius:6px;box-shadow:0 1px 2px rgba(10,15,40,.08),0 12px 36px rgba(10,15,40,.14);background:var(--paper)}
 .sheet-scaler{transform-origin:top left}
 
-/* the sheet itself: fixed A4 width, paper colors */
-.sheet{width:794px;min-height:1123px;background:var(--paper);color:var(--paper-ink);font-family:var(--font-ui);display:flex;flex-direction:column}
-.s-band{background:var(--paper-band);color:#fff;padding:34px 48px 30px;display:flex;gap:26px;align-items:center;position:relative}
-.s-band::after{content:"";position:absolute;left:48px;right:48px;bottom:0;height:4px;background:var(--paper-gold)}
-.s-photo{width:112px;height:112px;border-radius:50%;flex:none;background:#2E4DA6 center/cover no-repeat;border:3px solid #fff;display:grid;place-items:center;font:400 44px var(--font-display);color:#fff}
-.s-kicker{font:500 11px var(--font-mono);letter-spacing:.16em;text-transform:uppercase;color:#F6C35A}
-.s-name{font:400 44px/1.05 var(--font-display);margin:6px 0 4px}
-.s-role{font-size:17px;font-weight:600;opacity:.95}
-.s-co{font-size:14px;opacity:.8;margin-top:2px}
-.s-body{padding:30px 48px 20px;display:flex;flex-direction:column;gap:24px;flex:1}
-.s-sec h3{font:600 11px var(--font-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--paper-gold);margin:0 0 10px;display:flex;align-items:center;gap:10px}
-.s-sec h3::after{content:"";flex:1;height:1px;background:var(--paper-rule)}
-.s-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 28px}
-.s-item{min-width:0}
-.s-item.full{grid-column:1/-1}
-.s-lab{font-size:11px;font-weight:700;color:var(--paper-muted);text-transform:uppercase;letter-spacing:.06em}
-.s-val{font-size:14.5px;line-height:1.45;margin-top:2px;overflow-wrap:anywhere;white-space:pre-wrap}
-.s-val.empty{color:#B3B7C6;font-style:italic}
-.s-quote{border-left:3px solid var(--paper-gold);padding:2px 0 2px 16px}
-.s-quote .s-lead{font:italic 400 19px/1.2 var(--font-display);color:var(--paper-band)}
-.s-quote .s-val{font-size:15px;margin-top:4px}
-.s-quotes{display:flex;flex-direction:column;gap:16px}
-.s-foot{padding:14px 48px 22px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--paper-muted);border-top:1px solid var(--paper-rule);margin:0 48px;padding-left:0;padding-right:0}
-.s-foot b{color:var(--paper-ink);font-weight:600}
+/* the sheet: official 2023 BNI Biography Sheet layout, landscape A4, filled in */
+.sheet{width:1123px;min-height:794px;background:#fff;color:#111;font-family:Arial,"Helvetica Neue",Helvetica,"Liberation Sans",sans-serif;padding:44px 64px 40px;display:flex;flex-direction:column}
+.bs-title{font-weight:700;font-size:30px;text-align:center;margin:6px 0 22px;letter-spacing:.2px}
+.bs-table{border:1.4px solid #111;display:flex;flex-direction:column;flex:1}
+.bs-row{border-top:1.2px solid #111;display:flex;align-items:stretch;min-height:36px;font-size:15px;line-height:1.35}
+.bs-row:first-child{border-top:0}
+.bs-row.tall{min-height:62px;flex:1}
+.bs-cell{flex:1;display:flex;gap:8px;align-items:baseline;padding:8px 10px;min-width:0}
+.bs-cell.half{flex:0 0 50%}
+.bs-cell.right{flex:0 0 37%}
+.bs-row.tall .bs-cell{align-items:center}
+.bs-lab{flex:none;color:#111;white-space:nowrap}
+.bs-row.tall .bs-lab{width:150px;white-space:normal}
+.bs-val{color:#13307A;font-weight:600;overflow-wrap:anywhere;white-space:pre-wrap;min-width:0}
+.bs-val.empty{color:#B8BCC8;font-weight:400;font-style:italic}
 .capture-host{position:fixed;left:-12000px;top:0;pointer-events:none}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style></head><body>
@@ -154,25 +166,26 @@ button[disabled]{opacity:.55;cursor:wait}
 
   <div class="admin-bar"><span><b>Coordinator mode.</b> Paste a member's polished text, check the preview, then save the PDF.</span><a href="#member" id="exitAdmin">Switch to member view</a></div>
   <section class="panel" id="pastePanel" hidden aria-label="Paste a bio sheet">
-    <div class="step-head"><h2>Paste a bio sheet</h2><p>Paste a bio sheet in the WhatsApp format this tool sends, for example one polished by your coordinator. The form fills in and you can save the PDF.</p></div>
+    <div class="step-head"><h2>Polish a member's sheet</h2><p>Paste the bio sheet message a member sent you on WhatsApp.</p></div>
     <textarea id="pasteBox" rows="8" placeholder="*BIOGRAPHY SHEET* · Chapter name&#10;Full name · Profession&#10;..."></textarea>
-    <div class="nav" style="border:0;padding:0"><button class="btn ghost" id="btnPasteCancel" type="button">Cancel</button><button class="btn primary" id="btnPasteApply" type="button">Fill the form</button></div>
+    <div class="nav" style="border:0;padding:0"><button class="btn ghost" id="btnPasteCancel" type="button">Cancel</button><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="btnPolish" type="button">1 · Polish with Claude</button><button class="btn primary" id="btnPasteApply" type="button">2 · Fill the form</button></span></div>
+    <div class="tip"><span><b>How:</b> paste the member's WhatsApp message and tap <b>Polish with Claude</b>. Claude opens with the prompt ready, so just press send. Copy Claude's polished sheet, paste it here in place of the original, and tap <b>Fill the form</b>.</span></div>
     <div class="status" id="pasteStatus" role="status" aria-live="polite"></div>
   </section>
 
   <div class="grid">
-    <section class="panel" aria-label="Questions">
+    <section class="panel" aria-label="Questions" id="qtop">
       <nav class="steps" id="steps" aria-label="Steps"></nav>
       <div class="progress" aria-hidden="true"><span id="prog"></span></div>
       <div id="stepBody"></div>
       <div class="nav">
         <button class="btn" id="btnBack" type="button">Back</button>
-        <button class="btn primary" id="btnNext" type="button">Next</button>
+        <span style="display:flex;gap:8px"><button class="btn ghost" id="btnSkip" type="button">Skip</button><button class="btn primary" id="btnNext" type="button">Next</button></span>
       </div>
     </section>
 
     <aside class="preview-col" aria-label="Live preview">
-      <div class="preview-bar"><span>Live preview · A4</span><span class="badge" id="exampleBadge" hidden>Example data</span></div>
+      <div class="preview-bar"><span>Live preview · official 2023 format</span><span class="badge" id="exampleBadge" hidden>Example data</span></div>
       <div class="sheet-frame" id="frame"><div class="sheet-scaler" id="scaler"><div class="sheet" id="sheet"></div></div></div>
     </aside>
   </div>
@@ -194,13 +207,17 @@ try{ if(location.hash==="#coordinator") localStorage.setItem("bio-sheet-admin","
      ADMIN = localStorage.getItem("bio-sheet-admin")==="1"; }catch(e){ ADMIN = location.hash==="#coordinator"; }
 if(ADMIN) document.documentElement.classList.add("admin");
 
+/* ---------- Business categories: tailor examples and quick picks ---------- */
+const CATS = {"Finance & Insurance": {"prof": ["Financial Planner", "Mutual Fund Distributor", "Life Insurance Advisor", "General Insurance Advisor", "Health Insurance Advisor", "Loan & Mortgage Advisor", "Stock Broker"], "desire": "help 1,000 families in my city plan for their children's education and retirement by 2030", "key": "explaining every product in plain language, so clients decide with confidence", "prev": "8 years in bank sales, then relationship manager at a private bank"}, "Legal & Accounting": {"prof": ["Chartered Accountant", "Company Secretary", "Tax Consultant", "Corporate Lawyer", "Property Lawyer", "GST Consultant", "Cost Accountant"], "desire": "make my firm the first call for 300 small businesses when they need tax or legal help, by 2028", "key": "meeting every deadline before the client has to remind me", "prev": "Articleship at a Big Four firm; audit manager"}, "Real Estate & Construction": {"prof": ["Real Estate Agent (Residential)", "Commercial Property Consultant", "Builder / Developer", "Civil Contractor", "Architect", "Structural Engineer", "Waterproofing Specialist"], "desire": "complete 50 homes that families are proud to live in, and launch my own project by 2028", "key": "telling buyers the honest picture, even when it costs me a sale", "prev": "Site engineer for a large builder; sales at a property portal"}, "Home & Interiors": {"prof": ["Interior Designer", "Modular Kitchen Specialist", "Furniture Manufacturer", "Painting Contractor", "Electrician", "Home Automation", "Solar Installer"], "desire": "design 100 homes that families never want to leave, and open a studio in a metro by 2028", "key": "listening first, so the home reflects the family, not the designer", "prev": "Draftsman at an architecture firm; site supervisor"}, "Health & Wellness": {"prof": ["Physiotherapist", "Dentist", "Dietitian / Nutritionist", "Yoga Trainer", "Gym Owner", "Pathology Lab", "Homeopath"], "desire": "help 5,000 people in my city live without chronic pain, and open a second clinic by 2027", "key": "treating every patient the way I would want my parents to be treated", "prev": "Resident at a government hospital; clinical trainer"}, "Marketing & Media": {"prof": ["Digital Marketing Agency", "Graphic Designer", "Photographer", "Videographer", "Printing & Branding", "Social Media Manager", "Public Relations"], "desire": "build the brands of 100 local businesses and see them become household names in my city", "key": "measuring every campaign by the business it brings, not by likes", "prev": "Copywriter at an ad agency; brand executive at an FMCG company"}, "IT & Technology": {"prof": ["Software Developer", "Website Developer", "IT Hardware & Networking", "CCTV & Security Systems", "Cyber Security", "ERP / Billing Software", "Mobile App Developer"], "desire": "digitise 200 small businesses in my region so they can serve customers online, by 2028", "key": "building simple systems that clients can actually use", "prev": "Software engineer at an IT services company; freelance developer"}, "Events, Travel & Hospitality": {"prof": ["Event Planner", "Wedding Planner", "Caterer", "Travel Agent", "Hotel / Banquet", "Decorator", "Gift & Corporate Hamper Supplier"], "desire": "run 100 events a year that guests talk about for years, and expand to destination weddings", "key": "planning for what can go wrong, so the client only sees what goes right", "prev": "Banquet manager at a hotel; event coordinator"}, "Manufacturing & Trading": {"prof": ["Manufacturer", "Wholesaler / Distributor", "Exporter", "Packaging Supplier", "Industrial Supplies", "Steel & Hardware Trader", "Textile Trader"], "desire": "take our products to 10 new states and start exporting by 2028", "key": "consistent quality and delivering on the promised date, every time", "prev": "Joined the family business after an MBA; purchase manager"}, "Education & Training": {"prof": ["Coaching Institute", "Corporate Trainer", "Career Counsellor", "Preschool / Play School", "Language Trainer", "Skill Development Centre", "Overseas Education Consultant"], "desire": "guide 10,000 students to the right career, and open three new centres by 2029", "key": "believing every student can do it, and showing them how", "prev": "School teacher; trainer at an ed-tech company"}, "Other": {"prof": [], "desire": "", "key": "", "prev": ""}};
+
 /* ---------- Questions ---------- */
 const STEPS = [
   { key:"business", title:"Business", heading:"You and your business",
     sub:"The facts members need to remember you and refer you.",
     fields:[
+      {id:"cat", label:"Which area is your business in?", type:"choice", options:["Finance & Insurance", "Legal & Accounting", "Real Estate & Construction", "Home & Interiors", "Health & Wellness", "Marketing & Media", "IT & Technology", "Events, Travel & Hospitality", "Manufacturing & Trading", "Education & Training", "Other"], req:true},
       {id:"name", label:"Your full name", q:"As you want it read out when you are introduced.", ph:"Priya Mehta", req:true, max:40},
-      {id:"profession", weak:"Consultant", strong:"Interior Designer for homes and apartments", label:"Profession / classification", q:"Your BNI classification, in plain words.", ph:"Interior Designer (Residential)", req:true, max:50},
+      {id:"profession", weak:"Consultant", strong:"Interior Designer for homes and apartments", label:"Profession / classification", q:"Your BNI classification, in plain words. Tap one below or type your own.", ph:"Interior Designer (Residential)", req:true, max:50},
       {id:"company", label:"Company name", ph:"Studio Aangan Interiors", req:true, max:50},
       {id:"location", label:"Business location", q:"Area and city where you work.", ph:"Baner, Pune", req:true, max:40},
       {id:"years", label:"Years in this business", ph:"12 years", req:true, max:20},
@@ -209,9 +226,13 @@ const STEPS = [
   { key:"family", title:"Family", heading:"Family and home",
     sub:"Share only what you are comfortable sharing. Members connect over these details.",
     fields:[
-      {id:"spouse", label:"Spouse / partner", opt:true, ph:"Rohan, a civil engineer", max:60},
-      {id:"children", label:"Children", opt:true, ph:"Two daughters, Anaya (10) and Myra (6)", max:70},
-      {id:"pets", label:"Pets", opt:true, ph:"An indie dog called Biscuit", max:50},
+      {id:"hasSpouse", label:"Are you married or with a partner?", type:"choice", options:["Yes","No"], req:true},
+      {id:"spouse", label:"What is your spouse or partner's name, and what do they do?", showIf:d=>d.hasSpouse==="Yes", req:true, ph:"Rohan, a civil engineer", max:60},
+      {id:"hasKids", label:"Do you have children?", type:"choice", options:["Yes","No"], req:true},
+      {id:"kidCount", label:"How many children?", type:"choice", options:["1","2","3","4+"], showIf:d=>d.hasKids==="Yes", req:true},
+      {id:"children", label:"What are their names and ages?", showIf:d=>d.hasKids==="Yes", req:true, ph:"Two daughters, Anaya (10) and Myra (6)", max:70},
+      {id:"hasPets", label:"Any pets at home?", type:"choice", options:["Yes","No"], req:true},
+      {id:"pets", label:"Tell us about your pet", showIf:d=>d.hasPets==="Yes", req:true, ph:"An indie dog called Biscuit", max:50},
       {id:"city", label:"City of residence", ph:"Pune", req:true, max:30},
       {id:"cityyears", label:"Years in this city", ph:"18 years", req:true, max:20}
     ]},
@@ -238,8 +259,7 @@ const STEPS = [
     fields:[
       {id:"phone", label:"Mobile / WhatsApp", type:"tel", ph:"+91 98xxx xxxxx", req:true, max:20},
       {id:"email", label:"Email", type:"email", opt:true, ph:"priya@studioaangan.in", max:50},
-      {id:"chapter", label:"Chapter name", ph:"Your chapter", req:true, max:40},
-      {id:"photo", label:"Your photo", opt:true, type:"photo", full:true}
+      {id:"chapter", label:"Chapter name", ph:"Your chapter", req:true, max:40}
     ]}
 ];
 const ALL = STEPS.flatMap(s=>s.fields);
@@ -247,7 +267,7 @@ const ALL = STEPS.flatMap(s=>s.fields);
 const EXAMPLE = {
   name:"Priya Mehta", profession:"Interior Designer (Residential)", company:"Studio Aangan Interiors",
   location:"Baner, Pune", years:"12 years", prevjobs:"Architect at a design firm; site supervisor for a builder",
-  spouse:"Rohan, a civil engineer", children:"Two daughters, Anaya (10) and Myra (6)", pets:"An indie dog called Biscuit",
+  cat:"Home & Interiors", hasSpouse:"Yes", hasKids:"Yes", kidCount:"2", hasPets:"Yes", spouse:"Rohan, a civil engineer", children:"Two daughters, Anaya (10) and Myra (6)", pets:"An indie dog called Biscuit",
   city:"Pune", cityyears:"18 years",
   hobbies:"Trekking in the Sahyadris, Hindustani classical music, terrace gardening, weekend cycling",
   desire:"design 100 homes that families never want to leave, and open a studio in Mumbai by 2028.",
@@ -259,80 +279,102 @@ const EXAMPLE = {
 /* ---------- State ---------- */
 const STORE_KEY = "bio-sheet-builder-v1";
 let data = {}; let step = 0; let isExample = false;
-try{ const s = JSON.parse(localStorage.getItem(STORE_KEY)||"null"); if(s){ data = s.data||{}; step = Math.min(s.step||0, STEPS.length-1);} }catch(e){}
+try{ const s = JSON.parse(localStorage.getItem(STORE_KEY)||"null"); if(s){ data = s.data||{}; step = Math.max(0, s.step||0);} }catch(e){}
 if(CONFIG.chapterName && !data.chapter) data.chapter = CONFIG.chapterName;
+function fillGates(d){ if(d.spouse&&!d.hasSpouse) d.hasSpouse="Yes"; if(d.children&&!d.hasKids) d.hasKids="Yes"; if(d.pets&&!d.hasPets) d.hasPets="Yes"; return d; }
+fillGates(data);
 function save(){ if(isExample) return; try{ localStorage.setItem(STORE_KEY, JSON.stringify({data,step})); }catch(e){} }
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const STORY = ["desire","secret","key"];
-const v = id => { let t=(data[id]||"").replace(/[ \t]+/g," ").trim().replace(/[\s,;:]+$/,""); if(!t) return t;
+const shown = id => { const f=ALL.find(x=>x.id===id); return !f || !f.showIf || f.showIf(data); };
+const v = id => { if(!shown(id)) return ""; let t=(data[id]||"").replace(/[ \t]+/g," ").trim().replace(/[\s,;:]+$/,""); if(!t) return t;
   if(STORY.includes(id)){ if(id!=="secret") t=t.replace(/^(my burning desire is to|my key to success is)\s*/i,""); else t=t.replace(/^something no one knows about me is:?\s*/i,""); if(!/[.!?]$/.test(t)) t+="."; }
   if(id==="secret") t=t.charAt(0).toUpperCase()+t.slice(1);
   if((id==="desire"||id==="key") && /^[A-Z][a-z]/.test(t)) t=t.charAt(0).toLowerCase()+t.slice(1);
   if(["name","city","company"].includes(id)) t=t.replace(/\b([a-z])/g,(m,c)=>c.toUpperCase());
   return t; };
 
-/* ---------- Steps UI ---------- */
-function stepComplete(i){ return STEPS[i].fields.every(f=>!f.req || v(f.id)); }
+/* ---------- Progressive questions: one at a time ---------- */
+function buildQS(){ return STEPS.flatMap(st=>st.fields.filter(f=>f.type!=="photo" && !(f.id==="chapter" && CONFIG.chapterName && !ADMIN) && (!f.showIf || f.showIf(data))).map(f=>({...f, section:st.title, tip:st.tip}))); }
+let QS = buildQS();
+const QI = id => Math.max(0, QS.findIndex(f=>f.id===id));
+const REVIEW = () => step>=QS.length;
 function renderTabs(){
-  $("#steps").innerHTML = STEPS.map((s,i)=>`<button type="button" class="step-tab ${stepComplete(i)&&i!==step?'done':''}" data-i="${i}" ${i===step?'aria-current="step"':''}><span class="dot">${stepComplete(i)&&i!==step?'✓':i+1}</span>${s.title}</button>`).join("");
-  $("#steps").querySelectorAll(".step-tab").forEach(b=>b.onclick=()=>go(+b.dataset.i));
+  QS = buildQS();
   const req = ALL.filter(f=>f.req); const filled = req.filter(f=>v(f.id)).length;
-  $("#prog").style.width = Math.round(filled/req.length*100)+"%";
+  $("#prog").style.width = (REVIEW()?100:Math.round(step/QS.length*100))+"%";
+  $("#steps").innerHTML = REVIEW()
+    ? `<span class="qcount">All done · review and send</span>`
+    : `<span class="qsec">${esc(QS[step].section)}</span><span class="qcount">Question ${step+1} of ${QS.length}</span>`;
 }
 function fieldHTML(f){
+  if(f.type==="choice") return `<div class="qcard"><div class="qlabel">${esc(f.label)}</div><div class="choices ${f.options.length>4?"many":""}">${f.options.map(o=>`<button type="button" class="choice ${data[f.id]===o?'on':''}" data-choice="${f.id}" data-v="${o}">${o}</button>`).join("")}</div><div class="qerr" id="qerr" role="alert"></div></div>`;
   const val = esc(data[f.id]||"");
-  const lab = `<label for="f_${f.id}">${esc(f.label)} ${f.opt?'<span class="opt">(optional)</span>':''}</label>${f.q?`<div class="q">${esc(f.q)}</div>`:''}`;
-  if(f.type==="photo" && !ADMIN) return `<div class="field full"><label>Your photo <span class="opt">(optional)</span></label><div class="tip"><span>After you send your bio sheet, send a clear, smiling headshot in the same WhatsApp chat. It goes on your finished PDF.</span></div></div>`;
-  if(f.type==="photo") return `<div class="field full">${lab}
-     <div class="photo-row"><div class="photo-thumb" id="thumb">${data.photo?'':'No photo'}</div>
-     <input type="file" id="f_photo" accept="image/*">
-     <button type="button" class="btn small ghost" id="rmPhoto" ${data.photo?'':'hidden'}>Remove</button></div>
-     <div class="q">A clear, smiling headshot works best. It stays on your device and only goes into your PDF or image.</div></div>`;
+  const C = CATS[data.cat]||{};
+  if(f.id==="profession" && C.prof && C.prof.length) f={...f, chips:C.prof, ph:C.prof[0]};
+  if(f.id==="desire" && C.desire) f={...f, ph:C.desire+".", strong:C.desire};
+  if(f.id==="key" && C.key) f={...f, ph:C.key+".", strong:C.key};
+  if(f.id==="prevjobs" && C.prev) f={...f, ph:C.prev, strong:C.prev};
+  if(f.id==="children"){ const n=data.kidCount; f={...f, ph: n==="1"?"A son, Vihaan (8)": n==="2"?"Two daughters, Anaya (10) and Myra (6)": n==="3"?"Aarav (14), Diya (11) and Kabir (6)":"Names and ages, e.g. Aarav (14), Diya (11)…"}; }
   const input = f.area
-    ? `<textarea id="f_${f.id}" data-id="${f.id}" maxlength="${f.max+40}" placeholder="${esc('e.g. '+f.ph)}" rows="3">${val}</textarea>`
-    : `<input type="${f.type||'text'}" id="f_${f.id}" data-id="${f.id}" maxlength="${f.max+20}" placeholder="${esc('e.g. '+f.ph)}" value="${val}" autocomplete="off">`;
+    ? `<textarea id="f_${f.id}" data-id="${f.id}" maxlength="${f.max+40}" placeholder="${esc('e.g. '+f.ph)}" rows="3" enterkeyhint="next">${val}</textarea>`
+    : `<input type="${f.type||'text'}" id="f_${f.id}" data-id="${f.id}" maxlength="${f.max+20}" placeholder="${esc('e.g. '+f.ph)}" value="${val}" autocomplete="off" enterkeyhint="next">`;
   const chips = f.chips?`<div class="chips">${f.chips.map(c=>`<button type="button" class="chip" data-for="${f.id}" data-t="${esc(c)}">+ ${esc(c.trim())}</button>`).join("")}</div>`:"";
   const count = f.area?`<div class="count" id="c_${f.id}"></div>`:"";
   const ws = f.strong?`<details class="ws"><summary>See a weak vs strong answer</summary><div class="ws-row"><span class="ws-tag weak">Weak</span><span>${esc(f.weak)}</span></div><div class="ws-row"><span class="ws-tag strong">Strong</span><span>${esc(f.strong)}</span></div></details>`:"";
-  return `<div class="field ${f.full?'full':''}">${lab}${input}${chips}${count}${ws}</div>`;
+  return `<div class="qcard"><label class="qlabel" for="f_${f.id}">${esc(f.label)}${f.opt?' <span class="opt">(optional)</span>':''}</label>${f.q?`<div class="q">${esc(f.q)}</div>`:''}${input}${chips}${count}${ws}<div class="qerr" id="qerr" role="alert"></div></div>`;
+}
+function summaryHTML(){
+  return `<div class="field full"><label>Your answers</label><div class="q">Tap any answer to change it.</div><div class="answers">${QS.map((f,i)=>`<button type="button" class="ans" data-q="${i}"><span class="ans-l">${esc(f.label.replace("…",""))}</span><span class="ans-v ${v(f.id)?'':'none'}">${esc(v(f.id)||(f.opt?"Skipped":"Missing"))}</span></button>`).join("")}</div></div>`;
 }
 function renderStep(){
-  const s = STEPS[step];
-  let html = `<div class="step-head"><h2>${esc(s.heading)}</h2><p>${esc(s.sub)}</p></div>
-    <div class="fields" style="margin-top:16px">${s.fields.map(fieldHTML).join("")}</div>`;
-  if(s.tip) html += `<div class="tip" style="margin-top:16px"><span>${s.tip}</span></div>`;
-  if(s.key==="send") html += reviewHTML();
+  QS = buildQS();
+  let html;
+  if(REVIEW()){
+    html = `<div class="step-head"><h2>${ADMIN?"Check and save":"Your bio sheet is ready"}</h2><p>${ADMIN?"Check the sheet, then save the PDF.":"Check it on the preview, then send it."}</p></div>${reviewHTML()}${summaryHTML()}`;
+  } else {
+    const f = QS[step];
+    html = fieldHTML(f) + (f.tip && (QS[step-1]||{}).section!==f.section ? `<div class="tip" style="margin-top:14px"><span>${f.tip}</span></div>` : "");
+  }
   $("#stepBody").innerHTML = html;
   $("#stepBody").querySelectorAll("[data-id]").forEach(el=>{
-    el.addEventListener("input",()=>{ if(isExample) return; data[el.dataset.id]=el.value; updateCount(el.dataset.id); onChange(); });
+    el.addEventListener("input",()=>{ if(isExample) return; data[el.dataset.id]=el.value; $("#qerr").textContent=""; updateCount(el.dataset.id); onChange(); });
+    el.addEventListener("keydown",e=>{ if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); next(); } });
     updateCount(el.dataset.id);
   });
   $("#stepBody").querySelectorAll(".chip").forEach(c=>c.onclick=()=>{
     if(isExample) return;
     const id=c.dataset.for, t=c.dataset.t, el=$("#f_"+id);
     const cur=(data[id]||"");
-    data[id] = id==="hobbies" ? (cur.trim()? cur.replace(/[,\s]*$/,"")+", "+t : t) : (cur.trim()? cur : t);
+    data[id] = id==="profession" ? t : id==="hobbies" ? (cur.trim()? cur.replace(/[,\s]*$/,"")+", "+t : t) : (cur.trim()? cur : t);
     el.value=data[id]; el.focus(); el.setSelectionRange(el.value.length,el.value.length); updateCount(id); onChange();
   });
-  const fp = $("#f_photo");
-  if(fp){ fp.onchange = e=>loadPhoto(e.target.files[0]); paintThumb();
-    $("#rmPhoto").onclick=()=>{ data.photo=""; fp.value=""; paintThumb(); $("#rmPhoto").hidden=true; onChange(); }; }
-  if(s.key==="send") wireActions();
-  if(isExample){ $("#stepBody").querySelectorAll("input,textarea,.chip,#rmPhoto").forEach(el=>{ if(el.tagName==="BUTTON"||el.type==="file") el.disabled=true; else el.readOnly=true; });
+  $("#stepBody").querySelectorAll(".choice").forEach(b=>b.onclick=()=>{ if(isExample) return; data[b.dataset.choice]=b.dataset.v; onChange(); setTimeout(()=>go(step+1),160); });
+  $("#stepBody").querySelectorAll(".ans").forEach(b=>b.onclick=()=>go(+b.dataset.q));
+  if(REVIEW()) wireActions();
+  if(isExample){ $("#stepBody").querySelectorAll("input,textarea,.chip").forEach(el=>{ if(el.tagName==="BUTTON") el.disabled=true; else el.readOnly=true; });
     $("#stepBody").insertAdjacentHTML("afterbegin",'<div class="tip" style="margin-bottom:14px"><span><b>You are viewing an example.</b> Tap “Back to my answers” at the top to fill in your own.</span></div>'); }
   $("#btnBack").style.visibility = step===0?"hidden":"visible";
-  $("#btnNext").hidden = step===STEPS.length-1;
+  $("#btnNext").hidden = REVIEW();
+  $("#btnSkip").hidden = REVIEW() || !QS[step].opt;
+  $("#btnNext").textContent = step===QS.length-1 ? "See my bio sheet" : "Next";
   renderTabs();
+  if(!REVIEW() && !isExample){ const el=$("#f_"+QS[step].id); if(el && window.matchMedia("(min-width: 600px)").matches) el.focus(); }
 }
 function updateCount(id){
   const f = ALL.find(x=>x.id===id), el=$("#c_"+id); if(!f||!el) return;
   const n=(data[id]||"").length; el.textContent = `${n} / ${f.max}`; el.classList.toggle("over", n>f.max);
 }
-function go(i){ step=Math.max(0,Math.min(STEPS.length-1,i)); save(); renderStep(); window.scrollTo({top:0,behavior:"smooth"}); }
+function go(i){ step=Math.max(0,Math.min(QS.length,i)); save(); renderStep(); $("#qtop").scrollIntoView({behavior:"smooth",block:"start"}); }
+function next(){
+  if(!REVIEW() && !isExample){ const f=QS[step]; if(f.req && !v(f.id)){ $("#qerr").textContent="Please answer this one. It's on the official sheet."; $("#f_"+f.id)?.focus(); return; } }
+  go(step+1);
+}
 $("#btnBack").onclick=()=>go(step-1);
-$("#btnNext").onclick=()=>go(step+1);
+$("#btnNext").onclick=next;
+$("#btnSkip").onclick=()=>go(step+1);
 
 /* ---------- Photo ---------- */
 function loadPhoto(file){
@@ -350,22 +392,21 @@ function paintThumb(){ const t=$("#thumb"); if(!t) return; t.style.backgroundIma
 /* ---------- Review ---------- */
 function checks(){
   const out=[];
-  const missing = ALL.filter(f=>f.req && !v(f.id));
-  if(missing.length) out.push({ok:false, t:`Still to fill: ${missing.map(f=>f.label.replace("…","")).join(", ")}.`, step:STEPS.findIndex(s=>s.fields.includes(missing[0]))});
+  const missing = buildQS().filter(f=>f.req && !v(f.id));
+  if(missing.length) out.push({ok:false, t:`Still to fill: ${missing.map(f=>f.label.replace("…","")).join(", ")}.`, id:missing[0].id});
   else out.push({ok:true, t:"All required answers are filled in."});
   const over = ALL.filter(f=>f.max && (data[f.id]||"").length>f.max);
   if(over.length) out.push({ok:false, t:`A little long for one page: ${over.map(f=>f.label.replace("…","")).join(", ")}. Try to trim.`});
   if(v("desire") && v("desire").split(/\s+/).length<6) out.push({ok:false, t:"Your burning desire is very short. Add something specific a member could help with."});
   if(v("hobbies") && v("hobbies").split(/,|\band\b/).length<2) out.push({ok:false, t:"Add at least two or three interests so members find common ground."});
   const words = id => v(id).split(/\s+/).filter(Boolean).length;
-  if(/^(consultant|business|businessman|service|services|agent|trader|self.?employed)$/i.test(v("profession"))) out.push({ok:false, t:"Your profession is broad. Say who you serve, e.g. “Tax Consultant for small businesses”.", step:0});
+  if(/^(consultant|business|businessman|service|services|agent|trader|self.?employed)$/i.test(v("profession"))) out.push({ok:false, t:"Your profession is broad. Say who you serve, e.g. “Tax Consultant for small businesses”.", id:"profession"});
   const generic = v("hobbies").split(/,|\band\b/).map(x=>x.trim().toLowerCase()).filter(x=>/^(travel|travelling|traveling|music|reading|movies|sports|cooking|friends|food)$/.test(x));
-  if(generic.length) out.push({ok:false, t:`Make “${generic[0]}” specific: where, what kind, or how often. Specific interests start conversations.`, step:2});
-  if(v("desire") && !/\d|by 20|this year|next year|in \w+ years/i.test(v("desire"))) out.push({ok:false, t:"Burning desire: add a number or a date (e.g. “100 families by 2028”). It makes the goal real.", step:3});
-  if(v("key") && words("key")<4) out.push({ok:false, t:"Key to success: one word like “hard work” is common. Name the habit behind it.", step:3});
-  if(v("secret") && words("secret")<5) out.push({ok:false, t:"Something no one knows: add a small detail so it becomes a story people remember.", step:3});
-  if(!v("prevjobs")) out.push({ok:false, t:"Optional: add previous jobs. Members often find a connection there.", step:0});
-  if(ADMIN && !data.photo) out.push({ok:false, t:"Optional: add a photo. Members remember faces faster than names."});
+  if(generic.length) out.push({ok:false, t:`Make “${generic[0]}” specific: where, what kind, or how often. Specific interests start conversations.`, id:"hobbies"});
+  if(v("desire") && !/\d|by 20|this year|next year|in \w+ years/i.test(v("desire"))) out.push({ok:false, t:"Burning desire: add a number or a date (e.g. “100 families by 2028”). It makes the goal real.", id:"desire"});
+  if(v("key") && words("key")<4) out.push({ok:false, t:"Key to success: one word like “hard work” is common. Name the habit behind it.", id:"key"});
+  if(v("secret") && words("secret")<5) out.push({ok:false, t:"Something no one knows: add a small detail so it becomes a story people remember.", id:"secret"});
+  if(!v("prevjobs")) out.push({ok:false, t:"Optional: add previous jobs. Members often find a connection there.", id:"prevjobs"});
   if(!missing.length && !over.length) out.push({ok:true, t:"Your sheet fits on one page."});
   return out;
 }
@@ -383,53 +424,50 @@ function reviewHTML(){
 }
 function renderChecks(){
   const ul=$("#checklist"); if(!ul) return;
-  ul.innerHTML = checks().map(c=>`<li class="${c.ok?'good':'fix'}"><span class="ic">${c.ok?'✓':'!'}</span><span>${esc(c.t)}${c.step!=null&&c.step!==step?` <button type="button" class="btn small ghost" style="padding:2px 8px" data-go="${c.step}">Go there</button>`:''}</span></li>`).join("");
-  ul.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(+b.dataset.go));
+  ul.innerHTML = checks().map(c=>`<li class="${c.ok?'good':'fix'}"><span class="ic">${c.ok?'✓':'!'}</span><span>${esc(c.t)}${c.id?` <button type="button" class="btn small ghost" style="padding:2px 8px" data-go="${c.id}">Go there</button>`:''}</span></li>`).join("");
+  ul.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(QI(b.dataset.go)));
 }
 
 /* ---------- Sheet ---------- */
-function item(lab,id,full){ const val=v(id); const f=ALL.find(x=>x.id===id);
-  return `<div class="s-item ${full?'full':''}"><div class="s-lab">${lab}</div><div class="s-val ${val?'':'empty'}">${esc(val||f?.ph||"")}</div></div>`; }
-function cityItem(){ const c=v("city"), y=v("cityyears"); const val=c?(y?`${c} (${y})`:c):"";
-  return `<div class="s-item"><div class="s-lab">City of residence</div><div class="s-val ${val?'':'empty'}">${esc(val||"Pune (18 years)")}</div></div>`; }
+function sv(id){ /* value as written on the official form */
+  if(!shown(id)){ const g={spouse:"hasSpouse",children:"hasKids",pets:"hasPets"}[id]; return g&&data[g]?"—":""; }
+  let t=v(id); if(!t) return t;
+  if(id==="desire" && !/^to\b/i.test(t)) t="To "+t;
+  if(id==="desire"||id==="key"||id==="hobbies"||id==="prevjobs") t=t.charAt(0).toUpperCase()+t.slice(1);
+  return t; }
+function cell(lab,id,cls){ const val=sv(id), f=ALL.find(x=>x.id===id);
+  const shown = val || (f? f.ph : "");
+  return `<div class="bs-cell ${cls||''}"><span class="bs-lab">${lab}</span><span class="bs-val ${val?'':'empty'}">${esc(shown)}</span></div>`; }
+function row(inner,tall){ return `<div class="bs-row ${tall?'tall':''}">${inner}</div>`; }
 function sheetHTML(){
-  const name=v("name"), initials=(name||"Your Name").split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase();
-  const photo = data.photo?`<div class="s-photo" style="background-image:url(${data.photo})"></div>`:`<div class="s-photo">${esc(initials)}</div>`;
-  const q=(lead,id)=>{const val=v(id), f=ALL.find(x=>x.id===id); return `<div class="s-quote"><div class="s-lead">${lead}</div><div class="s-val ${val?'':'empty'}">${esc(val||f.ph)}</div></div>`;};
-  const contact=[v("phone"),v("email")].filter(Boolean).join("  ·  ");
-  return `<div class="s-band">${photo}<div style="min-width:0">
-      <div class="s-kicker">Biography Sheet${v("chapter")?" · "+esc(v("chapter")):""}</div>
-      <div class="s-name">${esc(name||"Your Name")}</div>
-      <div class="s-role">${esc(v("profession")||"Your profession")}</div>
-      <div class="s-co">${esc(v("company")||"Company name")}${v("location")?" · "+esc(v("location")):""}</div></div></div>
-    <div class="s-body">
-      <div class="s-sec"><h3>Business information</h3><div class="s-grid">
-        ${item("Company name","company")}${item("Profession","profession")}
-        ${item("Location","location")}${item("Years in the business","years")}
-        ${item("Previous types of jobs","prevjobs",true)}</div></div>
-      <div class="s-sec"><h3>Personal information</h3><div class="s-grid">
-        ${item("Spouse / partner","spouse")}${item("Children","children")}
-        ${item("Pets","pets")}${cityItem()}
-        ${item("Hobbies, activities and interests","hobbies",true)}</div></div>
-      <div class="s-sec"><h3>In my own words</h3><div class="s-quotes">
-        ${q("My burning desire is to…","desire")}
-        ${q("Something no one knows about me is…","secret")}
-        ${q("My key to success is…","key")}</div></div>
-    </div>
-    <div class="s-foot"><span>${contact?`<b>Contact:</b> ${esc(contact)}`:"<b>Contact:</b> add your mobile and email"}</span><span>Updated ${new Date().toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"})}</span></div>`;
+  return `<div class="bs-title">Biography Sheet</div>
+  <div class="bs-table">
+    ${row(cell("Name:","name","half")+cell("Company Name:","company"))}
+    ${row(cell("Location:","location"))}
+    ${row(cell("Profession:","profession")+cell("Years in the Business:","years","right"))}
+    ${row(cell("Previous Types of Jobs:","prevjobs"),true)}
+    ${row(cell("Spouse/Partner:","spouse"))}
+    ${row(cell("Children:","children"))}
+    ${row(cell("Pets:","pets"))}
+    ${row(cell("City of Residence:","city")+cell("Years in the City:","cityyears","right"))}
+    ${row(cell("Hobbies/activities/ interests:","hobbies"),true)}
+    ${row(cell("Burning desire:","desire"),true)}
+    ${row(cell("Something no one knows about you:","secret"),true)}
+    ${row(cell("Key to success:","key"),true)}
+  </div>`;
 }
 function renderSheet(){ $("#sheet").innerHTML = sheetHTML(); fit(); }
-function fit(){ const fr=$("#frame"), sc=$("#scaler"), sh=$("#sheet"); const k=fr.clientWidth/794; sc.style.transform=`scale(${k})`; fr.style.height=(sh.offsetHeight*k)+"px"; }
+function fit(){ const fr=$("#frame"), sc=$("#scaler"), sh=$("#sheet"); const k=fr.clientWidth/1123; sc.style.transform=`scale(${k})`; fr.style.height=(sh.offsetHeight*k)+"px"; }
 new ResizeObserver(fit).observe($("#frame"));
 
 function onChange(){ save(); renderSheet(); renderTabs(); renderChecks(); }
 
 /* ---------- Example / clear ---------- */
-let saved=null;
-function leaveExample(){ if(!isExample) return; isExample=false; $("#exampleBadge").hidden=true; data = saved||{}; saved=null; $("#btnExample").textContent="See an example"; renderStep(); renderSheet(); renderChecks(); }
+let saved=null, savedStep=0;
+function leaveExample(){ if(!isExample) return; isExample=false; $("#exampleBadge").hidden=true; data = saved||{}; saved=null; step=savedStep; $("#btnExample").textContent="See an example"; renderStep(); renderSheet(); renderChecks(); }
 $("#btnExample").onclick=()=>{
   if(isExample){ leaveExample(); return; }
-  saved={...data}; data={...EXAMPLE}; isExample=true; $("#exampleBadge").hidden=false; $("#btnExample").textContent="Back to my answers";
+  saved={...data}; savedStep=step; data={...EXAMPLE}; isExample=true; step=buildQS().length; $("#exampleBadge").hidden=false; $("#btnExample").textContent="Back to my answers";
   renderStep(); renderSheet(); renderChecks();
 };
 let clearArmed=false;
@@ -483,17 +521,17 @@ function wireActions(){
   renderChecks();
   const busy=(b,on,label)=>{ b.disabled=on; if(label) b.textContent=label; };
   $("#btnWA").onclick=()=>{
-    const missing=ALL.filter(f=>f.req&&!v(f.id));
+    const missing=buildQS().filter(f=>f.req&&!v(f.id));
     if(missing.length){ setStatus("Please fill the items marked above first.","err"); return; }
     const num=ADMIN?"":(CONFIG.coordinatorWhatsApp||"").replace(/\D/g,"");
     const url=`https://wa.me/${num}?text=${encodeURIComponent(asText(true))}`;
     const a=document.createElement("a"); a.href=url; a.target="_blank"; a.rel="noopener"; document.body.appendChild(a); a.click(); a.remove();
-    setStatus(num?"WhatsApp should open with your bio sheet ready to send. Press send, then send your photo in the same chat.":"WhatsApp should open. Pick your Bio Sheet Coordinator and press send.","ok");
+    setStatus(num?"WhatsApp should open with your bio sheet ready to send. Just press send.":"WhatsApp should open. Pick your Bio Sheet Coordinator and press send.","ok");
   };
   if($("#btnPDF")) $("#btnPDF").onclick=async()=>{
     const b=$("#btnPDF"); busy(b,true,"Preparing PDF…");
     try{ const c=await capture(); const { jsPDF } = window.jspdf;
-      const pdf=new jsPDF({unit:"mm",format:"a4"}); const W=210,H=297; let w=W,h=c.height*W/c.width; if(h>H){ h=H; w=c.width*H/c.height; }
+      const pdf=new jsPDF({unit:"mm",format:"a4",orientation:"landscape"}); const W=297,H=210; let w=W,h=c.height*W/c.width; if(h>H){ h=H; w=c.width*H/c.height; }
       pdf.addImage(c.toDataURL("image/jpeg",.94),"JPEG",(W-w)/2,0,w,h); await offer(fileBase()+".pdf", pdf.output("blob"));
     }catch(e){ setStatus("Could not build the PDF here. Try “Save as image”.","err"); }
     busy(b,false,"Save PDF");
@@ -528,15 +566,25 @@ function parseSheet(txt){
       if(LAB[k]){ out[LAB[k]]=m[2].trim(); continue; } }
     if(!out.name && l.includes("·") && !/:/.test(l)){ const [n,...r]=l.split("·"); out.name=n.trim(); out.profession=r.join("·").trim(); continue; }
   }
-  return out;
+  return fillGates(out);
 }
 $("#btnPaste").onclick=()=>{ $("#pastePanel").hidden=false; $("#pasteBox").focus(); };
+const POLISH_PROMPT = "You are helping me, my chapter's Bio Sheet Coordinator for BNI in India, polish a member's BNI Biography Sheet. The sheet is read aloud when the member is introduced as Feature speaker, and shared before 1-2-1 meetings. It should make the member warm, memorable and easy to refer.\n\nRULES\n1. Keep every fact the member gave. Never invent facts, numbers, names, awards, clients or family details. If something would help but is missing, ask about it in the QUESTIONS section; do not guess.\n2. Fix grammar, spelling and capitalisation. Write in clear, warm, professional Indian English. No exaggeration, no \"best\", \"No. 1\", \"guaranteed\".\n3. Profession: make it specific about who they serve, e.g. \"Tax Consultant for small businesses and NRIs\", using only what the member said.\n4. Hobbies: make them specific and conversational (3 to 5 items, comma separated).\n5. \"My burning desire is to\u2026\": one or two sentences, a concrete goal a listener could help with. Keep their goal; sharpen the wording.\n6. \"Something no one knows about me is\u2026\": one light, positive, chapter-friendly sentence with a small detail.\n7. \"My key to success is\u2026\": the habit or belief behind their results, one or two sentences.\n8. Keep each answer short so the sheet fits on one A4 page: about 25 words max for each \"In my own words\" answer, 20 words for hobbies.\n9. Leave out any line the member left blank. Keep phone and email exactly as given.\n\nOUTPUT\nReply with exactly two sections.\n\nSection 1: the polished sheet inside one code block, in EXACTLY this format and with these labels (the tool reads it back):\n\n*BIOGRAPHY SHEET* \u00b7 <chapter name>\n<Full name> \u00b7 <Profession>\n\n*Business information*\nCompany: ...\nLocation: ...\nYears in the business: ...\nPrevious jobs: ...\n\n*Personal information*\nSpouse / partner: ...\nChildren: ...\nPets: ...\nCity of residence: <city> (<years in the city>)\nHobbies & interests: ...\n\n*In my own words*\nMy burning desire is to ...\nSomething no one knows about me is: ...\nMy key to success is ...\n\nMobile: ...\nEmail: ...\n\nSection 2: QUESTIONS FOR THE MEMBER. Up to 3 short, friendly questions I can forward on WhatsApp to make the sheet stronger. Write \"None\" if the sheet is already strong.\n\nMEMBER'S SHEET\n";
+$("#btnPolish").onclick=()=>{
+  const t=$("#pasteBox").value.trim(); const st=$("#pasteStatus");
+  if(t.length<20){ st.textContent="Paste the member's WhatsApp message first."; st.className="status err"; return; }
+  const full=POLISH_PROMPT+t;
+  try{ navigator.clipboard.writeText(full).catch(()=>{}); }catch(e){}
+  const a=document.createElement("a"); a.href="https://claude.ai/new?q="+encodeURIComponent(full); a.target="_blank"; a.rel="noopener"; document.body.appendChild(a); a.click(); a.remove();
+  st.textContent="Claude should open with the prompt ready (it's also copied, in case you need to paste it). When Claude replies, copy the sheet from its first box and paste it here."; st.className="status ok";
+  $("#pasteBox").value=""; $("#pasteBox").placeholder="Paste Claude's polished sheet here, then tap Fill the form";
+};
 $("#btnPasteCancel").onclick=()=>{ $("#pastePanel").hidden=true; };
 $("#btnPasteApply").onclick=()=>{
   const got=parseSheet($("#pasteBox").value); const n=Object.keys(got).length;
   if(n<3){ $("#pasteStatus").textContent="That text doesn't look like a bio sheet. Paste the whole message, starting with the BIOGRAPHY SHEET line."; $("#pasteStatus").className="status err"; return; }
   if(isExample) leaveExample();
-  data={...(data.photo?{photo:data.photo}:{}), ...got}; step=STEPS.length-1; save(); renderStep(); renderSheet();
+  data={...(data.photo?{photo:data.photo}:{}), ...got}; step=QS.length; save(); renderStep(); renderSheet();
   $("#pastePanel").hidden=true; $("#pasteBox").value="";
   setStatus(`Filled ${n} answers from the pasted text. Check the preview, then save the PDF.`,"ok");
 };
